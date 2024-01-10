@@ -17,19 +17,18 @@ class Trace2Treat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //usematerial false
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en', 'US'),
         Locale('id', 'ID'),
-        Locale('ko', 'KR'),
+        Locale('en', 'US'),
       ],
       debugShowCheckedModeBanner: false,
       title: 'Trace2Treat',
       theme: ThemeData(
+        useMaterial3: false,
         primaryColor: AppColors.primary,
         primarySwatch: const MaterialColor(
           0xFF06B059,
