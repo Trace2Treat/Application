@@ -37,7 +37,7 @@ class _NoInternetPageState extends State<NoInternetPage> with TickerProviderStat
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('No Internet Connection', style: TextStyle(color: AppColors.primary)),
+                const Text('Tidak ada koneksi internet', style: TextStyle(color: AppColors.primary)),
                 const SizedBox(height: 30),
                 Center(
                   child: GestureDetector(
@@ -50,26 +50,14 @@ class _NoInternetPageState extends State<NoInternetPage> with TickerProviderStat
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        gradient: const LinearGradient(
-                          colors: [Colors.white, AppColors.secondary],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 5,
-                            spreadRadius: 2,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
+                        color: AppColors.primary,
                       ),
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
                           child: Text(
-                            'Try Again',
+                            'Coba Lagi',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
