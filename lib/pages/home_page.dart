@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
 import 'dashboard_page.dart';
-// import 'search_page.dart';
+import 'search_page.dart';
 // import 'favorite_page.dart';
 // import 'profile_page.dart';
 import '../theme/app_colors.dart';
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           transitionType: BottomNavigationTransitionType.none,
           children: const [
             DashboardPage(),
-            DefaultPage(color: Colors.green, name: 'Search'),
+            SearchPage(),
             DefaultPage(color: Colors.green, name: 'Favorite'),
             DefaultPage(color: Colors.green, name: 'Profile'),
           ],
