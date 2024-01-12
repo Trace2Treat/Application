@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
-import '../theme/app_colors.dart';
 import 'dashboard_page.dart';
 // import 'search_page.dart';
 // import 'favorite_page.dart';
 // import 'profile_page.dart';
+import '../theme/app_colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,10 +66,26 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               },
               type: BottomNavigationBarType.fixed,
               items: const [
-                BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home_outlined, color: AppColors.primary)),
-                BottomNavigationBarItem(label: 'Search', icon: Icon(Icons.search, color: AppColors.primary)),
-                BottomNavigationBarItem(label: 'Favorite', icon: Icon(Icons.favorite_border_outlined, color: AppColors.primary)),
-                BottomNavigationBarItem(label: 'Profile', icon: Icon(Icons.person_2_outlined, color: AppColors.primary)),
+                BottomNavigationBarItem(
+                  label: 'Home', 
+                  icon: Icon(Icons.home_outlined, color: AppColors.primary),
+                  activeIcon: Icon(Icons.home, color: AppColors.primary)
+                ),
+                BottomNavigationBarItem(
+                  label: 'Search', 
+                  icon: Icon(Icons.search, color: AppColors.primary),
+                  activeIcon: Icon(Icons.search, color: AppColors.primary)
+                ),
+                BottomNavigationBarItem(
+                  label: 'Favorite', 
+                  icon: Icon(Icons.favorite_border_outlined, color: AppColors.primary),
+                  activeIcon: Icon(Icons.favorite, color: AppColors.primary),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Profile', 
+                  icon: Icon(Icons.person_2_outlined, color: AppColors.primary),
+                  activeIcon: Icon(Icons.person, color: AppColors.primary),
+                ),
               ],
             );
           },

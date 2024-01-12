@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import '../theme/app_colors.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -12,26 +13,22 @@ class _DashboardPageState extends State<DashboardPage> {
   String name = 'Kiddovation';
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/dashboard.png'),
-                fit: BoxFit.cover,
-              ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/dashboard.png'),
+              fit: BoxFit.cover,
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 30, right: 10, top: 50, bottom: 20),
-              child: Column(
-                children: [
-                  Row(
+          ),
+          child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 30, right: 10, top: 50),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
@@ -54,33 +51,132 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 150,
-                    margin: const EdgeInsets.only(right: 20),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(''),
+                ),
+                const SizedBox(height: 20),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    aspectRatio: 2.0,
+                    enlargeCenterPage: true,
                   ),
-                  const SizedBox(height: 10),
-                  Container(
-                    height: 150,
-                    margin: const EdgeInsets.only(right: 20),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(''),
-                  ),
-                  
-                ],
-              ),
+                  items: [
+                    buildContainer(AppColors.white),
+                    buildContainer(AppColors.primary),
+                    buildContainer(AppColors.white),
+                    buildContainer(AppColors.primary),
+                    buildContainer(AppColors.white),
+                    buildContainer(AppColors.primary),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Makanan Tersedia', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          TextButton(onPressed: (){}, child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
+                        ]
+                      ),
+                      const SizedBox(height: 10),
+                      GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 5,
+                        ),
+                        itemCount: 4, 
+                        itemBuilder: (context, index) {
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Image.asset(
+                                  'assets/defaultmakanan.png',
+                                  fit: BoxFit.cover,
+                                  width: double.infinity, 
+                                  height: 80,
+                                ),
+                                const SizedBox(height: 8),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Cheese Burger',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Rp 15.000',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(5),
+                                        margin: EdgeInsets.symmetric(vertical: 5),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primary,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          'Tersedia',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                )
+              ],
             ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildContainer(Color color) {
+    return Container(
+      height: 150,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.white,
+            blurRadius: 5, 
+            offset: Offset(0, 2), 
           ),
+        ],
+      ),
+      child: Center(
+        child: Text(''),
+      ),
     );
   }
 }
