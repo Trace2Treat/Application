@@ -3,7 +3,7 @@ import 'package:bottom_navigation_view/bottom_navigation_view.dart';
 import 'dashboard_page.dart';
 import 'search_page.dart';
 // import 'favorite_page.dart';
-// import 'profile_page.dart';
+import 'profile_page.dart';
 import '../theme/app_colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -52,8 +52,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           children: const [
             DashboardPage(),
             SearchPage(),
-            DefaultPage(color: Colors.green, name: 'Favorite'),
-            DefaultPage(color: Colors.green, name: 'Profile'),
+            DefaultPage(color: Colors.white, name: 'Favorite'),
+            ProfilePage(),
           ],
         ),
         bottomNavigationBar: BottomNavigationIndexedBuilder(
@@ -68,22 +68,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               items: const [
                 BottomNavigationBarItem(
                   label: 'Home', 
-                  icon: Icon(Icons.home_outlined, color: AppColors.primary),
+                  icon: Icon(Icons.home_outlined, color: Colors.grey),
                   activeIcon: Icon(Icons.home, color: AppColors.primary)
                 ),
                 BottomNavigationBarItem(
                   label: 'Search', 
-                  icon: Icon(Icons.search, color: AppColors.primary),
+                  icon: Icon(Icons.search, color: Colors.grey),
                   activeIcon: Icon(Icons.search, color: AppColors.primary)
                 ),
                 BottomNavigationBarItem(
                   label: 'Favorite', 
-                  icon: Icon(Icons.favorite_border_outlined, color: AppColors.primary),
+                  icon: Icon(Icons.favorite_border_outlined, color: Colors.grey),
                   activeIcon: Icon(Icons.favorite, color: AppColors.primary),
                 ),
                 BottomNavigationBarItem(
                   label: 'Profile', 
-                  icon: Icon(Icons.person_2_outlined, color: AppColors.primary),
+                  icon: Icon(Icons.person_2_outlined, color: Colors.grey),
                   activeIcon: Icon(Icons.person, color: AppColors.primary),
                 ),
               ],
@@ -112,7 +112,7 @@ class DefaultPage extends StatelessWidget {
         child: Center(
           child: Text(
             'This is the $name Page',
-            style: const TextStyle(fontSize: 20, color: Colors.white),
+            style: const TextStyle(fontSize: 20, color: Colors.green),
           ),
         ),
       ),
