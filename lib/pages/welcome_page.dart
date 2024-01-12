@@ -117,7 +117,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     children: [
                       TextSpan(
                         text: 'Ketentuan Layanan',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primary,
                           decoration: TextDecoration.underline,
                         ),
@@ -126,7 +126,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             // ketentuan layanan page
                           },
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: ' atau ',
                         style: TextStyle(
                           color: Colors.black,
@@ -134,7 +134,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       ),
                       TextSpan(
                         text: 'Kebijakan Privasi',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primary,
                           decoration: TextDecoration.underline,
                         ),
@@ -143,7 +143,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             // kebijakan privasi page
                           },
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: '.',
                         style: TextStyle(
                           color: Colors.black,
