@@ -22,19 +22,24 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/background.png'),
-              fit: BoxFit.cover,
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/dashboard.png"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 30, right: 10, top: 50),
+          SingleChildScrollView(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Padding(
+                padding: const EdgeInsets.only(left: 30, right: 10),
                 child: Column(
                   children: [
                     Row(
@@ -60,7 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Container(
                       margin: const EdgeInsets.only(left: 10, right: 30),
                       height: 146,
@@ -143,11 +148,14 @@ class _DashboardPageState extends State<DashboardPage> {
                                                 SizedBox(width: 10),
                                                 Text(
                                                   'Rumah',
-                                                  style: TextStyle(fontSize: 12),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold
+                                                  ),
                                                 ),
                                                 Spacer(),
                                                 Icon(Icons.arrow_drop_down_circle, color: AppColors.secondary),
-                                                SizedBox(width: 60)
+                                                SizedBox(width: 70)
                                               ]
                                             )
                                         ),
@@ -165,7 +173,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           child: const Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              SizedBox(width: 5),
+                                              SizedBox(width: 10),
                                               Text(
                                                 'Order',
                                                 style: TextStyle(
@@ -174,7 +182,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                   fontWeight: FontWeight.bold
                                                 ),
                                               ),
-                                              SizedBox(width: 5),
+                                              SizedBox(width: 10),
                                             ]
                                           ),
                                         ),
@@ -305,9 +313,11 @@ class _DashboardPageState extends State<DashboardPage> {
                     ],
                   )
                 )
-              ],
+                ],
+              ),
             ),
-        ),
+          ),
+        ],
       ),
     );
   }
