@@ -10,7 +10,14 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final CarouselController controller = CarouselController();
   String name = 'Kiddovation';
+  int currentIndex = 0;
+  List<String> imageAssets = [
+    'assets/banner.png',
+    'assets/banner.png',
+    'assets/banner.png',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,55 +25,201 @@ class _DashboardPageState extends State<DashboardPage> {
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/dashboard.png'),
+              image: AssetImage('assets/background.png'),
               fit: BoxFit.cover,
             ),
           ),
           child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 30, right: 10, top: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Halo, $name',
-                        style: const TextStyle(
-                          color: AppColors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 30, right: 10, top: 50),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Halo, $name',
+                          style: const TextStyle(
+                            color: AppColors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.notifications,
+                            color: AppColors.white,
+                          ),
+                          onPressed: () {
+                            // Notification page
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      margin: const EdgeInsets.only(left: 10, right: 30),
+                      height: 146,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.notifications,
-                          color: AppColors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset('assets/wallet.png', height: 30, width: 30),
+                                const SizedBox(width: 5),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Metode ',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                    Text(
+                                      'Pembayaran',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const Spacer(),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Image.asset('assets/point.png', height: 16, width: 16),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          'Poin Kamu',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        )
+                                      ]
+                                    ),
+                                    Text('1000', style: TextStyle(fontSize: 14))
+                                  ],
+                                )
+                              ]
+                            ),
+                            const SizedBox(height: 20),
+                            Container(
+                              height: 50,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      child: SizedBox(
+                                        height: 40, 
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          color: Colors.white,
+                                          child: const Row(
+                                              children: [
+                                                SizedBox(width: 10),
+                                                Text(
+                                                  'Rumah',
+                                                  style: TextStyle(fontSize: 12),
+                                                ),
+                                                Spacer(),
+                                                Icon(Icons.arrow_drop_down_circle, color: AppColors.secondary),
+                                                SizedBox(width: 60)
+                                              ]
+                                            )
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: SizedBox(
+                                        height: 40,
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          color: AppColors.secondary,
+                                          child: const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(width: 5),
+                                              Text(
+                                                'Order',
+                                                style: TextStyle(
+                                                  fontSize: 14, 
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                              SizedBox(width: 5),
+                                            ]
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                        onPressed: () {
-                          // Notification page
-                        },
+                        )
                       ),
                     ],
-                  ),
+                  )
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 CarouselSlider(
+                  items: imageAssets.map((asset) {
+                    return ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Image.asset(
+                              asset, 
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                  }).toList(),
                   options: CarouselOptions(
                     autoPlay: true,
-                    aspectRatio: 2.0,
                     enlargeCenterPage: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
                   ),
-                  items: [
-                    buildContainer(AppColors.white),
-                    buildContainer(AppColors.primary),
-                    buildContainer(AppColors.white),
-                    buildContainer(AppColors.primary),
-                    buildContainer(AppColors.white),
-                    buildContainer(AppColors.primary),
-                  ],
+                  carouselController: controller,
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    3,
+                    (index) => buildDot(index),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Padding(
@@ -159,23 +312,14 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget buildContainer(Color color) {
+  Widget buildDot(int index) {
     return Container(
-      height: 150,
-      width: double.infinity,
+      width: 8,
+      height: 8,
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.white,
-            blurRadius: 5, 
-            offset: Offset(0, 2), 
-          ),
-        ],
-      ),
-      child: Center(
-        child: Text(''),
+        shape: BoxShape.circle,
+        color: currentIndex == index ? AppColors.primary : Colors.grey,
       ),
     );
   }
