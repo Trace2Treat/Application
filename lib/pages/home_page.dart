@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
 import 'dashboard_page.dart';
 import 'search_page.dart';
-// import 'favorite_page.dart';
+import 'favorite_page.dart';
 import 'profile_page.dart';
 import '../theme/app_colors.dart';
 
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           children: const [
             DashboardPage(),
             SearchPage(),
-            DefaultPage(color: Colors.white, name: 'Favorite'),
+            FavoritePage(),
             ProfilePage(),
           ],
         ),
@@ -89,31 +89,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ],
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class DefaultPage extends StatelessWidget {
-  final Color color;
-  final String name;
-
-  const DefaultPage({Key? key, required this.color, required this.name}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-      ),
-      body: Container(
-        color: color,
-        child: Center(
-          child: Text(
-            'This is the $name Page',
-            style: const TextStyle(fontSize: 20, color: Colors.green),
-          ),
         ),
       ),
     );

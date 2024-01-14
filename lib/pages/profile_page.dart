@@ -38,9 +38,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'PROFILE',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -85,15 +85,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Wrap(
-                                      spacing: 14,
-                                      children: [
-                                        Text('Admin',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                                color: Colors.black)),
-                                      ],
-                                    ),
+                                    const Text(
+                                      'Admin',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(color: Colors.black)),
                                   ],
                                 ),
                               ),
@@ -109,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  buildRow('Number','+62 888 4444 2222'),
+                                  buildRow('Telepon','+62 888 4444 2222'),
                                   buildDivider(),
                                   buildRow('Email', 'kiddovation@gmail.com'),
                                   buildDivider(),
@@ -167,12 +162,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(text1, style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
-              Text(text2, style: const TextStyle(color: Colors.grey)),
-            ],
-          ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(text1, style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+          Text(text2, style: const TextStyle(color: Colors.grey)),
+        ],
+      ),
     );
   }
 
