@@ -19,20 +19,17 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           SingleChildScrollView(
             child: SafeArea(
               child: Column(
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.only(left: 30, right: 10),
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 10, top: 20, bottom: 20),
                       child: Column(
                         children: [
                           Row(
@@ -59,7 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                         ],
-                      )),
+                      )
+                  ),),
                   const SizedBox(height: 30),
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
