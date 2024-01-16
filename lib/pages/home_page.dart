@@ -4,6 +4,7 @@ import 'dashboard_page.dart';
 import 'search_page.dart';
 import 'favorite_page.dart';
 import 'profile_page.dart';
+import 'exchange_page.dart';
 import '../theme/app_colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -52,6 +53,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           children: const [
             DashboardPage(),
             SearchPage(),
+            ExchangePage(),
             FavoritePage(),
             ProfilePage(),
           ],
@@ -75,6 +77,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   label: 'Search', 
                   icon: Icon(Icons.search, color: Colors.grey),
                   activeIcon: Icon(Icons.search, color: AppColors.primary)
+                ),
+                BottomNavigationBarItem(
+                  label: 'Exchange', 
+                  icon: Icon(Icons.currency_exchange, color: Colors.grey),
+                  activeIcon: Icon(Icons.currency_exchange, color: AppColors.primary)
                 ),
                 BottomNavigationBarItem(
                   label: 'Favorite', 

@@ -57,16 +57,19 @@ class _SearchPageState extends State<SearchPage> {
                         itemBuilder: (context, index) {
                           return Card(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Image.asset(
-                                  'assets/defaultmakanan.png',
-                                  fit: BoxFit.cover,
-                                  width: double.infinity, 
-                                  height: 80,
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.asset(
+                                    'assets/makanan.png',
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: 80,
+                                  ),
                                 ),
                                 const SizedBox(height: 8),
                                 Padding(

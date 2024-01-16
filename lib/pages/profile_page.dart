@@ -84,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     ),
                                     const Text(
-                                      'Admin',
+                                      'Mahasiswa',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(color: Colors.black)),
                                   ],

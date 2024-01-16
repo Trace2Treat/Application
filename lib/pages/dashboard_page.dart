@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'foodorder_page.dart';
 import '../theme/app_colors.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -251,61 +252,72 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                         itemCount: 4, 
                         itemBuilder: (context, index) {
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Image.asset(
-                                  'assets/defaultmakanan.png',
-                                  fit: BoxFit.cover,
-                                  width: double.infinity, 
-                                  height: 80,
-                                ),
-                                const SizedBox(height: 8),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 23),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Cheese Burger',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Rp 15.000',
-                                        style: TextStyle(
-                                          color: AppColors.primary,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        margin: EdgeInsets.symmetric(vertical: 5),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: Text(
-                                          'Tersedia',
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => FoodOrderPage()), 
+                              );
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.asset(
+                                      'assets/makanan.png',
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: 80,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 23),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Cheese Burger',
                                           style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
+                                            color: Colors.black,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          'Rp 15.000',
+                                          style: TextStyle(
+                                            color: AppColors.primary,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(5),
+                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primary,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Text(
+                                            'Tersedia',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
