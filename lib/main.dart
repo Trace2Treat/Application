@@ -6,13 +6,25 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'theme/app_colors.dart';
 import 'pages/nointernet_page.dart';
 import 'pages/welcome_page.dart';
+import 'pages/home_page.dart';
+import 'utils/session_manager.dart';
 
-void main() {
-  runApp(const Trace2Treat());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final sessionManager = SessionManager();
+  await sessionManager.initPrefs();
+
+  final isLoggedIn = await sessionManager.isLoggedIn();
+
+  runApp(Trace2Treat(isLoggedIn: isLoggedIn));
 }
 
 class Trace2Treat extends StatelessWidget {
-  const Trace2Treat({super.key});
+  final bool isLoggedIn;
+
+  const Trace2Treat({Key? key, required this.isLoggedIn}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +68,7 @@ class Trace2Treat extends StatelessWidget {
             return const Center(child: Text('Error checking internet connection'));
           } else {
             return snapshot.data == true
-              ? const SplashScreen()
+              ? (isLoggedIn ? const HomePage() : const SplashScreen())
               : const NoInternetPage();
           }
         },

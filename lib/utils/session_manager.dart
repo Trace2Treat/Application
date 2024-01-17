@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class SessionManager {
   static const String _keyIsLoggedIn = 'isLoggedIn';
@@ -11,8 +11,6 @@ class SessionManager {
   static const String _keyAvatar = 'avatar';
   static const String _keyRole = 'role';
   static const String _keyStatus= 'status';
-  // static const String _themeKey = 'theme';
-  // static const Locale _languageKey = Locale('en', 'US');
 
   static final SessionManager _instance = SessionManager._internal();
 
@@ -80,24 +78,6 @@ class SessionManager {
   String? getUserStatus() {
     return _prefs.getString(_keyStatus);
   }
-
-  // String getTheme() {
-  //   return _prefs.getString(_themeKey) ?? globalTheme;
-  // }
-
-  // Future<void> setTheme(String theme) async {
-  //   await _prefs.setString(_themeKey, theme);
-  // }
-
-  // Locale getLanguage() {
-  //   String storedLanguage = _prefs.getString(_languageKey.toString()) ?? globalLanguage.toString();
-  //   List<String> languageParts = storedLanguage.split('_');
-  //   return Locale(languageParts[0], languageParts.length > 1 ? languageParts[1] : '');
-  // }
-
-  // Future<void> setLanguage(Locale languageCode) async {
-  //   await _prefs.setString(_languageKey.toString(), languageCode.toString());
-  // }
 
   void logout() {
     _prefs.remove(_keyUserId);

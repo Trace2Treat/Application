@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'welcome_page.dart';
 import '../theme/app_colors.dart';
+import '../utils/session_manager.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -115,6 +116,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(height: 10),
                           ElevatedButton(
                             onPressed: () {
+                              SessionManager().setLoggedIn(false);
+
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => const WelcomePage(),

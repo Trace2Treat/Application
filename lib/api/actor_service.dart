@@ -4,8 +4,6 @@ import 'config.dart';
 import '../utils/session_manager.dart';
 
 class ActorService {
-  // bool isLoading = false;
-  // Map<String, dynamic> userData = {};
 
   Future<List<ActorData>> fetchData() async {
     try {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:trace2treat/main.dart';
 import '../theme/app_colors.dart';
+import '../utils/session_manager.dart';
 
 class NoInternetPage extends StatefulWidget {
   const NoInternetPage({Key? key}) : super(key: key);
@@ -12,11 +13,17 @@ class NoInternetPage extends StatefulWidget {
 
 class _NoInternetPageState extends State<NoInternetPage> with TickerProviderStateMixin {
   late bool isLoggedIn;
-  late String savedTheme;
 
   @override
   void initState() {
     super.initState();
+    initAsyncData();
+  }
+
+  Future<void> initAsyncData() async {
+    final sessionManager = SessionManager();
+    isLoggedIn = await sessionManager.isLoggedIn();
+    setState(() {}); 
   }
 
   @override
@@ -44,7 +51,7 @@ class _NoInternetPageState extends State<NoInternetPage> with TickerProviderStat
                     onTap: () async {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const Trace2Treat()),
+                        MaterialPageRoute(builder: (context) => Trace2Treat(isLoggedIn: isLoggedIn)),
                       );
                     },
                     child: Container(
