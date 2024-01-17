@@ -272,7 +272,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                       'assets/makanan.png',
                                       fit: BoxFit.cover,
                                       width: double.infinity,
-                                      height: 80,
+                                      height: 60,
                                     ),
                                   ),
                                   const SizedBox(height: 8),

@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionManager {
   static const String _keyIsLoggedIn = 'isLoggedIn';
-  //static const String _keyUserId = 'userId';
+  static const String _keyUserId = 'userId';
   static const String _keyName = 'name';
   static const String _keyEmail = 'email';
   static const String _keyPhone = 'phone';
@@ -39,7 +39,7 @@ class SessionManager {
   }
 
   Future<void> saveUserInfo(Map<String, dynamic> userData) async {
-    //await _prefs.setString(_keyUserId, userData['user_id']);
+    await _prefs.setString(_keyUserId, userData['id']);
     await _prefs.setString(_keyName, userData['name']);
     await _prefs.setString(_keyEmail, userData['email']);
     await _prefs.setString(_keyPhone, userData['phone']);
@@ -49,9 +49,9 @@ class SessionManager {
     await _prefs.setString(_keyStatus, userData['status']);
   }
 
-  // String? getUserId() {
-  //   return _prefs.getString(_keyUserId);
-  // }
+  String? getUserId() {
+    return _prefs.getString(_keyUserId);
+  }
 
   String? getName() {
     return _prefs.getString(_keyName);
@@ -100,7 +100,7 @@ class SessionManager {
   // }
 
   void logout() {
-    //_prefs.remove(_keyUserId);
+    _prefs.remove(_keyUserId);
     _prefs.remove(_keyName);
     _prefs.remove(_keyEmail);
     _prefs.remove(_keyPhone);

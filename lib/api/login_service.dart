@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'config.dart';
+import '../utils/session_manager.dart';
 
 class LoginService {
   bool isLoading = false;
@@ -20,6 +22,8 @@ class LoginService {
       print(response.body);
 
       if (response.statusCode == 200) {
+        final Map<String, dynamic> userData = json.decode(response.body);
+        SessionManager().saveUserInfo(userData);
         // success
       } else {
         // failed

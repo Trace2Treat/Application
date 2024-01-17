@@ -66,6 +66,30 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
+                      GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondary,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(
+                              'Lihat History', 
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white
+                              ),
+                            )
+                          )
+                        ),
+                      ),
+                      const SizedBox(height: 10),
                       Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
@@ -82,10 +106,10 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Selasa, 16 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('Username: Diva Ariani'),
-                                  Text('Berat Sampah: 0.2 kg'),
-                                  Text('Lokasi: SV IPB'),
-                                  Text('Jarak: 7km dari Lokasi Saya')
+                                  Text('Username: Reksa', style: TextStyle(fontSize: 12)),
+                                  Text('Berat Sampah: 0.2 kg', style: TextStyle(fontSize: 12)),
+                                  Text('Lokasi: SV IPB', style: TextStyle(fontSize: 12)),
+                                  Text('Jarak: 7km dari Lokasi Saya', style: TextStyle(fontSize: 12))
                                 ],
                               ),
                               Spacer(),
@@ -119,10 +143,10 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Selasa, 16 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('Username: Reksa'),
-                                  Text('Berat Sampah: 0.2 kg'),
-                                  Text('Lokasi: SV IPB'),
-                                  Text('Jarak: 7km dari Lokasi Saya')
+                                  Text('Username: Reksa', style: TextStyle(fontSize: 12)),
+                                  Text('Berat Sampah: 0.2 kg', style: TextStyle(fontSize: 12)),
+                                  Text('Lokasi: SV IPB', style: TextStyle(fontSize: 12)),
+                                  Text('Jarak: 7km dari Lokasi Saya', style: TextStyle(fontSize: 12))
                                 ],
                               ),
                               Spacer(),
@@ -156,10 +180,10 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Selasa, 16 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('Username: Muhammad Rafi'),
-                                  Text('Berat Sampah: 0.2 kg'),
-                                  Text('Lokasi: SV IPB'),
-                                  Text('Jarak: 7km dari Lokasi Saya')
+                                  Text('Username: Reksa', style: TextStyle(fontSize: 12)),
+                                  Text('Berat Sampah: 0.2 kg', style: TextStyle(fontSize: 12)),
+                                  Text('Lokasi: SV IPB', style: TextStyle(fontSize: 12)),
+                                  Text('Jarak: 7km dari Lokasi Saya', style: TextStyle(fontSize: 12))
                                 ],
                               ),
                               Spacer(),
@@ -193,10 +217,10 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Selasa, 16 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('Username: Muhammad Rizki'),
-                                  Text('Berat Sampah: 0.2 kg'),
-                                  Text('Lokasi: SV IPB'),
-                                  Text('Jarak: 7km dari Lokasi Saya')
+                                  Text('Username: Reksa', style: TextStyle(fontSize: 12)),
+                                  Text('Berat Sampah: 0.2 kg', style: TextStyle(fontSize: 12)),
+                                  Text('Lokasi: SV IPB', style: TextStyle(fontSize: 12)),
+                                  Text('Jarak: 7km dari Lokasi Saya', style: TextStyle(fontSize: 12))
                                 ],
                               ),
                               Spacer(),

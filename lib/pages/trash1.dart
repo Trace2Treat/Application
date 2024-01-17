@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'trash1.dart';
+import 'trash2.dart';
 import '../theme/app_colors.dart';
 
-class TrashPickupPage extends StatefulWidget {
-  const TrashPickupPage({Key? key}) : super(key: key);
+class TrashPickup1Page extends StatefulWidget {
+  const TrashPickup1Page({Key? key}) : super(key: key);
 
   @override
 
-  State<TrashPickupPage> createState() => _TrashPickupPageState();
+  State<TrashPickup1Page> createState() => _TrashPickupPageState();
 }
 
-class _TrashPickupPageState extends State<TrashPickupPage> {
+class _TrashPickupPageState extends State<TrashPickup1Page> {
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class _TrashPickupPageState extends State<TrashPickupPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              'In Pickup', 
+              'Delivered', 
               style: TextStyle(
                 fontSize: 12, 
               )
@@ -126,15 +126,11 @@ class _TrashPickupPageState extends State<TrashPickupPage> {
             ),
             Spacer(),
             Visibility(
-              visible: true,
+              visible: false,
               // if status received, so the visible false
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => const TrashPickup1Page()
-                  ), 
-                );
+                  // change status to received
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
@@ -156,11 +152,15 @@ class _TrashPickupPageState extends State<TrashPickupPage> {
               ),
             ),
             Visibility(
-              visible: false,
+              visible: true,
               // if status received, so the visible true
               child: GestureDetector(
                 onTap: () {
-                  // change status to received
+                  Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => const TrashPickup2Page()
+                  ), 
+                );
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 10),

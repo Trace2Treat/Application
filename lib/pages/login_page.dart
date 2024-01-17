@@ -5,6 +5,7 @@ import 'register_page.dart';
 import 'home_page.dart';
 import '../api/login_service.dart';
 import '../theme/app_colors.dart';
+import '../utils/session_manager.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,10 +15,30 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final controller = LoginService();
+  LoginService controller = LoginService();
   bool isPasswordVisible = false;
   String email = '';
   String password = '';
+
+  void loginButtonPressed() async {
+    setState(() {
+      controller.isLoading = true;
+    });
+
+    try {
+      await controller.postLogin(
+        email,
+        password,
+      );
+
+    } catch (error) {
+
+    } finally {
+      setState(() {
+        controller.isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,12 +130,18 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
-                    if (email.isNotEmpty && password.isNotEmpty) {
-                              try {
-                                final response = await controller.postLogin(
-                                  email,
-                                  password
-                                );
+                    setState(() {
+                      controller.isLoading = true;
+                    });
+
+                    try {
+                      await controller.postLogin(
+                        email,
+                        password,
+                      );
+
+                      SessionManager().saveUserInfo(controller.userData);
+                                SessionManager().setLoggedIn(true);
 
                                 AnimatedSnackBar.rectangle(
                                   'Success',
@@ -131,22 +158,19 @@ class _LoginPageState extends State<LoginPage> {
                                         const HomePage(),
                                   ),
                                 );
-                              } catch (error) {
-                                print('Error $error');
 
-                                AnimatedSnackBar.material(
+                    } catch (error) {
+
+                      AnimatedSnackBar.material(
                                     'Gagal masuk, coba lagi !',
                                     type: AnimatedSnackBarType.error,
                                 ).show(context);
-                                                                
-                              }
-                            } else {
-                              print('No user available');
-                              AnimatedSnackBar.material(
-                                    'Gagal masuk, coba lagi !',
-                                    type: AnimatedSnackBarType.error,
-                                ).show(context);
-                            }
+
+                    } finally {
+                      setState(() {
+                        controller.isLoading = false;
+                      });
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,

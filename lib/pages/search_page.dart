@@ -76,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
                                       'assets/makanan.png',
                                       fit: BoxFit.cover,
                                       width: double.infinity,
-                                      height: 80,
+                                      height: 70,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
