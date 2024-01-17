@@ -4,32 +4,55 @@ import 'config.dart';
 
 class LoginService {
   bool isLoading = false;
-  Map<String, dynamic> userData = {};
 
-  Future<http.Response> postLogin(String email, String password) async {
-    try {
-      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/login');
+  Future<Map<String, dynamic>> loginUser(String email, String password) async {
+    final loginUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/login');
+    
+    final response = await http.post(
+      loginUrl,
+      body: {
+        'email': email,
+        'password': password,
+      },
+    );
 
-      final response = await http.post(
-        url,
-        body: {
-          'email': email,
-          'password': password,
-        },
-      );
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final accessToken = responseData['access_token'];
 
-      print(response.body);
+      final userData = await getUserData(accessToken);
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> userData = json.decode(response.body);
-        this.userData = userData;
-      }
+      return userData;
+    } else {
+      throw Exception('Failed to login');
+    }
+  }
 
-      return response; 
+  Future<Map<String, dynamic>> getUserData(String accessToken) async {
+    final userUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/user');
 
-    } catch (error) {
-      print('Error login: $error');
-      rethrow;
+    final response = await http.get(
+      userUrl,
+      headers: {'Authorization': 'Bearer $accessToken'},
+    );
+
+    if (response.statusCode == 200) {
+      final userData = json.decode(response.body);
+
+      final filteredData = {
+        'id': userData['id'],
+        'name': userData['name'],
+        'email': userData['email'],
+        'phone': userData['phone'],
+        'address': userData['address'],
+        'avatar': userData['avatar'],
+        'role': userData['role'],
+        'balance_coin': userData['balance_coin'],
+      };
+
+      return filteredData;
+    } else {
+      throw Exception('Failed to get user data');
     }
   }
 }

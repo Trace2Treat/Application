@@ -13,13 +13,29 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   final CarouselController controller = CarouselController();
-  String name = 'Kiddovation';
   int currentIndex = 0;
   List<String> imageAssets = [
     'assets/banner.png',
     'assets/banner.png',
     'assets/banner.png',
   ];
+
+  late String name;
+  late int point;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final userData = await SessionManager.getUserData();
+    setState(() {
+      name = userData['name'];
+      point = userData['balance_coin'] ?? 0;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +64,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Halo, ${SessionManager().getName() ?? "Unknown"}",
-                          //'Halo, $name',
+                          "Halo, $name",
                           style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 14,
@@ -121,7 +136,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         )
                                       ]
                                     ),
-                                    Text('1000', style: TextStyle(fontSize: 14))
+                                    Text('$point', style: TextStyle(fontSize: 14))
                                   ],
                                 )
                               ]
