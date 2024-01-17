@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
+import 'foodordersuccess_page.dart';
 import '../theme/app_colors.dart';
 
 class FoodCartPage extends StatefulWidget {
-  const FoodCartPage({Key? key}) : super(key: key);
+  final int counterFromOrder;
+
+  const FoodCartPage({required this.counterFromOrder, Key? key}) : super(key: key);
 
   @override
   State<FoodCartPage> createState() => _FoodCartPageState();
 }
 
 class _FoodCartPageState extends State<FoodCartPage> {
+  late int counter;
+  late int totalPoin;
+
+  @override
+  void initState() {
+    super.initState();
+    counter = widget.counterFromOrder;
+    totalPoin = 100 * counter;
+  }
+
+  void incrementCounter() {
+    setState(() {
+      counter++;
+      totalPoin = 100 * counter;
+    });
+  }
+
+  void decrementCounter() {
+    if (counter > 1) {
+      setState(() {
+        counter--;
+        totalPoin = 100 * counter;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,24 +107,24 @@ class _FoodCartPageState extends State<FoodCartPage> {
                           Row(
                             children: [
                               IconButton(
-                                icon: Icon(Icons.remove),
+                                icon: const Icon(Icons.remove),
                                 onPressed: () {
-                                  // minus logic
+                                  decrementCounter(); 
                                 },
                               ),
-                              SizedBox(width: 8),
-                              Text('1'),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
+                              Text('$counter'), 
+                              const SizedBox(width: 8),
                               IconButton(
-                                icon: Icon(Icons.add),
+                                icon: const Icon(Icons.add),
                                 onPressed: () {
-                                  // add logic
+                                  incrementCounter(); 
                                 },
                               ),
                             ],
                           ),
                           Text(
-                            'Total Poin: 100',
+                            'Total Poin: $totalPoin',
                             style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.bold,
@@ -110,43 +138,56 @@ class _FoodCartPageState extends State<FoodCartPage> {
               ],
             ),
             Spacer(),
-            Container(
-              width: double.infinity,
-              color: AppColors.primary,
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Total poin', style: TextStyle(color: Colors.white)),
-                        SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset('assets/point.png', height: 16, width: 16, color: Colors.white),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          '100',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white
-                                          ),
-                                        )
-                          ]
-                        )
-                      ],
-                    ),
-                    Text('Tukar (1)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  ],
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => const OrderSuccessPage()
+                  ), 
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              )
-            ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Total poin', style: TextStyle(color: Colors.white)),
+                          SizedBox(height: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset('assets/point.png', height: 16, width: 16, color: Colors.white),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            '$totalPoin',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white
+                                            ),
+                                          )
+                            ]
+                          )
+                        ],
+                      ),
+                      Text('Tukar ($counter)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                )
+              ),
+            )
           ],
         ),
       ),

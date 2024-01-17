@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'foodorder_page.dart';
 import '../theme/app_colors.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -55,55 +56,63 @@ class _FavoritePageState extends State<FavoritePage> {
                         ),
                         itemCount: 2, 
                         itemBuilder: (context, index) {
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.asset(
-                                    'assets/makanan.png',
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: 80,
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => FoodOrderPage()), 
+                              );
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.asset(
+                                      'assets/makanan.png',
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: 80,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 23),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Cheese Burger',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
+                                  const SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 23),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Cheese Burger',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        'Rp 15.000',
-                                        style: TextStyle(
-                                          color: AppColors.primary,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold
+                                        Text(
+                                          'Rp 15.000',
+                                          style: TextStyle(
+                                            color: AppColors.primary,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold
+                                          ),
                                         ),
-                                      ),
-                                      Row(
+                                        Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Icon(Icons.favorite, color: AppColors.primary),
                                         ],
                                       )
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },

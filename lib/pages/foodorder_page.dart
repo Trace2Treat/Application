@@ -10,6 +10,21 @@ class FoodOrderPage extends StatefulWidget {
 }
 
 class _FoodOrderPageState extends State<FoodOrderPage> {
+  int counter = 1;
+
+  void incrementCounter() {
+    setState(() {
+      counter++;
+    });
+  }
+
+  void decrementCounter() {
+    if (counter > 1) {
+      setState(() {
+        counter--;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,16 +79,16 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                     IconButton(
                       icon: const Icon(Icons.remove),
                       onPressed: () {
-                        // remove logic
+                        decrementCounter(); 
                       },
                     ),
                     const SizedBox(width: 8),
-                    Text('1'),
+                    Text('$counter'), 
                     const SizedBox(width: 8),
                     IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: () {
-                        // add logic
+                        incrementCounter(); 
                       },
                     ),
                   ],
@@ -82,7 +97,9 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const FoodCartPage()), 
+                      MaterialPageRoute(builder: (context) => FoodCartPage(
+                        counterFromOrder: counter,
+                      )), 
                     );
                   },
                   child: const Row(
@@ -96,6 +113,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                 const SizedBox(width: 6),
               ],
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
