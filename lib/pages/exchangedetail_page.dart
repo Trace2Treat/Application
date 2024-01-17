@@ -11,7 +11,6 @@ class ExchangeDetailPage extends StatefulWidget {
 
 class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

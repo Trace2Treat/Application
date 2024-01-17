@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
 import 'dashboard_page.dart';
+import 'dashboarddriver_page.dart';
 import 'search_page.dart';
 import 'favorite_page.dart';
 import 'profile_page.dart';
@@ -51,7 +52,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           controller: _controller,
           transitionType: BottomNavigationTransitionType.none,
           children: const [
-            DashboardPage(),
+            //DashboardPage(),
+            DashboardDriverPage(),
             SearchPage(),
             ExchangePage(),
             FavoritePage(),

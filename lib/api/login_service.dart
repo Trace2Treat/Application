@@ -1,41 +1,32 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 
 class LoginService {
   bool isLoading = false;
   Map<String, dynamic> userData = {};
-  
-  Future<bool> login(String username, String password) async {
-    isLoading = true;
 
+  Future<void> postLogin(String email, String password) async {
     try {
-      final response = await http.get(
-        Uri.parse('${AppConfig.apiBaseUrl}/api/login'),
+      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/login');
+
+      final response = await http.post(
+        url,
+        body: {
+          'email': email,
+          'password': password
+        },
       );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
+      print(response.body);
 
-        if (data['status'] == 1) {
-          // Login successful
-          userData = data['data'][0];
-          isLoading = false;
-          return true;
-        } else {
-          // Login failed
-          isLoading = false;
-          return false;
-        }
+      if (response.statusCode == 200) {
+        // success
       } else {
-        // Handle other HTTP status codes
-        isLoading = false;
-        return false;
+        // failed
       }
-    } catch (e) {
-      // Handle network errors or exceptions
-      isLoading = false;
-      return false;
+    } catch (error) {
+      print('Error login: $error');
+      rethrow;
     }
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'register_page.dart';
 import 'home_page.dart';
+import '../api/login_service.dart';
 import '../theme/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,7 +14,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final controller = LoginService();
   bool isPasswordVisible = false;
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +50,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      email = value;
+                    });
+                  },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -62,6 +72,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
                   obscureText: !isPasswordVisible,
                   decoration: InputDecoration(
                     filled: true,
@@ -93,12 +108,45 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const HomePage(),
-                      ),
-                    );
+                  onPressed: () async {
+                    if (email.isNotEmpty && password.isNotEmpty) {
+                              try {
+                                final response = await controller.postLogin(
+                                  email,
+                                  password
+                                );
+
+                                AnimatedSnackBar.rectangle(
+                                  'Success',
+                                    'Anda berhasil masuk',
+                                    type: AnimatedSnackBarType.success,
+                                    brightness: Brightness.light,
+                                  ).show(
+                                    context,
+                                  );
+
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const HomePage(),
+                                  ),
+                                );
+                              } catch (error) {
+                                print('Error $error');
+
+                                AnimatedSnackBar.material(
+                                    'Gagal masuk, coba lagi !',
+                                    type: AnimatedSnackBarType.error,
+                                ).show(context);
+                                                                
+                              }
+                            } else {
+                              print('No user available');
+                              AnimatedSnackBar.material(
+                                    'Gagal masuk, coba lagi !',
+                                    type: AnimatedSnackBarType.error,
+                                ).show(context);
+                            }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,

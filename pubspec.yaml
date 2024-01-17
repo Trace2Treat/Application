@@ -20,6 +20,7 @@ dependencies:
   bottom_navigation_view: ^0.3.0
   carousel_slider: ^4.2.1
   timeline_tile: ^2.0.0
+  animated_snack_bar: ^0.4.0
 
 dev_dependencies:
   flutter_test:
