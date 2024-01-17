@@ -7,7 +7,7 @@ class LoginService {
   bool isLoading = false;
   Map<String, dynamic> userData = {};
 
-  Future<void> postLogin(String email, String password) async {
+  Future<http.Response> postLogin(String email, String password) async {
     try {
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/login');
 
@@ -15,7 +15,7 @@ class LoginService {
         url,
         body: {
           'email': email,
-          'password': password
+          'password': password,
         },
       );
 
@@ -23,11 +23,11 @@ class LoginService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> userData = json.decode(response.body);
-        SessionManager().saveUserInfo(userData);
-        // success
-      } else {
-        // failed
+        this.userData = userData;
       }
+
+      return response; 
+
     } catch (error) {
       print('Error login: $error');
       rethrow;

@@ -1,12 +1,6 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
-import 'dashboard_page.dart';
-import 'search_page.dart';
-import 'favorite_page.dart';
-import 'profile_page.dart';
-import 'exchange_page.dart';
 import '../theme/app_colors.dart';
 
 class ManagementOrderPage extends StatefulWidget {
@@ -16,15 +10,13 @@ class ManagementOrderPage extends StatefulWidget {
   State<ManagementOrderPage> createState() => _ManagementOrderPageState();
 }
 
-class _ManagementOrderPageState extends State<ManagementOrderPage>
-    with SingleTickerProviderStateMixin {
+class _ManagementOrderPageState extends State<ManagementOrderPage> {
   late final BottomNavigationController _controller;
   DateTime? currentBackPressTime;
 
   @override
   void initState() {
     super.initState();
-    _controller = BottomNavigationController(vsync: this);
   }
 
   @override
@@ -82,7 +74,6 @@ class _ManagementOrderPageState extends State<ManagementOrderPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // mapping the items list here
                 Expanded(
                   child: ListView.builder(
                     itemCount: items.length,

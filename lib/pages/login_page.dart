@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
@@ -135,37 +136,42 @@ class _LoginPageState extends State<LoginPage> {
                     });
 
                     try {
-                      await controller.postLogin(
+                      final response = await controller.postLogin(
                         email,
                         password,
                       );
 
-                      SessionManager().saveUserInfo(controller.userData);
-                                SessionManager().setLoggedIn(true);
+                      if (response.statusCode == 200) {
+                        SessionManager().saveUserInfo(controller.userData);
+                        SessionManager().setLoggedIn(true);
 
-                                AnimatedSnackBar.rectangle(
-                                  'Success',
-                                    'Anda berhasil masuk',
-                                    type: AnimatedSnackBarType.success,
-                                    brightness: Brightness.light,
-                                  ).show(
-                                    context,
-                                  );
+                        AnimatedSnackBar.rectangle(
+                          'Success',
+                          'Anda berhasil masuk',
+                          type: AnimatedSnackBarType.success,
+                          brightness: Brightness.light,
+                        ).show(
+                          context,
+                        );
 
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const HomePage(),
-                                  ),
-                                );
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      } else {
+                        AnimatedSnackBar.material(
+                          'Gagal masuk, coba lagi !',
+                          type: AnimatedSnackBarType.error,
+                        ).show(context);
+                      }
 
                     } catch (error) {
-
+                      print('Error: $error');
                       AnimatedSnackBar.material(
-                                    'Gagal masuk, coba lagi !',
-                                    type: AnimatedSnackBarType.error,
-                                ).show(context);
-
+                          'Gagal masuk, coba lagi !',
+                          type: AnimatedSnackBarType.error,
+                        ).show(context);
                     } finally {
                       setState(() {
                         controller.isLoading = false;
