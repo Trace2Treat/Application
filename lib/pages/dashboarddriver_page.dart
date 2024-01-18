@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'trashdetail_page.dart';
 import '../theme/app_colors.dart';
+import '../utils/globals.dart';
 
 class DashboardDriverPage extends StatefulWidget {
   const DashboardDriverPage({Key? key}) : super(key: key);
@@ -10,7 +11,6 @@ class DashboardDriverPage extends StatefulWidget {
 }
 
 class _DashboardDriverPageState extends State<DashboardDriverPage> {
-  String name = 'Abang';
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              'Halo, $name',
+                              'Halo, $userName',
                               style: const TextStyle(
                                 color: AppColors.white,
                                 fontSize: 14,

@@ -1,14 +1,12 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'register_page.dart';
 import 'home_page.dart';
 import '../api/login_service.dart';
-import '../api/config.dart';
 import '../theme/app_colors.dart';
 import '../utils/session_manager.dart';
+import '../utils/globals.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -22,71 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordVisible = false;
   String email = '';
   String password = '';
-
-  // void loginButtonPressed() async {
-  //   setState(() {
-  //     controller.isLoading = true;
-  //   });
-
-  //   try {
-  //     await controller.postLogin(
-  //       email,
-  //       password,
-  //     );
-
-  //   } catch (error) {
-
-  //   } finally {
-  //     setState(() {
-  //       controller.isLoading = false;
-  //     });
-  //   }
-  // }
-
-  // Future<Map<String, dynamic>> loginUser(String email, String password) async {
-  //   final loginUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/login');
-    
-  //   final response = await http.post(
-  //     loginUrl,
-  //     body: {
-  //       'email': email,
-  //       'password': password,
-  //     },
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     final responseData = json.decode(response.body);
-  //     final accessToken = responseData['access_token'];
-
-  //     final userData = await getUserData(accessToken);
-
-  //     return userData;
-  //   } else {
-  //     throw Exception('Failed to login');
-  //   }
-  // }
-
-  // Future<Map<String, dynamic>> getUserData(String accessToken) async {
-  //   final userUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/user');
-
-  //   final response = await http.get(
-  //     userUrl,
-  //     headers: {'Authorization': 'Bearer $accessToken'},
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     final userData = json.decode(response.body);
-
-  //     final filteredData = {
-  //       'id': userData['id'],
-  //       'name': userData['name'],
-  //     };
-
-  //     return filteredData;
-  //   } else {
-  //     throw Exception('Failed to get user data');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -185,8 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       final loginResult = await controller.loginUser(email, password);
                       SessionManager().setLoggedIn(true);
-                      
-
+                    
                         AnimatedSnackBar.rectangle(
                           'Success',
                           'Anda berhasil masuk',
@@ -205,14 +137,21 @@ class _LoginPageState extends State<LoginPage> {
                       final id = loginResult['id'];
                       final name = loginResult['name'];
                       final emailnya = loginResult['email'];
+                      //final balanceCoin = loginResult['balance_coin'];
                       // final phone = loginResult['phone'];
                       // final address = loginResult['address'];
                       // final avatar = loginResult['avatar'];
                       // final role = loginResult['role'];
-                      final balanceCoin = loginResult['balance_coin'];
                       //final status = loginResult['status'];
 
-                      await SessionManager.saveUserData(id, name, emailnya, balanceCoin);
+                      // await SessionManager.saveUserData(id, name, emailnya);
+                      setState(() {
+                        userId = id;
+                        userName = name;
+                        userEmail = emailnya;
+                      });
+
+                      print('idnya $id, namanya $name');
 
                     } catch (e) {
                       print('Error during login: $e');
@@ -238,10 +177,14 @@ class _LoginPageState extends State<LoginPage> {
                     child: Container(
                       constraints: const BoxConstraints(minHeight: 36, minWidth: 88),
                       alignment: Alignment.center,
-                      child: const Text(
-                        'Masuk',
-                        style: TextStyle(color: AppColors.white),
-                      ),
+                      child: controller.isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                          )
+                        : const Text(
+                            'Masuk',
+                            style: TextStyle(color: AppColors.white),
+                          ),
                     ),
                   ),
                 ),

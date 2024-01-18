@@ -8,7 +8,7 @@ class SessionManager {
   // static const String _keyPhone = 'phone';
   // static const String _keyAddress = 'address';
   // static const String _keyAvatar = 'avatar';
-  static const String _keyPoin = 'balance_coin';
+  //static const String _keyPoin = 'balance_coin';
   // static const String _keyRole = 'role';
   // static const String _keyStatus= 'status';
 
@@ -39,7 +39,7 @@ class SessionManager {
   static Future<void> saveUserData(
     int id, String name, String email, 
     //String phone, String address, String avatar, String role, 
-    String poin, 
+    //String poin, 
     //String status
     ) async {
     final prefs = await SharedPreferences.getInstance();
@@ -49,7 +49,7 @@ class SessionManager {
     // await prefs.setString(_keyPhone, phone);
     // await prefs.setString(_keyAddress, address);
     // await prefs.setString(_keyAvatar, avatar);
-    await prefs.setString(_keyPoin, poin);
+    //await prefs.setString(_keyPoin, poin);
     // await prefs.setString(_keyRole, role);
     // await prefs.setString(_keyStatus, status);
   }
@@ -62,7 +62,7 @@ class SessionManager {
     //final phone = prefs.getString(_keyPhone);
     // final address = prefs.getString(_keyAddress);
     // final avatar = prefs.getString(_keyAvatar);
-    final poin = prefs.getString(_keyPoin);
+    //final poin = prefs.getString(_keyPoin);
     // final role = prefs.getString(_keyRole);
     // final status = prefs.getString(_keyStatus);
 
@@ -73,7 +73,7 @@ class SessionManager {
       // 'phone': phone,
       // 'address': address,
       // 'avatar': avatar,
-      'balance_coin': poin,
+      //'balance_coin': poin,
       // 'role': role,
       // 'status': status
     };
@@ -86,7 +86,7 @@ class SessionManager {
    // _prefs.remove(_keyPhone);
     // _prefs.remove(_keyAddress);
     // _prefs.remove(_keyAvatar);
-    _prefs.remove(_keyPoin);
+    //_prefs.remove(_keyPoin);
     // _prefs.remove(_keyRole);
     // _prefs.remove(_keyStatus);
     setLoggedIn(false);

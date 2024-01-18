@@ -118,6 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               SessionManager().setLoggedIn(false);
 
+                              SessionManager().logout();
+
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => const WelcomePage(),
