@@ -164,6 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                           'Gagal masuk, coba lagi !',
                           type: AnimatedSnackBarType.error,
                         ).show(context);
+
+                      setState(() {
+                        controller.isLoading = false;
+                      });
                     }
                   },
                   style: ElevatedButton.styleFrom(

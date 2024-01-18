@@ -6,6 +6,7 @@ import 'dashboardumkm_page.dart';
 import 'search_page.dart';
 import 'favorite_page.dart';
 import 'profile_page.dart';
+import 'foodorderqr_page.dart';
 import 'exchange_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/globals.dart';
@@ -60,7 +61,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             else if (userRole == 'RESTAURANT_OWNER') DashboardUmkmPage()
             else DashboardDriverPage(),
             SearchPage(),
-            ExchangePage(),
+            //ExchangePage(),
+            FoodOrderQrPage(),
             FavoritePage(),
             ProfilePage(),
           ],
@@ -86,9 +88,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   activeIcon: Icon(Icons.search, color: AppColors.primary)
                 ),
                 BottomNavigationBarItem(
-                  label: 'Exchange', 
-                  icon: Icon(Icons.currency_exchange, color: Colors.grey),
-                  activeIcon: Icon(Icons.currency_exchange, color: AppColors.primary)
+                  label: 'Pay', 
+                  icon: Icon(Icons.qr_code_2_outlined, color: Colors.grey),
+                  activeIcon: Icon(Icons.qr_code_rounded, color: AppColors.primary)
                 ),
                 BottomNavigationBarItem(
                   label: 'Favorite', 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trace2treat/pages/home_page.dart';
 import 'foodtrackorder_page.dart';
 import '../theme/app_colors.dart';
 
@@ -38,7 +39,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
               onTap: () {
                 Navigator.push(
                   context, MaterialPageRoute(
-                    builder: (context) => const TrackOrderPage()
+                    builder: (context) => const HomePage()
                   ), 
                 );
               },
@@ -54,7 +55,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Lacak Pesanan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text('OK', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'foodorder_page.dart';
+import 'package:trace2treat/pages/exchange_page.dart';
+import 'exchangedetail_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/globals.dart';
 
@@ -19,6 +20,7 @@ class _DashboardPageState extends State<DashboardPage> {
     'assets/banner.png',
     'assets/banner.png',
   ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +121,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         )
                                       ]
                                     ),
-                                    Text('1000', style: TextStyle(fontSize: 14))
+                                    Text('$userPoin', style: TextStyle(fontSize: 14))
                                   ],
                                 )
                               ]
@@ -239,89 +241,155 @@ class _DashboardPageState extends State<DashboardPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Makanan Tersedia', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          TextButton(onPressed: (){}, child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
+                          TextButton(onPressed: (){
+                            Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ExchangePage()), 
+                        );
+                          }, child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
                         ]
                       ),
                       const SizedBox(height: 10),
-                      GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 5,
-                        ),
-                        itemCount: 4, 
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => FoodOrderPage()), 
-                              );
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
+                      Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.asset(
-                                      'assets/makanan.png',
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 60,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 23),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Cheese Burger',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Rp 15.000',
-                                          style: TextStyle(
-                                            color: AppColors.primary,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(5),
-                                          margin: EdgeInsets.symmetric(vertical: 5),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primary,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Text(
-                                            'Tersedia',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+                                child: Row(
+                                  children: [
+                    Image.asset('assets/trash.png', height: 16, width: 16),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Selasa, 16 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Point earned: Pending'),
+                        Text('Status: Pending')
+                      ],
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
+                        );
+                      }, 
+                      icon: Icon(Icons.arrow_right_alt_rounded)
+                    )
+                  ]
+                )
+              )
+            ),
+            const SizedBox(height: 5),
+            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ),
-                          );
-                        },
-                      ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+                                child: Row(
+                                  children: [
+                    Image.asset('assets/trash.png', height: 16, width: 16),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Senin, 15 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Point earned: 200'),
+                        Text('Status: Received')
+                      ],
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
+                        );
+                      }, 
+                      icon: Icon(Icons.arrow_right_alt_rounded)
+                    )
+                  ]
+                )
+              )
+            ),
+            const SizedBox(height: 5),
+            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+                                child: Row(
+                                  children: [
+                    Image.asset('assets/trash.png', height: 16, width: 16),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Jumat, 12 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Point earned: 500'),
+                        Text('Status: Finished')
+                      ],
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
+                        );
+                      }, 
+                      icon: Icon(Icons.arrow_right_alt_rounded)
+                    )
+                  ]
+                )
+              )
+            ),
+            const SizedBox(height: 5),
+            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
+                                child: Row(
+                                  children: [
+                    Image.asset('assets/trash.png', height: 16, width: 16),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Kamis, 11 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Point earned: 500'),
+                        Text('Status: Finished')
+                      ],
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
+                        );
+                      }, 
+                      icon: Icon(Icons.arrow_right_alt_rounded)
+                    )
+                  ]
+                )
+              )
+            ),
+            const SizedBox(height: 20),
                     ],
                   )
                 )

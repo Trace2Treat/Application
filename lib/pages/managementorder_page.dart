@@ -130,7 +130,11 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              SizedBox(
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.pop(context);
+                                },
+                                child: SizedBox(
                                 height: 40,
                                 width: 100,
                                 child: Card(
@@ -153,6 +157,7 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                         SizedBox(width: 10),
                                       ]),
                                 ),
+                              ),
                               ),
                               SizedBox(
                                 height: 40,
