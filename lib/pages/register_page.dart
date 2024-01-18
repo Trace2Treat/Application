@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'login_page.dart';
 import '../theme/app_colors.dart';
+import '../api/register_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -11,7 +13,17 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  RegisterService controller = RegisterService();
+
   bool isPasswordVisible = false;
+  bool isPasswordConfirmVisible = false;
+  String name = '';
+  String email = '';
+  String password = '';
+  String passwordConfirm = '';
+  String phone = '';
+  String address = '';
+  String role = 'USER';
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +37,6 @@ class _RegisterPageState extends State<RegisterPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.15),
                 Center(
                   child: Image.asset(
                     'assets/logo.png', 
@@ -36,14 +47,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   'Selamat datang di Trace2Treat!', 
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 5),
-                const Text(
-                  'Masuk atau daftar hanya dalam beberapa langkah mudah.', 
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal), 
-                  textAlign: TextAlign.center,
-                ),
                 const SizedBox(height: 20),
                 TextField(
+                  onChanged: (value) {
+                          setState(() {
+                            name = value;
+                          });
+                        },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -61,6 +71,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -78,6 +93,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 5),
                 TextField(
+                  onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
                   obscureText: !isPasswordVisible,
                   decoration: InputDecoration(
                     filled: true,
@@ -107,14 +127,161 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   )
                 ),
+                const SizedBox(height: 5),
+                TextField(
+                  onChanged: (value) {
+                          setState(() {
+                            passwordConfirm = value;
+                          });
+                        },
+                  obscureText: !isPasswordConfirmVisible,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    contentPadding: const EdgeInsets.all(12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(26),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: Colors.grey[600],
+                    ),
+                    hintText: 'Enter your Password Confirm',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordConfirmVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.grey[600],
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordConfirmVisible = !isPasswordConfirmVisible;
+                        });
+                      },
+                    ),
+                  )
+                ),
+                const SizedBox(height: 5),
+                TextField(
+                  onChanged: (value) {
+                          setState(() {
+                            phone = value;
+                          });
+                        },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    contentPadding: const EdgeInsets.all(12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(26),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.phone,
+                      color: Colors.grey[600],
+                    ),
+                    hintText: 'Enter your Phone Number',
+                  )
+                ),
+                const SizedBox(height: 5),
+                TextField(
+                  onChanged: (value) {
+                          setState(() {
+                            address = value;
+                          });
+                        },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    contentPadding: const EdgeInsets.all(12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(26),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.map, 
+                      color: Colors.grey[600],
+                    ),
+                    hintText: 'Enter your Address',
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Card(
+                  color: Colors.grey[200],
+                      margin: EdgeInsets.zero,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            Icon(Icons.person, color: Colors.grey[600]),
+                            const SizedBox(width: 10),
+                            DropdownButton<String>(
+                              value: role,
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    role = newValue;
+                                  });
+                                }
+                              },
+                              items: <String>['USER', 'DRIVER', 'RESTAURANT_OWNER', 'WASTE_COLLECTOR'].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value,
+                                      style: TextStyle(color: Colors.grey[600])),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
+                  onPressed: () async {
+                    if (password.length < 8 && passwordConfirm.length < 8) {
+                      AnimatedSnackBar.material(
+                        'Password minimal 8 karakter',
+                        type: AnimatedSnackBarType.warning,
+                      ).show(context);
+                      return;
+                    }
+
+                    setState(() {
+                      controller.isLoading = true;
+                    });
+
+                    try {
+                      await controller.postRegister(name, email, password, passwordConfirm, phone, address, role);
+                    
+                        AnimatedSnackBar.rectangle(
+                          'Sukses',
+                          'Anda berhasil mendaftar',
+                          type: AnimatedSnackBarType.success,
+                          brightness: Brightness.light,
+                        ).show(
+                          context,
+                        );
+
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
+
+                    } catch (e) {
+                      print('Error during register: $e');
+                      AnimatedSnackBar.material(
+                          'Gagal mendaftar, coba lagi !',
+                          type: AnimatedSnackBarType.error,
+                        ).show(context);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
@@ -132,10 +299,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Container(
                       constraints: const BoxConstraints(minHeight: 36, minWidth: 88),
                       alignment: Alignment.center,
-                      child: const Text(
-                        'Daftar',
-                        style: TextStyle(color: AppColors.white),
-                      ),
+                      child:  controller.isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                          )
+                        : const Text(
+                            'Daftar',
+                            style: TextStyle(color: AppColors.white),
+                          ),
                     ),
                   ),
                 ),

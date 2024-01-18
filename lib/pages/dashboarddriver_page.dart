@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'trashpickuplist_page.dart';
 import 'trashdetail_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/globals.dart';
@@ -68,7 +69,10 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-
+                          Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const TrashPickupListPage()), 
+                                  );
                         },
                         child: Container(
                           width: double.infinity,

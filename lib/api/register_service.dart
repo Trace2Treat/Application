@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 
-class LoginService {
+class RegisterService {
   bool isLoading = false;
-  //Map<String, dynamic> userData = {};
 
   Future<void> postRegister(String name, String email, String password, String passwordConfirm, String phone, String address, String role) async {
     try {

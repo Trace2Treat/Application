@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       SessionManager().setLoggedIn(true);
                     
                         AnimatedSnackBar.rectangle(
-                          'Success',
+                          'Sukses',
                           'Anda berhasil masuk',
                           type: AnimatedSnackBarType.success,
                           brightness: Brightness.light,
@@ -137,22 +137,27 @@ class _LoginPageState extends State<LoginPage> {
                       final id = loginResult['id'];
                       final name = loginResult['name'];
                       final emailnya = loginResult['email'];
-                      //final balanceCoin = loginResult['balance_coin'];
-                      // final phone = loginResult['phone'];
-                      // final address = loginResult['address'];
-                      // final avatar = loginResult['avatar'];
-                      // final role = loginResult['role'];
+                      final balanceCoin = loginResult['balance_coin'];
+                      final phone = loginResult['phone'];
+                      //final address = loginResult['address'];
+                      //final avatar = loginResult['avatar'];
+                      final role = loginResult['role'];
                       //final status = loginResult['status'];
 
-                      // await SessionManager.saveUserData(id, name, emailnya);
                       setState(() {
                         userId = id;
                         userName = name;
                         userEmail = emailnya;
+                        userPoin = balanceCoin;
+                        userPhone = phone;
+                        //userAddress = address;
+                        //userAvatar = avatar;
+                        userRole = role;
+                        //userStatus = status;
                       });
 
-                      print('idnya $id, namanya $name');
-
+                      print('idnya $id, namanya $name, emailnya $email, poinnya $balanceCoin, phonenya $phone');
+                      print('role $role');
                     } catch (e) {
                       print('Error during login: $e');
                       AnimatedSnackBar.material(

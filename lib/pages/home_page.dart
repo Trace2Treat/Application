@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
 import 'dashboard_page.dart';
 import 'dashboarddriver_page.dart';
+import 'dashboardumkm_page.dart';
 import 'search_page.dart';
 import 'favorite_page.dart';
 import 'profile_page.dart';
 import 'exchange_page.dart';
 import '../theme/app_colors.dart';
+import '../utils/globals.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -51,13 +53,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         body: BottomNavigationView(
           controller: _controller,
           transitionType: BottomNavigationTransitionType.none,
-          children: const [
-            DashboardPage(),
-            //DashboardDriverPage(),
+          children: [
+            //userRole == 'USER' ? (userRole == 'RESTAURANT_OWNER' ? DashboardUmkmPage() : DashboardPage()): DashboardDriverPage(),
+            // userRole == 'USER' ? DashboardPage() : DashboardDriverPage(),
+            if (userRole == 'USER') DashboardPage()
+            else if (userRole == 'RESTAURANT_OWNER') DashboardUmkmPage()
+            else DashboardDriverPage(),
             SearchPage(),
             ExchangePage(),
-            DashboardDriverPage(),
-            //FavoritePage(),
+            FavoritePage(),
             ProfilePage(),
           ],
         ),

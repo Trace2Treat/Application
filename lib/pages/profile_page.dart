@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'welcome_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/session_manager.dart';
+import '../utils/globals.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -11,7 +12,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String name = 'Kiddovation';
 
   @override
   Widget build(BuildContext context) {
@@ -78,16 +78,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      name,
+                                      userName,
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const Text(
-                                      'Mahasiswa',
+                                    Text(
+                                      userRole,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(color: Colors.black)),
+                                      style: const TextStyle(color: Colors.black)),
                                   ],
                                 ),
                               ),
@@ -103,13 +103,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  buildRow('Telepon','+62 888 4444 2222'),
+                                  buildRow('Telepon', userPhone),
                                   buildDivider(),
-                                  buildRow('Email', 'kiddovation@gmail.com'),
+                                  buildRow('Email', userEmail),
                                   buildDivider(),
                                   buildRow('Alamat', 'Bogor, Jawa Barat, Indonesia'),
                                   buildDivider(),
-                                  buildRow('Poin', '1000'),
+                                  buildRow('Poin', '200'),
+                                  //buildRow('Poin', '$userPoin'),
                                 ],
                               )
                           ),

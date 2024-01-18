@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trace2treat/pages/dashboarddriver_page.dart';
+import 'home_page.dart';
 import '../theme/app_colors.dart';
 
 class TrashPickup3Page extends StatefulWidget {
@@ -98,21 +98,15 @@ class _TrashPickupPageState extends State<TrashPickup3Page> {
                 fontSize: 12, 
               )
             ),
-            Visibility(
-              visible: true,
-              // if status is finished turn visible true
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Text(
+            const SizedBox(height: 10),
+            Text(
                     'Bukti Penerimaan', 
                     style: TextStyle(
                       fontSize: 14, 
                       fontWeight: FontWeight.bold
                     )
                   ),
-                  const SizedBox(height: 5),
-                  TextButton(
+            TextButton(
                                       onPressed: () {
                                         // post attachment
                                       },
@@ -121,9 +115,6 @@ class _TrashPickupPageState extends State<TrashPickup3Page> {
                                           style: const TextStyle(color: AppColors.primary, decoration: TextDecoration.underline),
                                       ),
                                     ),
-                ]
-              ),
-            ),
             Spacer(),
             Visibility(
               visible: false,
@@ -211,7 +202,7 @@ class _TrashPickupPageState extends State<TrashPickup3Page> {
                   // change status to complete
                   Navigator.push(
                   context, MaterialPageRoute(
-                    builder: (context) => const DashboardDriverPage()
+                    builder: (context) => const HomePage()
                   ), 
                 );
                 },
