@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
-import 'exchange_page.dart';
+import 'exchangelist_page.dart';
 import '../theme/app_colors.dart';
 import '../api/trash_service.dart';
 
@@ -76,7 +76,7 @@ class _ExchangeFormPageState extends State<ExchangeFormPage> {
 
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ExchangePage()), 
+                          MaterialPageRoute(builder: (context) => const ExchangeListPage()), 
                         );
 
                     } catch (e) {
@@ -93,7 +93,7 @@ class _ExchangeFormPageState extends State<ExchangeFormPage> {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ExchangePage()), 
+                      MaterialPageRoute(builder: (context) => const ExchangeListPage()), 
                     );
 
                   },

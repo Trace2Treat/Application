@@ -68,8 +68,8 @@ class SessionManager {
     return _prefs.getString(_keyAccessToken) ?? '';
   }
 
-  String? getUserId() {
-    return _prefs.getString(userIdKey) ?? '';
+  int? getUserId() {
+    return _prefs.getInt(userIdKey);
   }
 
   String? getUserName() {

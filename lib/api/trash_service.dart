@@ -5,35 +5,46 @@ import '../utils/session_manager.dart';
 
 class TrashService {
   bool isLoading = false;
-  final accessToken = SessionManager().getAccess();
 
-  Future<Map<String, dynamic>> getTrashList() async {
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests?user_id=2');
+  Future<List<Map<String, dynamic>>> getTrashList() async {
+    final String? accessToken = SessionManager().getAccess();
+    final int userid = SessionManager().getUserId() ?? 0;
 
-    final response = await http.get(
-      baseUrl,
-      headers: {'Authorization': 'Bearer $accessToken'},
-    );
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests?user_id=$userid');
 
-    if (response.statusCode == 200) {
-      final trashData = json.decode(response.body);
+    try {
+      final response = await http.get(
+        baseUrl,
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
 
-      final filteredData = {
-        'id': trashData['id'],
-        'userid': trashData['user_id'],
-        'trash_type': trashData['trash_type'],
-        'trash_weight': trashData['trash_weight'],
-        'latitude': trashData['latitude'],
-        'longitude': trashData['longitude'],
-        'status': trashData['status'],
-        'driver_id': trashData['driver_id'],
-        'thumb': trashData['thumb'],
-        'created_at': trashData['created_at'],
-        'updated_at': trashData['updated_at'],
-      };
+      if (response.statusCode == 200) {
+        final trashDataList = json.decode(response.body)['data'];
 
-      return filteredData;
-    } else {
+        return List<Map<String, dynamic>>.from(trashDataList.map((trashData) {
+          return {
+            'id': trashData['id'],
+            'user_id': trashData['user_id'],
+            'trash_type': trashData['trash_type'],
+            'trash_weight': trashData['trash_weight'],
+            'latitude': trashData['latitude'],
+            'longitude': trashData['longitude'],
+            'status': trashData['status'],
+            'driver_id': trashData['driver_id'],
+            'thumb': trashData['thumb'],
+            'created_at': trashData['created_at'],
+            'updated_at': trashData['updated_at'],
+            'date': trashData['date'],
+          };
+        }));
+      } else {
+        print('Failed to get trash request list - Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        throw Exception('Failed to get trash request list');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      print('aksessnya $accessToken');
       throw Exception('Failed to get trash request list');
     }
   }
@@ -91,3 +102,4 @@ class TrashService {
     }
   }
 }
+

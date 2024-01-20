@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:trace2treat/pages/exchange_page.dart';
 import 'exchangedetail_page.dart';
+import 'exchangelist_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/session_manager.dart';
 
@@ -257,7 +257,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             onPressed: (){
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ExchangePage()), 
+                                MaterialPageRoute(builder: (context) => const ExchangeListPage()), 
                               );
                             }, 
                             child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
