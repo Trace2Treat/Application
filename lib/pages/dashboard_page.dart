@@ -300,7 +300,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         children: [
                                           Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
                                           Text('Tipe sampah: ${trashList[index]['trash_type']}'),
-                                          Text('Poin didapat: ${trashList[index]['point'] ?? 'pending'}'),
+                                          Text('Poin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
                                           Text('Status: ${trashList[index]['status']}')
                                         ],
                                       ),

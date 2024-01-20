@@ -29,6 +29,15 @@ class _ExchangeFormPageState extends State<ExchangeFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ExchangeListPage()), 
+            );
+          },
+        ),
         title: Text('Tukar Sampah'),
         centerTitle: true,
       ),

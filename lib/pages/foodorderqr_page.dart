@@ -41,6 +41,7 @@ class _FoodOrderQrPageState extends State<FoodOrderQrPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text('PAYMENT', style: TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),

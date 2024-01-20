@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'refresh_page.dart';
 import 'exchangedetail_page.dart';
+import 'home_page.dart';
 import '../api/trash_service.dart';
 import '../theme/app_colors.dart';
 
@@ -18,6 +19,16 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()), 
+            );
+          },
+        ),
+        centerTitle: true,
         title: Text('Daftar Penukaran'),
       ),
       body: ListView(
@@ -88,7 +99,7 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
                             children: [
                               Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
                               Text('Tipe sampah: ${trashList[index]['trash_type']}'),
-                              Text('Poin didapat: ${trashList[index]['point'] ?? 'pending'}'),
+                              Text('Poin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
                               Text('Status: ${trashList[index]['status']}')
                             ],
                           ),
