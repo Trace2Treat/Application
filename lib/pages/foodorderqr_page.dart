@@ -42,9 +42,9 @@ class _FoodOrderQrPageState extends State<FoodOrderQrPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: Text('Payment'),
-        centerTitle: true,
-      ),
+          title: Text('PAYMENT', style: TextStyle(fontWeight: FontWeight.bold)),
+          centerTitle: true,
+        ),
         backgroundColor: Colors.transparent,
         body: Stack(
           fit: StackFit.expand,

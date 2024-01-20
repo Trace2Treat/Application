@@ -6,7 +6,6 @@ import 'home_page.dart';
 import '../api/login_service.dart';
 import '../theme/app_colors.dart';
 import '../utils/session_manager.dart';
-import '../utils/globals.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -118,8 +117,29 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       final loginResult = await controller.loginUser(email, password);
                       SessionManager().setLoggedIn(true);
+
+                      final id = loginResult['id'];
+                      final name = loginResult['name'];
+                      final emailnya = loginResult['email'];
+                      final balanceCoin = loginResult['balance_coin'];
+                      final phone = loginResult['phone'];
+                      final address = loginResult['address'];
+                      //final avatar = loginResult['avatar'];
+                      final role = loginResult['role'];
+                      //final status = loginResult['status'];
+
+                      SessionManager().saveUserData(
+                        userId: id,
+                        userName: name,
+                        userEmail: emailnya,
+                        userPoin: balanceCoin,
+                        userPhone: phone,
+                        userRole: role,
+                        userAddress: address
+                        // Add parameters for additional user data
+                      );
                     
-                        AnimatedSnackBar.rectangle(
+                      AnimatedSnackBar.rectangle(
                           'Sukses',
                           'Anda berhasil masuk',
                           type: AnimatedSnackBarType.success,
@@ -132,27 +152,17 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                             builder: (context) => const HomePage(),
                           ),
-                        );
-
-                      final id = loginResult['id'];
-                      final name = loginResult['name'];
-                      final emailnya = loginResult['email'];
-                      final balanceCoin = loginResult['balance_coin'];
-                      final phone = loginResult['phone'];
-                      //final address = loginResult['address'];
-                      //final avatar = loginResult['avatar'];
-                      final role = loginResult['role'];
-                      //final status = loginResult['status'];
+                        );                  
 
                       setState(() {
-                        userId = id;
-                        userName = name;
-                        userEmail = emailnya;
-                        userPoin = balanceCoin;
-                        userPhone = phone;
+                        // userId = id;
+                        // userName = name;
+                        // userEmail = emailnya;
+                        // userPoin = balanceCoin;
+                        // userPhone = phone;
                         //userAddress = address;
                         //userAvatar = avatar;
-                        userRole = role;
+                        //userRole = role;
                         //userStatus = status;
                       });
 

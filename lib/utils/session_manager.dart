@@ -2,14 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionManager {
   static const String _keyIsLoggedIn = 'isLoggedIn';
-  static const String _keyUserId = 'userId';
-  static const String _keyName = 'name';
-  static const String _keyEmail = 'email';
-  // static const String _keyPhone = 'phone';
-  // static const String _keyAddress = 'address';
+  static const String userIdKey = 'userId';
+  static const String userNameKey = 'userName';
+  static const String userEmailKey = 'userEmail';
+  static const String userPoinKey = 'userPoin';
+  static const String userPhoneKey = 'userPhone';
+  static const String userRoleKey = 'userRole';
+  static const String userAddressKey = 'userAddress';
   // static const String _keyAvatar = 'avatar';
-  //static const String _keyPoin = 'balance_coin';
-  // static const String _keyRole = 'role';
   // static const String _keyStatus= 'status';
 
   static final SessionManager _instance = SessionManager._internal();
@@ -36,59 +36,56 @@ class SessionManager {
     return _prefs.getBool(_keyIsLoggedIn) ?? false;
   }
 
-  static Future<void> saveUserData(
-    int id, String name, String email, 
-    //String phone, String address, String avatar, String role, 
-    //String poin, 
-    //String status
-    ) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_keyUserId, id);
-    await prefs.setString(_keyName, name);
-    await prefs.setString(_keyEmail, email);
-    // await prefs.setString(_keyPhone, phone);
-    // await prefs.setString(_keyAddress, address);
-    // await prefs.setString(_keyAvatar, avatar);
-    //await prefs.setString(_keyPoin, poin);
-    // await prefs.setString(_keyRole, role);
-    // await prefs.setString(_keyStatus, status);
+  void saveUserData({
+    required int userId,
+    required String userName,
+    required String userEmail,
+    required int userPoin,
+    required String userPhone,
+    required String userRole,
+    required String userAddress
+    // additional user data
+  }) {
+    _prefs.setInt(userIdKey, userId);
+    _prefs.setString(userNameKey, userName);
+    _prefs.setString(userEmailKey, userEmail);
+    _prefs.setInt(userPoinKey, userPoin);
+    _prefs.setString(userPhoneKey, userPhone);
+    _prefs.setString(userRoleKey, userRole);
+    _prefs.setString(userAddressKey, userAddress);
+    // Save additional user data here
   }
 
-  static Future<Map<String, dynamic>> getUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt(_keyUserId);
-    final name = prefs.getString(_keyName);
-    final email = prefs.getString(_keyEmail);
-    //final phone = prefs.getString(_keyPhone);
-    // final address = prefs.getString(_keyAddress);
-    // final avatar = prefs.getString(_keyAvatar);
-    //final poin = prefs.getString(_keyPoin);
-    // final role = prefs.getString(_keyRole);
-    // final status = prefs.getString(_keyStatus);
+  String getUserId() {
+    return _prefs.getString(userIdKey) ?? '';
+  }
 
-    return {
-      'id': id,
-      'name': name,
-      'email': email,
-      // 'phone': phone,
-      // 'address': address,
-      // 'avatar': avatar,
-      //'balance_coin': poin,
-      // 'role': role,
-      // 'status': status
-    };
+  String getUserName() {
+    return _prefs.getString(userNameKey) ?? '';
+  }
+
+  String getUserEmail() {
+    return _prefs.getString(userEmailKey) ?? '';
+  }
+
+  int getUserPoin() {
+    return _prefs.getInt(userPoinKey) ?? 0;
+  }
+
+  String getUserPhone() {
+    return _prefs.getString(userPhoneKey) ?? '';
+  }
+
+  String getUserRole() {
+    return _prefs.getString(userRoleKey) ?? '';
+  }
+
+  String getUserAddress() {
+    return _prefs.getString(userAddressKey) ?? '';
   }
 
   void logout() {
-    _prefs.remove(_keyUserId);
-    _prefs.remove(_keyName);
-    _prefs.remove(_keyEmail);
-   // _prefs.remove(_keyPhone);
-    // _prefs.remove(_keyAddress);
-    // _prefs.remove(_keyAvatar);
-    //_prefs.remove(_keyPoin);
-    // _prefs.remove(_keyRole);
-    // _prefs.remove(_keyStatus);
+    // _prefs.remove(_keyUserId);
     setLoggedIn(false);
   }
 }

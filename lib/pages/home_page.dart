@@ -7,9 +7,8 @@ import 'search_page.dart';
 import 'favorite_page.dart';
 import 'profile_page.dart';
 import 'foodorderqr_page.dart';
-import 'exchange_page.dart';
 import '../theme/app_colors.dart';
-import '../utils/globals.dart';
+import '../utils/session_manager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -55,11 +54,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           controller: _controller,
           transitionType: BottomNavigationTransitionType.none,
           children: [
-            //userRole == 'USER' ? (userRole == 'RESTAURANT_OWNER' ? DashboardUmkmPage() : DashboardPage()): DashboardDriverPage(),
-            // userRole == 'USER' ? DashboardPage() : DashboardDriverPage(),
-            if (userRole == 'USER') DashboardPage()
-            else if (userRole == 'RESTAURANT_OWNER') DashboardUmkmPage()
-            else DashboardDriverPage(),
+            if (SessionManager().getUserRole() == 'USER') DashboardPage()
+            else if (SessionManager().getUserRole() == 'RESTAURANT_OWNER') DashboardUmkmPage()
+            else if (SessionManager().getUserRole() == 'DRIVER') DashboardDriverPage()
+            else DashboardPage(),
             SearchPage(),
             //ExchangePage(),
             FoodOrderQrPage(),

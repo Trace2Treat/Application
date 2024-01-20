@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'welcome_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/session_manager.dart';
-import '../utils/globals.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -16,61 +15,20 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text('PROFILE', style: TextStyle(fontWeight: FontWeight.bold)),
+          centerTitle: true,
+      ),
       backgroundColor: Colors.transparent,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/dashboard.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           SingleChildScrollView(
             child: SafeArea(
               child: Column(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30, right: 10, top: 20, bottom: 20),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'PROFILE',
-                                style: TextStyle(
-                                  color: AppColors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.shopping_cart,
-                                  color: AppColors.white,
-                                ),
-                                onPressed: () {
-                                  // Cart page
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ),
-                  ),
-                  const SizedBox(height: 30),
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      padding: const EdgeInsets.all(30),
                       child: Column(
                         children: [
                           Row(
@@ -87,14 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      userName,
+                                      SessionManager().getUserName(),
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
-                                      userRole,
+                                      SessionManager().getUserRole(),
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(color: Colors.black)),
                                   ],
@@ -112,14 +70,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  buildRow('Telepon', userPhone),
+                                  buildRow('Telepon', SessionManager().getUserPhone()),
                                   buildDivider(),
-                                  buildRow('Email', userEmail),
+                                  buildRow('Email', SessionManager().getUserEmail()),
                                   buildDivider(),
-                                  buildRow('Alamat', 'Bogor, Jawa Barat, Indonesia'),
+                                  buildRow('Alamat', SessionManager().getUserAddress()),
                                   buildDivider(),
-                                  buildRow('Poin', '200'),
-                                  //buildRow('Poin', '$userPoin'),
+                                  buildRow('Poin', '${SessionManager().getUserPoin()}'),
                                 ],
                               )
                           ),

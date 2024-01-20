@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'foodorder_page.dart';
 import 'managementorder_page.dart';
 import '../theme/app_colors.dart';
-import '../utils/globals.dart';
+import '../utils/session_manager.dart';
 
 class DashboardUmkmPage extends StatefulWidget {
   const DashboardUmkmPage({Key? key}) : super(key: key);
@@ -48,7 +48,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Halo, $userName",
+                          'Halo, ${SessionManager().getUserName()}',
                           style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 14,

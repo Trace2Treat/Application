@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'trashpickuplist_page.dart';
 import 'trashdetail_page.dart';
 import '../theme/app_colors.dart';
-import '../utils/globals.dart';
+import '../utils/session_manager.dart';
 
 class DashboardDriverPage extends StatefulWidget {
   const DashboardDriverPage({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                'Halo, $userName',
+                                'Halo, ${SessionManager().getUserName()}',
                                 style: const TextStyle(
                                   color: AppColors.white,
                                   fontSize: 14,

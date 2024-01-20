@@ -4,6 +4,7 @@ import 'package:trace2treat/pages/exchange_page.dart';
 import 'exchangedetail_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/globals.dart';
+import '../utils/session_manager.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Halo, $userName",
+                              'Halo, ${SessionManager().getUserName()}',
                               style: const TextStyle(
                                 color: AppColors.white,
                                 fontSize: 14,
@@ -133,7 +134,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             )
                                           ]
                                         ),
-                                        Text('$userPoin', style: TextStyle(fontSize: 14))
+                                        Text('${SessionManager().getUserPoin()}', style: TextStyle(fontSize: 14))
                                       ],
                                     )
                                   ]
