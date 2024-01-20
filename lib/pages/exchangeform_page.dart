@@ -3,13 +3,10 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'exchangelist_page.dart';
 import '../theme/app_colors.dart';
 import '../api/trash_service.dart';
+import '../utils/globals.dart';
 
 class ExchangeFormPage extends StatefulWidget {
-  final double myLatitude;
-  final double myLongitude;
-  const ExchangeFormPage({
-    required this.myLatitude, required this.myLongitude, 
-    Key? key}) : super(key: key);
+  const ExchangeFormPage({Key? key}) : super(key: key);
 
   @override
 
@@ -51,7 +48,7 @@ class _ExchangeFormPageState extends State<ExchangeFormPage> {
               controller: weightController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: 'Berat Sampah (kg)...',
+                labelText: 'Berat Sampah (gr)...',
               ),
             ),
             SizedBox(height: 20),
@@ -62,8 +59,10 @@ class _ExchangeFormPageState extends State<ExchangeFormPage> {
                       controller.isLoading = true;
                     });
 
+                    double weightValue = int.parse(weightController.text) / 1000;
+
                     try {
-                      await controller.postTrashRequest(typeController.text, weightController.text, '-6.5900593', '106.8012695', 'example.photo.png');
+                      await controller.postTrashRequest(typeController.text, '$weightValue', globalLat, globalLong, 'example.photo.png');
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',

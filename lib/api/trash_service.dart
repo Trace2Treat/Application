@@ -1,5 +1,4 @@
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'config.dart';
 import 'dart:convert';
 import '../utils/session_manager.dart';
@@ -8,7 +7,7 @@ class TrashService {
   bool isLoading = false;
 
   Future<List<Map<String, dynamic>>> getTrashList() async {
-    final String? accessToken = SessionManager().getAccess();
+    final String accessToken = SessionManager().getAccess() ?? '';
     final int userid = SessionManager().getUserId() ?? 0;
 
     final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests?user_id=$userid');
@@ -52,10 +51,12 @@ class TrashService {
 
   Future<void> postTrashRequest(String type, String weight, String latitude, String longitude, String photo) async {
     try {
+      final String accessToken = SessionManager().getAccess() ?? '';
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests/store');
 
       final response = await http.post(
         url,
+        headers: {'Authorization': 'Bearer $accessToken'},
         body: {
           'trash_type': type,
           'trash_weight': weight,

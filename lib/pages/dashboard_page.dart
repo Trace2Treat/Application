@@ -262,7 +262,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                 MaterialPageRoute(builder: (context) => const ExchangeListPage()), 
                               );
                             }, 
-                            child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
+                            child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary))
+                          )
                         ]
                       ),
                       const SizedBox(height: 10),

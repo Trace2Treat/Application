@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
 
 class ExchangeDetailPage extends StatefulWidget {
   final Map<String, dynamic> selectedData;
@@ -36,11 +35,11 @@ class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
                   buildDivider(),
                   buildRow('Berat Sampah', '${widget.selectedData['trash_weight'].toString()} (kg)'),
                   buildDivider(),
-                  buildRow('Poin Didapat', '${widget.selectedData['point'] ?? 'pending'}'),
+                  buildRow('Poin Didapat', '${widget.selectedData['point'] ?? 'Pending'}'),
                   buildDivider(),
                   buildRow('Status', widget.selectedData['status']),
                   buildDivider(),
-                  buildRow('Driver', widget.selectedData['driver_id'].toString()), 
+                  buildRow('Driver', widget.selectedData['driver_id'].toString() == 'null' ? 'Pending' : widget.selectedData['driver_id'].toString()), 
                   buildDivider(),
                   buildRow('Tanggal', widget.selectedData['date']),
                 ],

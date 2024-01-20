@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:trace2treat/pages/exchangeform_page.dart';
-import 'dart:async';
+import 'exchangeform_page.dart';
 import '../theme/app_colors.dart';
+import '../utils/globals.dart';
 
 class RefreshTrashForm extends StatefulWidget {
   const RefreshTrashForm({Key? key}) : super(key: key);
@@ -63,6 +64,12 @@ class _RefreshTrashFormState extends State<RefreshTrashForm> {
       String address = "$locationName $thoroughfare $subLocality $locality $administrativeArea $country $postalCode";
 
       myLocation = address;
+
+      setState(() {
+        globalLat = myLatitude.toString();
+        globalLong = myLongitude.toString();
+        globalLocationName = address;
+      });
       return address;
     } else {
       myLocation = "Location not found";
@@ -110,7 +117,7 @@ class _RefreshTrashFormState extends State<RefreshTrashForm> {
         //_liveLocation();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ExchangeFormPage(myLatitude: myLatitude, myLongitude: myLongitude),
+            builder: (context) => const ExchangeFormPage(),
           ),
         );
       });
