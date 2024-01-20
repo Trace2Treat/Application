@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     try {
                       final loginResult = await controller.loginUser(email, password);
-                      SessionManager().setLoggedIn(true);
+                      
 
                       final id = loginResult['id'];
                       final name = loginResult['name'];
@@ -129,15 +129,15 @@ class _LoginPageState extends State<LoginPage> {
                       final status = loginResult['status'];
 
                       SessionManager().saveUserData(
-                        userId: id,
-                        userName: name,
-                        userEmail: emailnya,
-                        userPoin: balanceCoin,
-                        userPhone: phone,
-                        userRole: role,
-                        userAddress: address,
-                        userAvatar: avatar,
-                        userStatus: status
+                        userId: id ?? '',
+                        userName: name ?? '',
+                        userEmail: emailnya ?? '',
+                        userPoin: balanceCoin ?? '',
+                        userPhone: phone ?? '',
+                        userRole: role ?? '',
+                        userAddress: address ?? '',
+                        userAvatar: avatar ?? '',
+                        userStatus: status ?? '',
                       );
                     
                       AnimatedSnackBar.rectangle(
@@ -153,7 +153,9 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                             builder: (context) => const HomePage(),
                           ),
-                        );                  
+                        );
+
+                        SessionManager().setLoggedIn(true);
 
                       print('idnya $id, namanya $name, emailnya $email');
                       print('role $role, poinnya $balanceCoin, phonenya $phone');

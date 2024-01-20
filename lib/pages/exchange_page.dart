@@ -37,7 +37,7 @@ class _ExchangePageState extends State<ExchangePage> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ExchangeFormPage()), 
+                      MaterialPageRoute(builder: (context) => const RefreshTrashForm()), 
                     );
                 },
                 style: ElevatedButton.styleFrom(

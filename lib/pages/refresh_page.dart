@@ -110,7 +110,7 @@ class _RefreshTrashFormState extends State<RefreshTrashForm> {
         //_liveLocation();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ExchangeFormPage(),
+            builder: (context) => ExchangeFormPage(myLatitude: myLatitude, myLongitude: myLongitude),
           ),
         );
       });

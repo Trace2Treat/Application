@@ -45,14 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      SessionManager().getUserName(),
+                                      SessionManager().getUserName() ?? '',
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
-                                      SessionManager().getUserRole(),
+                                      SessionManager().getUserRole() ?? '',
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(color: Colors.black)),
                                   ],
@@ -70,11 +70,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  buildRow('Telepon', SessionManager().getUserPhone()),
+                                  buildRow('Telepon', SessionManager().getUserPhone() ?? ''),
                                   buildDivider(),
-                                  buildRow('Email', SessionManager().getUserEmail()),
+                                  buildRow('Email', SessionManager().getUserEmail() ?? ''),
                                   buildDivider(),
-                                  buildRow('Alamat', SessionManager().getUserAddress()),
+                                  buildRow('Alamat', SessionManager().getUserAddress() ?? ''),
                                   buildDivider(),
                                   buildRow('Poin', '${SessionManager().getUserPoin()}'),
                                 ],

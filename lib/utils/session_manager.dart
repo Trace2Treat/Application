@@ -58,39 +58,39 @@ class SessionManager {
     _prefs.setString(userStatusKey, userStatus);
   }
 
-  String getUserId() {
+  String? getUserId() {
     return _prefs.getString(userIdKey) ?? '';
   }
 
-  String getUserName() {
+  String? getUserName() {
     return _prefs.getString(userNameKey) ?? '';
   }
 
-  String getUserEmail() {
+  String? getUserEmail() {
     return _prefs.getString(userEmailKey) ?? '';
   }
 
-  int getUserPoin() {
+  int? getUserPoin() {
     return _prefs.getInt(userPoinKey) ?? 0;
   }
 
-  String getUserPhone() {
+  String? getUserPhone() {
     return _prefs.getString(userPhoneKey) ?? '';
   }
 
-  String getUserRole() {
+  String? getUserRole() {
     return _prefs.getString(userRoleKey) ?? '';
   }
 
-  String getUserAddress() {
+  String? getUserAddress() {
     return _prefs.getString(userAddressKey) ?? '';
   }
 
-  String getUserAvatar() {
+  String? getUserAvatar() {
     return _prefs.getString(userAvatarKey) ?? '';
   }
 
-  String getUserStatus() {
+  String? getUserStatus() {
     return _prefs.getString(userStatusKey) ?? '';
   }
 
