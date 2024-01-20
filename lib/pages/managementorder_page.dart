@@ -86,8 +86,8 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.asset(
                                   'assets/makanan.png',
-                                  width: 80.0,
-                                  height: 80.0,
+                                  width: 80,
+                                  height: 80,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -99,7 +99,7 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                     Text(
                                       items[index]['name']!,
                                       style: TextStyle(
-                                        fontSize: 16.0,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -113,7 +113,7 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                             Text(
                                               items[index]['price']!,
                                               style: TextStyle(
-                                                fontSize: 16.0,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             )

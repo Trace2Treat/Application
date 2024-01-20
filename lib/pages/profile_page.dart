@@ -20,6 +20,14 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/dashboard.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
           SingleChildScrollView(
             child: SafeArea(
               child: Column(
@@ -58,7 +66,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       )
-                  ),),
+                    ),
+                  ),
                   const SizedBox(height: 30),
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),

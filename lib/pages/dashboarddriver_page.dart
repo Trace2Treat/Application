@@ -32,35 +32,41 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
             child: SafeArea(
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Halo, $userName',
-                              style: const TextStyle(
-                                color: AppColors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Halo, $userName',
+                                style: const TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.notifications,
-                                color: AppColors.white,
+                              const Spacer(),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.notifications,
+                                  color: AppColors.white,
+                                ),
+                                onPressed: () {
+                                  // Notification page
+                                },
                               ),
-                              onPressed: () {
-                                // Notification page
-                              },
-                            ),
-                          ],
-                        ),
-                    ],
-                  )
+                            ],
+                          ),
+                      ],
+                    )
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Padding(

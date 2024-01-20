@@ -27,7 +27,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                   BoxShadow(
                     color: Colors.black26,
                     blurRadius: 5,
-                    offset: Offset(0.0, -5.0),
+                    offset: Offset(0, -5),
                   ),
                 ],
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -54,8 +54,8 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         borderRadius: BorderRadius.circular(10),
                         child: Image.asset(
                           'assets/makanan.png',
-                          width: 80.0,
-                          height: 80.0,
+                          width: 80,
+                          height: 80,
                           fit: BoxFit.cover,
                         ),
                       ),

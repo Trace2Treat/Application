@@ -59,7 +59,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
             Text(
               'Alamat Pengiriman',
               style: TextStyle(
-                fontSize: 16.0,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -72,7 +72,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
             Text(
               'Pesananmu',
               style: TextStyle(
-                fontSize: 16.0,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -83,8 +83,8 @@ class _FoodCartPageState extends State<FoodCartPage> {
                   borderRadius: BorderRadius.circular(10),
                   child: Image.asset(
                     'assets/makanan.png',
-                    width: 80.0,
-                    height: 80.0,
+                    width: 80,
+                    height: 80,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -96,7 +96,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                       Text(
                         'Cheese Burger',
                         style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -126,7 +126,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                           Text(
                             'Total Poin: $totalPoin',
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

@@ -41,167 +41,179 @@ class _DashboardPageState extends State<DashboardPage> {
             child: SafeArea(
               child: Column(
                 children: [
-                  Padding(
-                padding: const EdgeInsets.only(left: 30, right: 10),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                    ),
+                    child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 10),
+                    child: Column(
                       children: [
-                        Text(
-                          "Halo, $userName",
-                          style: const TextStyle(
-                            color: AppColors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.notifications,
-                            color: AppColors.white,
-                          ),
-                          onPressed: () {
-                            // Notification page
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Halo, $userName",
+                              style: const TextStyle(
+                                color: AppColors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.notifications,
+                                color: AppColors.white,
+                              ),
+                              onPressed: () {
+                                // Notification page
+                              },
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      margin: const EdgeInsets.only(left: 10, right: 30),
-                      height: 146,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Row(
+                    )
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 10),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 10, right: 30),
+                          height: 146,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
                               children: [
-                                Image.asset('assets/wallet.png', height: 30, width: 30),
-                                const SizedBox(width: 5),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
                                   children: [
-                                    Text(
-                                      'Metode ',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                    Text(
-                                      'Pembayaran',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const Spacer(),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Row(
+                                    Image.asset('assets/wallet.png', height: 30, width: 30),
+                                    const SizedBox(width: 5),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Image.asset('assets/point.png', height: 16, width: 16),
-                                        const SizedBox(width: 5),
                                         Text(
-                                          'Poin Kamu',
+                                          'Metode ',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        Text(
+                                          'Pembayaran',
                                           style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold
                                           ),
                                         )
-                                      ]
+                                      ],
                                     ),
-                                    Text('$userPoin', style: TextStyle(fontSize: 14))
-                                  ],
-                                )
-                              ]
-                            ),
-                            const SizedBox(height: 20),
-                            Container(
-                              height: 50,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                      child: SizedBox(
-                                        height: 40, 
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                          ),
-                                          color: Colors.white,
-                                          child: const Row(
-                                              children: [
-                                                SizedBox(width: 10),
-                                                Text(
-                                                  'Rumah',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold
-                                                  ),
-                                                ),
-                                                Spacer(),
-                                                Icon(Icons.arrow_drop_down_circle, color: AppColors.secondary),
-                                                SizedBox(width: 70)
-                                              ]
-                                            )
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      child: SizedBox(
-                                        height: 40,
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8.0),
-                                          ),
-                                          color: AppColors.secondary,
-                                          child: const Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(width: 10),
-                                              Text(
-                                                'Order',
-                                                style: TextStyle(
-                                                  fontSize: 14, 
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold
-                                                ),
+                                    const Spacer(),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Image.asset('assets/point.png', height: 16, width: 16),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                              'Poin Kamu',
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold
                                               ),
-                                              SizedBox(width: 10),
-                                            ]
+                                            )
+                                          ]
+                                        ),
+                                        Text('$userPoin', style: TextStyle(fontSize: 14))
+                                      ],
+                                    )
+                                  ]
+                                ),
+                                const SizedBox(height: 20),
+                                Container(
+                                  height: 50,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                          child: SizedBox(
+                                            height: 40, 
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              color: Colors.white,
+                                              child: const Row(
+                                                  children: [
+                                                    SizedBox(width: 10),
+                                                    Text(
+                                                      'Rumah',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.bold
+                                                      ),
+                                                    ),
+                                                    Spacer(),
+                                                    Icon(Icons.arrow_drop_down_circle, color: AppColors.secondary),
+                                                    SizedBox(width: 70)
+                                                  ]
+                                                )
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                        Positioned(
+                                          right: 0,
+                                          child: SizedBox(
+                                            height: 40,
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(8.0),
+                                              ),
+                                              color: AppColors.secondary,
+                                              child: const Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    'Order',
+                                                    style: TextStyle(
+                                                      fontSize: 14, 
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10),
+                                                ]
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
+                                  ),
+                                )
+                              ],
+                            ),
                             )
-                          ],
-                        ),
-                        )
-                      ),
-                    ],
-                  )
-                ),
+                          ),
+                        ],
+                      )
+                  ),
                 const SizedBox(height: 10),
                 CarouselSlider(
                   items: imageAssets.map((asset) {
