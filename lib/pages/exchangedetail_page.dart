@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
 class ExchangeDetailPage extends StatefulWidget {
-  const ExchangeDetailPage({Key? key}) : super(key: key);
+  final Map<String, dynamic> selectedData;
+
+  const ExchangeDetailPage({Key? key, required this.selectedData}) : super(key: key);
 
   @override
-
-  State<ExchangeDetailPage> createState() => _ExchangeDetailPageState();
+  _ExchangeDetailPageState createState() => _ExchangeDetailPageState();
 }
 
 class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,35 +24,35 @@ class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
-                            margin: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            color: Colors.white,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  buildRow('Tipe Sampah','Plastik'),
-                                  buildDivider(),
-                                  buildRow('Berat Sampah', '0.2 kg'),
-                                  buildDivider(),
-                                  buildRow('Poin Didapat', '200'),
-                                  buildDivider(),
-                                  buildRow('Status', 'In Pick Up'),
-                                  buildDivider(),
-                                  buildRow('Driver', 'Abang'),
-                                  buildDivider(),
-                                  buildRow('Tanggal', '2024-01-16'),
-                                ],
-                              )
-                          ),
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildRow('Tipe Sampah', widget.selectedData['trash_type']),
+                  buildDivider(),
+                  buildRow('Berat Sampah', '${widget.selectedData['trash_weight'].toString()} (kg)'),
+                  buildDivider(),
+                  buildRow('Poin Didapat', '${widget.selectedData['point'] ?? 'pending'}'),
+                  buildDivider(),
+                  buildRow('Status', widget.selectedData['status']),
+                  buildDivider(),
+                  buildRow('Driver', widget.selectedData['driver_id'].toString()), 
+                  buildDivider(),
+                  buildRow('Tanggal', widget.selectedData['date']),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-   Widget buildRow(String text1, String text2) {
+  Widget buildRow(String text1, String text2) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Row(

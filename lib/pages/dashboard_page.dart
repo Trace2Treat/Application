@@ -4,6 +4,7 @@ import 'exchangedetail_page.dart';
 import 'exchangelist_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/session_manager.dart';
+import '../api/trash_service.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   final CarouselController controller = CarouselController();
+  final TrashService trashController = TrashService();
   int currentIndex = 0;
   List<String> imageAssets = [
     'assets/banner.png',
@@ -264,146 +266,65 @@ class _DashboardPageState extends State<DashboardPage> {
                         ]
                       ),
                       const SizedBox(height: 10),
-                      Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-                                child: Row(
-                                  children: [
-                    Image.asset('assets/trash.png', height: 16, width: 16),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Selasa, 16 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Point earned: Pending'),
-                        Text('Status: Pending')
-                      ],
-                    ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
-                        );
-                      }, 
-                      icon: Icon(Icons.arrow_right_alt_rounded)
-                    )
-                  ]
-                )
-              )
-            ),
-            const SizedBox(height: 5),
-            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-                                child: Row(
-                                  children: [
-                    Image.asset('assets/trash.png', height: 16, width: 16),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Senin, 15 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Point earned: 200'),
-                        Text('Status: Received')
-                      ],
-                    ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
-                        );
-                      }, 
-                      icon: Icon(Icons.arrow_right_alt_rounded)
-                    )
-                  ]
-                )
-              )
-            ),
-            const SizedBox(height: 5),
-            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-                                child: Row(
-                                  children: [
-                    Image.asset('assets/trash.png', height: 16, width: 16),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Jumat, 12 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Point earned: 500'),
-                        Text('Status: Finished')
-                      ],
-                    ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
-                        );
-                      }, 
-                      icon: Icon(Icons.arrow_right_alt_rounded)
-                    )
-                  ]
-                )
-              )
-            ),
-            const SizedBox(height: 5),
-            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 16),
-                                child: Row(
-                                  children: [
-                    Image.asset('assets/trash.png', height: 16, width: 16),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Kamis, 11 Januari 2024', style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Point earned: 500'),
-                        Text('Status: Finished')
-                      ],
-                    ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
-                        );
-                      }, 
-                      icon: Icon(Icons.arrow_right_alt_rounded)
-                    )
-                  ]
-                )
-              )
-            ),
-            const SizedBox(height: 20),
+                      FutureBuilder<List<Map<String, dynamic>>>(
+                        future: trashController.getTrashList(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text('Error: ${snapshot.error}'));
+                          } else if (snapshot.data == null) {
+                            return Center(child: Text('No data available'));
+                          } else {
+                            List<Map<String, dynamic>> trashList = snapshot.data!;
+
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: trashList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 6),
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white, 
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Image.asset('assets/trash.png', height: 16, width: 16),
+                                      const SizedBox(width: 16),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
+                                          Text('Tipe sampah: ${trashList[index]['trash_type']}'),
+                                          Text('Poin didapat: ${trashList[index]['point'] ?? 'pending'}'),
+                                          Text('Status: ${trashList[index]['status']}')
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ExchangeDetailPage(
+                                                selectedData: trashList[index],
+                                              ),
+                                            ),
+                                          );
+                                        }, 
+                                        icon: Icon(Icons.arrow_right_alt_rounded)
+                                      )
+                                    ]
+                                  )
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
                     ],
                   )
                 )

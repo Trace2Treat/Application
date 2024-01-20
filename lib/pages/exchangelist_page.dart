@@ -12,18 +12,18 @@ class ExchangeListPage extends StatefulWidget {
 }
 
 class _ExchangeListPageState extends State<ExchangeListPage> {
-  final TrashService trashService = TrashService();
+  final TrashService controller = TrashService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Trash List'),
+        title: Text('Daftar Penukaran'),
       ),
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -56,7 +56,7 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
               ),
           ),
           FutureBuilder<List<Map<String, dynamic>>>(
-            future: trashService.getTrashList(),
+            future: controller.getTrashList(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -73,7 +73,7 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
                   itemCount: trashList.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.white, 
@@ -87,7 +87,8 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text('Point earned: ${trashList[index]['point'] ?? 'pending'}'),
+                              Text('Tipe sampah: ${trashList[index]['trash_type']}'),
+                              Text('Poin didapat: ${trashList[index]['point'] ?? 'pending'}'),
                               Text('Status: ${trashList[index]['status']}')
                             ],
                           ),
@@ -96,26 +97,17 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const ExchangeDetailPage()), 
+                                MaterialPageRoute(
+                                  builder: (context) => ExchangeDetailPage(
+                                    selectedData: trashList[index],
+                                  ),
+                                ),
                               );
                             }, 
                             icon: Icon(Icons.arrow_right_alt_rounded)
                           )
                         ]
                       )
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     Text(
-                      //       'Trash Type: ${trashList[index]['trash_type']}',
-                      //       style: TextStyle(fontWeight: FontWeight.bold),
-                      //     ),
-                      //     SizedBox(height: 8.0),
-                      //     Text('Trash Weight: ${trashList[index]['trash_weight']} (kg)'),
-                      //     Text('Status: ${trashList[index]['status']}'),
-                      //     // Add more Text widgets as needed
-                      //   ],
-                      // ),
                     );
                   },
                 );
