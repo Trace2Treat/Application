@@ -253,12 +253,14 @@ class _DashboardPageState extends State<DashboardPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Pengumpulan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          TextButton(onPressed: (){
-                            Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ExchangePage()), 
-                        );
-                          }, child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
+                          TextButton(
+                            onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ExchangePage()), 
+                              );
+                            }, 
+                            child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
                         ]
                       ),
                       const SizedBox(height: 10),

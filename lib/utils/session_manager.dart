@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionManager {
   static const String _keyIsLoggedIn = 'isLoggedIn';
+  static const String _keyAccessToken = 'userAccessToken';
   static const String userIdKey = 'userId';
   static const String userNameKey = 'userName';
   static const String userEmailKey = 'userEmail';
@@ -56,6 +57,15 @@ class SessionManager {
     _prefs.setString(userAddressKey, userAddress);
     _prefs.setString(userAvatarKey, userAvatar);
     _prefs.setString(userStatusKey, userStatus);
+  }
+
+  void saveAccess({
+    required String accessToken,
+  }) {
+    _prefs.setString(_keyAccessToken, accessToken);
+  }
+  String? getAccess() {
+    return _prefs.getString(_keyAccessToken) ?? '';
   }
 
   String? getUserId() {

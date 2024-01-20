@@ -1,12 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'dart:convert';
+import '../utils/session_manager.dart';
 
 class FoodService {
   bool isLoading = false;
 
-  Future<Map<String, dynamic>> getFoodList(String accessToken) async {
+  Future<Map<String, dynamic>> getFoodList() async {
     final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/foods');
+    final accessToken = SessionManager().getAccess();
 
     final response = await http.get(
       baseUrl,

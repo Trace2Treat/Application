@@ -1,12 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'dart:convert';
+import '../utils/session_manager.dart';
 
 class TransactionService {
   bool isLoading = false;
 
-  Future<Map<String, dynamic>> getTransaction(String accessToken) async {
+  Future<Map<String, dynamic>> getTransaction() async {
     final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction');
+    final accessToken = SessionManager().getAccess();
 
     final response = await http.get(
       baseUrl,

@@ -1,12 +1,14 @@
 import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'dart:convert';
+import '../utils/session_manager.dart';
 
 class TrashService {
   bool isLoading = false;
+  final accessToken = SessionManager().getAccess();
 
-  Future<Map<String, dynamic>> getTrashList(String accessToken) async {
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests?lang=106.78214274260917&lot=-6.672887498704049');
+  Future<Map<String, dynamic>> getTrashList() async {
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests?user_id=2');
 
     final response = await http.get(
       baseUrl,
@@ -18,7 +20,7 @@ class TrashService {
 
       final filteredData = {
         'id': trashData['id'],
-        'userid': trashData['userid'],
+        'userid': trashData['user_id'],
         'trash_type': trashData['trash_type'],
         'trash_weight': trashData['trash_weight'],
         'latitude': trashData['latitude'],
