@@ -9,8 +9,8 @@ class SessionManager {
   static const String userPhoneKey = 'userPhone';
   static const String userRoleKey = 'userRole';
   static const String userAddressKey = 'userAddress';
-  // static const String _keyAvatar = 'avatar';
-  // static const String _keyStatus= 'status';
+  static const String userAvatarKey = 'userAvatar';
+  static const String userStatusKey = 'userStatus';
 
   static final SessionManager _instance = SessionManager._internal();
 
@@ -43,8 +43,9 @@ class SessionManager {
     required int userPoin,
     required String userPhone,
     required String userRole,
-    required String userAddress
-    // additional user data
+    required String userAddress,
+    required String userAvatar,
+    required String userStatus
   }) {
     _prefs.setInt(userIdKey, userId);
     _prefs.setString(userNameKey, userName);
@@ -53,7 +54,8 @@ class SessionManager {
     _prefs.setString(userPhoneKey, userPhone);
     _prefs.setString(userRoleKey, userRole);
     _prefs.setString(userAddressKey, userAddress);
-    // Save additional user data here
+    _prefs.setString(userAvatarKey, userAvatar);
+    _prefs.setString(userStatusKey, userStatus);
   }
 
   String getUserId() {
@@ -84,8 +86,24 @@ class SessionManager {
     return _prefs.getString(userAddressKey) ?? '';
   }
 
+  String getUserAvatar() {
+    return _prefs.getString(userAvatarKey) ?? '';
+  }
+
+  String getUserStatus() {
+    return _prefs.getString(userStatusKey) ?? '';
+  }
+
   void logout() {
-    // _prefs.remove(_keyUserId);
+    _prefs.remove(userIdKey);
+    _prefs.remove(userNameKey);
+    _prefs.remove(userEmailKey);
+    _prefs.remove(userPoinKey);
+    _prefs.remove(userPhoneKey);
+    _prefs.remove(userRoleKey);
+    _prefs.remove(userAddressKey);
+    _prefs.remove(userAvatarKey);
+    _prefs.remove(userStatusKey);
     setLoggedIn(false);
   }
 }

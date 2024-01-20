@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:trace2treat/pages/exchange_page.dart';
 import 'exchangedetail_page.dart';
 import '../theme/app_colors.dart';
-import '../utils/globals.dart';
 import '../utils/session_manager.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -253,7 +252,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Makanan Tersedia', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text('Pengumpulan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                           TextButton(onPressed: (){
                             Navigator.push(
                           context,

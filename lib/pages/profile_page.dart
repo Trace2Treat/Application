@@ -83,8 +83,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(height: 10),
                           ElevatedButton(
                             onPressed: () {
-                              SessionManager().setLoggedIn(false);
-
                               SessionManager().logout();
 
                               Navigator.of(context).pushReplacement(
