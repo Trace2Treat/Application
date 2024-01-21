@@ -51,7 +51,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                           'Halo, ${SessionManager().getUserName()}',
                           style: const TextStyle(
                             color: AppColors.white,
-                            fontSize: 14,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

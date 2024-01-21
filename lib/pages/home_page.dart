@@ -59,7 +59,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             else if (SessionManager().getUserRole() == 'DRIVER') DashboardDriverPage()
             else DashboardPage(),
             SearchPage(),
-            //ExchangePage(),
             FoodOrderQrPage(),
             FavoritePage(),
             ProfilePage(),

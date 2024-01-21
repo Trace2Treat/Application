@@ -65,7 +65,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
             ),
             Divider(),
             Text(
-              'Griya Cibinong Indah, Kabupaten Bogor, Jawa Barat, Indonesia, 16912',
+              'Cibinong, Kabupaten Bogor, Jawa Barat, Indonesia, 16912',
               style: TextStyle(fontSize: 14.0),
             ),
             SizedBox(height: 26),

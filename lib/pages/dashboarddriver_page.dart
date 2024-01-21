@@ -53,7 +53,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                                 'Halo, ${SessionManager().getUserName()}',
                                 style: const TextStyle(
                                   color: AppColors.white,
-                                  fontSize: 14,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -123,7 +123,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                                 Icon(Icons.refresh, color: AppColors.secondary),
                                 SizedBox(width: 8), 
                                 Text(
-                                  'Refresh untuk Lokasi Saya',
+                                  'Refresh untuk lokasi Saya',
                                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary),
                                 ),
                               ],

@@ -22,6 +22,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
   @override
   Widget build(BuildContext context) {
     String username = widget.trashDetails['user_name'];
+    String type = widget.trashDetails['trash_type'];
     String weight = widget.trashDetails['trash_weight'];
     String address = widget.trashDetails['place_name'];
     String distance = widget.trashDistance;
@@ -39,7 +40,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Username', 
+              'Nama', 
               style: TextStyle(
                 fontSize: 14, 
                 fontWeight: FontWeight.bold
@@ -63,6 +64,36 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               address, 
+              style: TextStyle(
+                fontSize: 12, 
+              )
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Tipe Sampah', 
+              style: TextStyle(
+                fontSize: 14, 
+                fontWeight: FontWeight.bold
+              )
+            ),
+            const SizedBox(height: 5),
+            Text(
+              type, 
+              style: TextStyle(
+                fontSize: 12, 
+              )
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Berat Sampah', 
+              style: TextStyle(
+                fontSize: 14, 
+                fontWeight: FontWeight.bold
+              )
+            ),
+            const SizedBox(height: 5),
+            Text(
+              '$weight kg', 
               style: TextStyle(
                 fontSize: 12, 
               )
@@ -93,21 +124,6 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               formattedDeliveryCost, 
-              style: TextStyle(
-                fontSize: 12, 
-              )
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Berat Sampah', 
-              style: TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold
-              )
-            ),
-            const SizedBox(height: 5),
-            Text(
-              '$weight kg', 
               style: TextStyle(
                 fontSize: 12, 
               )
