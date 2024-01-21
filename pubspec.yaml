@@ -15,6 +15,7 @@ dependencies:
   google_fonts: ^6.1.0
   shared_preferences: ^2.2.2
   http: ^1.1.0
+  intl: ^0.18.1
   lottie: ^2.7.0
   connectivity_plus: ^5.0.2
   bottom_navigation_view: ^0.3.0

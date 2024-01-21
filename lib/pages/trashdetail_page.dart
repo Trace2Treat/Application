@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'trashpickup_page.dart';
 import '../theme/app_colors.dart';
 
 class TrashDetailPage extends StatefulWidget {
-  const TrashDetailPage({Key? key}) : super(key: key);
+  final Map<String, dynamic> trashDetails;
+  final String trashDistance;
+
+  const TrashDetailPage({Key? key, required this.trashDetails, required this.trashDistance}) : super(key: key);
 
   @override
-
   State<TrashDetailPage> createState() => _TrashDetailPageState();
 }
 
 class _TrashDetailPageState extends State<TrashDetailPage> {
+  double calculateDeliveryCost(double distance) {
+    const double costPerKilometer = 5000;
+    return distance * costPerKilometer;
+  }
 
   @override
   Widget build(BuildContext context) {
+    int username = widget.trashDetails['user_id'];
+    String weight = widget.trashDetails['trash_weight'];
+    String address = widget.trashDetails['place_name'];
+    String distance = widget.trashDistance;
+    double deliveryCost = (calculateDeliveryCost(double.parse(distance))/1000).round() * 1000;
+    String formattedDeliveryCost = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ').format(deliveryCost);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Penjemputan'),
@@ -33,7 +47,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              'Diva Ariani', 
+              '$username', 
               style: TextStyle(
                 fontSize: 12, 
               )
@@ -48,7 +62,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              'Cibinong, Kabupaten Bogor, Jawa Barat, Indonesia 16912', 
+              address, 
               style: TextStyle(
                 fontSize: 12, 
               )
@@ -63,7 +77,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              '2km dari lokasi saya', 
+              '$distance km dari lokasi saya', 
               style: TextStyle(
                 fontSize: 12, 
               )
@@ -78,7 +92,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              'Rp 10.000', 
+              formattedDeliveryCost, 
               style: TextStyle(
                 fontSize: 12, 
               )
@@ -93,7 +107,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              '0.2 kg', 
+              '$weight kg', 
               style: TextStyle(
                 fontSize: 12, 
               )

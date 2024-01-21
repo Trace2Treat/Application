@@ -80,13 +80,9 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const RefreshHomePage()), 
-                                  );
-                          // Navigator.push(
-                          //           context,
-                          //           MaterialPageRoute(builder: (context) => const TrashPickupListPage()), 
-                          //         );
+                            context,
+                            MaterialPageRoute(builder: (context) => const TrashPickupListPage()), 
+                          );
                         },
                         child: Container(
                           width: double.infinity,
@@ -118,11 +114,11 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                                 MaterialPageRoute(builder: (context) => const RefreshHomePage()),
                               );
                             },
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.refresh, color: AppColors.secondary), // Tambahkan ikon refresh di sini
-                                const SizedBox(width: 8), // Jarak antara ikon dan teks
+                                Icon(Icons.refresh, color: AppColors.secondary),
+                                SizedBox(width: 8), 
                                 Text(
                                   'Refresh untuk Lokasi Saya',
                                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary),
@@ -173,7 +169,6 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
     }
   }
 
-
   Widget buildTrashList() {
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: trashController.getTrashListForDriver(),
@@ -192,6 +187,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: trashList.length,
             itemBuilder: (context, index) {
+              
               double trashLat = double.parse(trashList[index]['latitude']);
               double trashLong = double.parse(trashList[index]['longitude']);
               double distance = getDistanceFromCurrentUser(trashLat, trashLong);
@@ -213,25 +209,23 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                         children: [
                           Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
                           Text('Nama: ${trashList[index]['user_id']}'),
-                          Text('Berat sampah: ${trashList[index]['trash_weight']} (kg)'),
-                          Text(
-                            'Lokasi: ${trashList[index]['latitude']}, ${trashList[index]['longitude']}',
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          Text('Berat sampah: ${trashList[index]['trash_weight']} kg'),
+                          Text('Lokasi: ${trashList[index]['place_name']}', overflow: TextOverflow.ellipsis),
                           Text('Jarak: ${distance.toStringAsFixed(2).toString()} km')
                         ],
                       ),
                     ),
                     IconButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ExchangeDetailPage(
-                        //       selectedData: trashList[index],
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TrashDetailPage(
+                              trashDetails: trashList[index], 
+                              trashDistance: distance.toStringAsFixed(2),
+                            ),
+                          ),
+                        );
                       },
                       icon: Icon(Icons.arrow_right_alt_rounded),
                     ),

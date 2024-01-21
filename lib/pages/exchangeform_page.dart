@@ -21,8 +21,6 @@ class _ExchangeFormPageState extends State<ExchangeFormPage> {
   @override
   void initState() {
     super.initState();
-    //_getCurrentLocation();
-    //_liveLocation();
   }
 
   @override
@@ -71,7 +69,7 @@ class _ExchangeFormPageState extends State<ExchangeFormPage> {
                     double weightValue = int.parse(weightController.text) / 1000;
 
                     try {
-                      await controller.postTrashRequest(typeController.text, '$weightValue', globalLat, globalLong, 'example.photo.png');
+                      await controller.postTrashRequest(typeController.text, '$weightValue', globalLat, globalLong, globalLocationName);
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',

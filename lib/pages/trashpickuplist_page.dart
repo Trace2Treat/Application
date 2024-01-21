@@ -231,10 +231,10 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                   Expanded(
                                     child:ElevatedButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => TrashDetailPage()),
-                                      );
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(builder: (context) => TrashDetailPage()),
+                                      // );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: AppColors.primary,

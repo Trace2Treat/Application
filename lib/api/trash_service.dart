@@ -77,6 +77,7 @@ class TrashService {
             'created_at': trashData['created_at'],
             'updated_at': trashData['updated_at'],
             'date': trashData['date'],
+            'place_name': trashData['place_name'],
           };
         }));
       } else {
@@ -91,7 +92,7 @@ class TrashService {
     }
   }
 
-  Future<void> postTrashRequest(String type, String weight, String latitude, String longitude, String photo) async {
+  Future<void> postTrashRequest(String type, String weight, String latitude, String longitude, String locationName) async {
     try {
       final String accessToken = SessionManager().getAccess() ?? '';
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests/store');
@@ -104,7 +105,7 @@ class TrashService {
           'trash_weight': weight,
           'latitude': latitude,
           'longitude': longitude,
-          'thumb': photo,
+          'place_name': locationName,
         },
       );
 
