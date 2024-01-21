@@ -48,7 +48,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              'Griya  Cibinong Indah, Kabupaten Bogor, Jawa Barat, Indonesia 16912', 
+              'Cibinong, Kabupaten Bogor, Jawa Barat, Indonesia 16912', 
               style: TextStyle(
                 fontSize: 12, 
               )

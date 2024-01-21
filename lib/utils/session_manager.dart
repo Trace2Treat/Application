@@ -114,6 +114,7 @@ class SessionManager {
     _prefs.remove(userAddressKey);
     _prefs.remove(userAvatarKey);
     _prefs.remove(userStatusKey);
+    _prefs.remove(_keyAccessToken);
     setLoggedIn(false);
   }
 }

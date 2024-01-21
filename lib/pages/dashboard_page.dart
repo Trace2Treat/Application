@@ -22,7 +22,14 @@ class _DashboardPageState extends State<DashboardPage> {
     'assets/banner.png',
     'assets/banner.png',
   ];
-  
+
+  late Widget trashListFutureBuilder;
+
+  @override
+  void initState() {
+    super.initState();
+    trashListFutureBuilder = buildTrashList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +66,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               'Halo, ${SessionManager().getUserName()}',
                               style: const TextStyle(
                                 color: AppColors.white,
-                                fontSize: 14,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -220,12 +227,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 CarouselSlider(
                   items: imageAssets.map((asset) {
                     return ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.asset(
-                              asset, 
-                              fit: BoxFit.cover,
-                            ),
-                          );
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.asset(asset, fit: BoxFit.cover)
+                    );
                   }).toList(),
                   options: CarouselOptions(
                     autoPlay: true,
@@ -267,65 +271,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         ]
                       ),
                       const SizedBox(height: 10),
-                      FutureBuilder<List<Map<String, dynamic>>>(
-                        future: trashController.getTrashList(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(child: Text('No data available'));
-                          } else if (snapshot.data == null) {
-                            return Center(child: Text('No data available'));
-                          } else {
-                            List<Map<String, dynamic>> trashList = snapshot.data!;
-
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: trashList.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: const EdgeInsets.only(bottom: 6),
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white, 
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image.asset('assets/trash.png', height: 16, width: 16),
-                                      const SizedBox(width: 16),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
-                                          Text('Tipe sampah: ${trashList[index]['trash_type']}'),
-                                          Text('Poin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
-                                          Text('Status: ${trashList[index]['status']}')
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ExchangeDetailPage(
-                                                selectedData: trashList[index],
-                                              ),
-                                            ),
-                                          );
-                                        }, 
-                                        icon: Icon(Icons.arrow_right_alt_rounded)
-                                      )
-                                    ]
-                                  )
-                                );
-                              },
-                            );
-                          }
-                        },
-                      ),
+                      trashListFutureBuilder,
+                      const SizedBox(height: 10),
                     ],
                   )
                 )
@@ -347,6 +294,66 @@ class _DashboardPageState extends State<DashboardPage> {
         shape: BoxShape.circle,
         color: currentIndex == index ? AppColors.primary : Colors.grey,
       ),
+    );
+  }
+
+  Widget buildTrashList() {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: trashController.getTrashList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('No data available'));
+        } else if (snapshot.data == null) {
+          return Center(child: Text('No data available'));
+        } else {
+          List<Map<String, dynamic>> trashList = snapshot.data!;
+
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: trashList.length,
+            itemBuilder: (context, index) {
+              return Container(
+                  margin: const EdgeInsets.only(bottom: 6),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(children: [
+                    Image.asset('assets/trash.png', height: 16, width: 16),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Tipe sampah: ${trashList[index]['trash_type']}'),
+                        Text('Poin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
+                        Text('Status: ${trashList[index]['status']}')
+                      ],
+                    ),
+                    Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ExchangeDetailPage(
+                                selectedData: trashList[index],
+                              ),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.arrow_right_alt_rounded))
+                  ]
+                )
+              );
+            },
+          );
+        }
+      },
     );
   }
 }

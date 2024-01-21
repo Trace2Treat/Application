@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'exchangeform_page.dart';
+import 'home_page.dart';
 import '../theme/app_colors.dart';
 import '../utils/globals.dart';
 
@@ -77,36 +78,103 @@ class _RefreshTrashFormState extends State<RefreshTrashForm> {
     }
   }
 
-  // void _liveLocation() {
-  //   geolocator.LocationSettings locationSettings = 
-  //     const geolocator.LocationSettings(accuracy: geolocator.LocationAccuracy.high, distanceFilter: 1000);
+  @override
+  void initState() {
+    super.initState();
 
-  //   geolocator.Geolocator.getPositionStream(locationSettings: locationSettings).listen((geolocator.Position position) {
-  //     double targetLatitude1 = -6.520107;
-  //     double targetLongitude1 = 106.830266;
-  //     double area1a10003000 = geolocator.Geolocator.distanceBetween(position.latitude, position.longitude, targetLatitude1, targetLongitude1);
+    Timer(const Duration(seconds: 1), () {
+      _getCurrentLocation().then((value) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ExchangeFormPage(),
+          ),
+        );
+      });
+    });
+  }
 
-  //     double targetLatitude2 = -6.520100;
-  //     double targetLongitude2 = 106.831998;
-  //     double finishedwarehouse = geolocator.Geolocator.distanceBetween(position.latitude, position.longitude, targetLatitude2, targetLongitude2);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        color: AppColors.white,
+        child: Center(
+          child: CircularProgressIndicator(color: AppColors.primary)
+        ),
+      ),
+    );
+  }
+}
 
-  //     if (area1a10003000 <= 50 || finishedwarehouse <= 50) {
-  //       globalLat = position.latitude.toString();
-  //       globalLong = position.longitude.toString();
+class RefreshHomePage extends StatefulWidget {
+  const RefreshHomePage({Key? key}) : super(key: key);
 
-  //       setState(() {
-  //         message = 'Latitude $globalLat, Longitude: $globalLong';
-  //       });
-  //     } else {
-  //       setState(() {
-  //         message = 'Outside the allowed area';
-  //         globalLat = '';
-  //         globalLong = '';
-  //         globalLocationName = AppLocalizations(globalLanguage).translate("outsideArea");
-  //       });
-  //     }
-  //   });
-  // }
+  @override
+  State<RefreshHomePage> createState() => _RefreshHomePageState();
+}
+
+class _RefreshHomePageState extends State<RefreshHomePage> {
+  double myLatitude = 0.0;
+  double myLongitude = 0.0;
+  String myLocation = '';
+
+  Future<Position> _getCurrentLocation() async {
+    bool serviceEnabled = await geolocator.Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    geolocator.LocationPermission permission = await geolocator.Geolocator.checkPermission();
+    if (permission == geolocator.LocationPermission.denied) {
+      permission = await geolocator.Geolocator.requestPermission();
+      if (permission == geolocator.LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == geolocator.LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied, we cant request');
+    }
+
+    final position = await geolocator.Geolocator.getCurrentPosition();
+    myLatitude = position.latitude;
+    myLongitude = position.longitude;
+    await getLocationName();
+
+    return await geolocator.Geolocator.getCurrentPosition();
+  }
+
+  Future<String> getLocationName() async {
+    double latitude = myLatitude;
+    double longitude = myLongitude;
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+    if (placemarks.isNotEmpty) {
+      Placemark placemark = placemarks[0];
+      String locationName = placemark.name ?? "";
+      String thoroughfare = placemark.thoroughfare ?? "";
+      String subLocality = placemark.subLocality ?? "";
+      String locality = placemark.locality ?? "";
+      String administrativeArea = placemark.administrativeArea ?? "";
+      String country = placemark.country ?? "";
+      String postalCode = placemark.postalCode ?? "";
+
+      String address = "$locationName $thoroughfare $subLocality $locality $administrativeArea $country $postalCode";
+
+      myLocation = address;
+
+      setState(() {
+        globalLat = myLatitude.toString();
+        globalLong = myLongitude.toString();
+        globalLocationName = address;
+      });
+      return address;
+    } else {
+      myLocation = "Location not found";
+      return "Location not found";
+    }
+  }
 
   @override
   void initState() {
@@ -114,10 +182,9 @@ class _RefreshTrashFormState extends State<RefreshTrashForm> {
 
     Timer(const Duration(seconds: 1), () {
       _getCurrentLocation().then((value) {
-        //_liveLocation();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const ExchangeFormPage(),
+            builder: (context) => const HomePage(),
           ),
         );
       });
