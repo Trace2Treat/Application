@@ -78,6 +78,7 @@ class TrashService {
             'updated_at': trashData['updated_at'],
             'date': trashData['date'],
             'place_name': trashData['place_name'],
+            'user_name': trashData['user']['name'],
           };
         }));
       } else {

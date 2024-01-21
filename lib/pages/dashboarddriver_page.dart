@@ -103,7 +103,10 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                           )
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      Visibility(
+                        visible: globalLat.isEmpty && globalLong.isEmpty,
+                        child: const SizedBox(height: 10),
+                      ),
                       Visibility(
                         visible: globalLat.isEmpty && globalLong.isEmpty,
                         child: Center(
@@ -208,7 +211,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('Nama: ${trashList[index]['user_id']}'),
+                          Text('Nama: ${trashList[index]['user_name']}'),
                           Text('Berat sampah: ${trashList[index]['trash_weight']} kg'),
                           Text('Lokasi: ${trashList[index]['place_name']}', overflow: TextOverflow.ellipsis),
                           Text('Jarak: ${distance.toStringAsFixed(2).toString()} km')

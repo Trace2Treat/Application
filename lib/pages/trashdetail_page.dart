@@ -21,7 +21,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    int username = widget.trashDetails['user_id'];
+    String username = widget.trashDetails['user_name'];
     String weight = widget.trashDetails['trash_weight'];
     String address = widget.trashDetails['place_name'];
     String distance = widget.trashDistance;
@@ -47,7 +47,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 5),
             Text(
-              '$username', 
+              username, 
               style: TextStyle(
                 fontSize: 12, 
               )
