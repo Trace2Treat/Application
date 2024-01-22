@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'foodorder_page.dart';
 import '../theme/app_colors.dart';
+import '../api/food_service.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -11,6 +12,26 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController searchController = TextEditingController();
+  final FoodService foodController = FoodService();
+
+  List<Map<String, dynamic>> foodList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFoodList();
+  }
+
+  Future<void> fetchFoodList() async {
+    try {
+      final List<Map<String, dynamic>> foods = await foodController.getFoodList();
+      setState(() {
+        foodList = foods;
+      });
+    } catch (e) {
+      print('Error fetching food list: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,80 +71,15 @@ class _SearchPageState extends State<SearchPage> {
                       GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
+                          childAspectRatio: 0.95, 
                         ),
-                        itemCount: 10, 
+                        itemCount: foodList.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => FoodOrderPage()), 
-                              );
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.asset(
-                                      'assets/makanan.png',
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 70,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 23),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Cheese Burger',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Rp 15.000',
-                                          style: TextStyle(
-                                            color: AppColors.primary,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(5),
-                                          margin: EdgeInsets.symmetric(vertical: 5),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primary,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Text(
-                                            'Tersedia',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                          return buildFoodCard(foodList[index]);
                         },
                       ),
                     ],
@@ -131,6 +87,81 @@ class _SearchPageState extends State<SearchPage> {
                 )
               ],
             ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildFoodCard(Map<String, dynamic> food) {
+    return GestureDetector(
+      onTap: () {
+        // food details page 
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+              'assets/makanan.png', 
+              // child: Image.network(
+              //   food['thumb'] ?? '-',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 90,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    food['name'] ?? '-',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Rp ${food['price'] ?? 0}',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [ 
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          'Tersedia',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ]
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

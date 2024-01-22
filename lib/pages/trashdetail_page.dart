@@ -18,7 +18,7 @@ class TrashDetailPage extends StatefulWidget {
 class _TrashDetailPageState extends State<TrashDetailPage> {
   TrashService controller = TrashService();
   double calculateDeliveryCost(double distance) {
-    const double costPerKilometer = 5000;
+    const double costPerKilometer = 2000;
     return distance * costPerKilometer;
   }
 
@@ -404,7 +404,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                   });
 
                   try {
-                      await controller.postTrashUpdateStatus(id, 'Finished');
+                      await controller.postTrashFinished(id, 'Finished', 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1635814357/attached_image/dampak-sampah-plastik-bagi-lingkungan-dan-kesehatan-manusia.jpg');
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',

@@ -6,7 +6,7 @@ import '../utils/session_manager.dart';
 class FoodService {
   bool isLoading = false;
 
-  Future<Map<String, dynamic>> getFoodList() async {
+  Future<List<Map<String, dynamic>>> getFoodList() async {
     final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/foods');
     final accessToken = SessionManager().getAccess();
 
@@ -16,22 +16,22 @@ class FoodService {
     );
 
     if (response.statusCode == 200) {
-      final foodsData = json.decode(response.body);
+      final foodDataList = json.decode(response.body)['data'];
 
-      final filteredData = {
-        'id': foodsData['id'],
-        'name': foodsData['name'],
-        'description': foodsData['description'],
-        'price': foodsData['price'],
-        'stock': foodsData['stock'],
-        'thumb': foodsData['thumb'],
-        'category_id': foodsData['category_id'],
-        'restaurant_id': foodsData['restaurant_id'],
-        'created_at': foodsData['created_at'],
-        'updated_at': foodsData['updated_at'],
-      };
-
-      return filteredData;
+        return List<Map<String, dynamic>>.from(foodDataList.map((food) {
+          return {
+            'id': food['id'],
+            'name': food['name'],
+            'description': food['description'],
+            'price': food['price'],
+            'stock': food['stock'],
+            'thumb': food['thumb'],
+            'category_id': food['category_id'],
+            'restaurant_id': food['restaurant_id'],
+            'created_at': food['created_at'],
+            'updated_at': food['updated_at'],
+          };
+        }));
     } else {
       throw Exception('Failed to get food list');
     }

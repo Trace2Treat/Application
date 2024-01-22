@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'foodorder_page.dart';
 import '../theme/app_colors.dart';
+import '../api/food_service.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({Key? key}) : super(key: key);
@@ -11,6 +12,26 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   final TextEditingController searchController = TextEditingController();
+  final FoodService foodController = FoodService();
+
+  List<Map<String, dynamic>> foodList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFoodList();
+  }
+
+  Future<void> fetchFoodList() async {
+    try {
+      final List<Map<String, dynamic>> foods = await foodController.getFoodList();
+      setState(() {
+        foodList = foods;
+      });
+    } catch (e) {
+      print('Error fetching food list: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,71 +71,15 @@ class _FavoritePageState extends State<FavoritePage> {
                       GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
+                          childAspectRatio: 1, 
                         ),
-                        itemCount: 2, 
+                        itemCount: foodList.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => FoodOrderPage()), 
-                              );
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.asset(
-                                      'assets/makanan.png',
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 80,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 23),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Cheese Burger',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Rp 15.000',
-                                          style: TextStyle(
-                                            color: AppColors.primary,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                        Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Icon(Icons.favorite, color: AppColors.primary),
-                                        ],
-                                      )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                          return buildFoodCard(foodList[index]);
                         },
                       ),
                     ],
@@ -122,6 +87,66 @@ class _FavoritePageState extends State<FavoritePage> {
                 )
               ],
             ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildFoodCard(Map<String, dynamic> food) {
+    return GestureDetector(
+      onTap: () {
+        // food details page 
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+              'assets/makanan.png', 
+              // child: Image.network(
+              //   food['thumb'] ?? '-',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 90,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    food['name'] ?? '-',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Rp ${food['price'] ?? 0}',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [ 
+                      Icon(Icons.favorite, color: AppColors.primary),
+                    ]
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
