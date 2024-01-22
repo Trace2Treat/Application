@@ -3,18 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'theme/app_colors.dart';
 import 'pages/nointernet_page.dart';
 import 'pages/welcome_page.dart';
 import 'pages/home_page.dart';
 import 'pages/refresh_page.dart';
 import 'utils/session_manager.dart';
+import 'utils/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final sessionManager = SessionManager();
   await sessionManager.initPrefs();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   final isLoggedIn = await sessionManager.isLoggedIn();
 

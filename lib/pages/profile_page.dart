@@ -34,11 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Row(
                             children: [
-                              const CircleAvatar(
+                              CircleAvatar(
                                 radius: 30,
                                 backgroundColor: AppColors.secondary,
-                                backgroundImage:
-                                    AssetImage('assets/avatar.jpg'),
+                                backgroundImage: NetworkImage(SessionManager().getUserAvatar() ?? 'assets/avatar.jpg'),
                               ),
                               const SizedBox(width: 20),
                               Expanded(

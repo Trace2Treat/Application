@@ -4,7 +4,7 @@ import 'config.dart';
 class RegisterService {
   bool isLoading = false;
 
-  Future<void> postRegister(String name, String email, String password, String passwordConfirm, String phone, String address, String role) async {
+  Future<void> postRegister(String name, String email, String password, String passwordConfirm, String phone, String address, String role, String avatar) async {
     try {
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/register');
 
@@ -17,7 +17,7 @@ class RegisterService {
           'password_confirmation': passwordConfirm,
           'phone': phone,
           'address': address,
-          'avatar': '-',
+          'avatar': avatar,
           'role': role,
           'status': 'active'
         },

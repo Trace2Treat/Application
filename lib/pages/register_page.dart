@@ -1,9 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
 import 'login_page.dart';
 import '../theme/app_colors.dart';
 import '../api/register_service.dart';
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -24,6 +28,47 @@ class _RegisterPageState extends State<RegisterPage> {
   String phone = '';
   String address = '';
   String role = 'USER';
+
+  CustomFile? pickedFile;
+  String attachment = '';
+  String file = 'Add File';
+  double uploadProgress = 0.0;
+  Future<void> selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+
+    setState(() {
+      pickedFile = CustomFile(
+          result.files.first.path ?? '', result.files.first.name);
+          
+    });
+  }
+  Future<void> uploadFile() async {
+    if (pickedFile != null) {
+      final path = 'files/${pickedFile!.name}';
+      final file = File(pickedFile!.path);
+
+      final ref = FirebaseStorage.instance.ref().child(path);
+      final uploadTask = ref.putFile(file);
+
+      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        setState(() {
+          uploadProgress = snapshot.bytesTransferred / snapshot.totalBytes;
+        });
+      });
+
+      final snapshot = await uploadTask.whenComplete(() {});
+
+      final urlDownload = await snapshot.ref.getDownloadURL();
+      setState(() {
+        attachment = urlDownload;
+      });
+      
+      print('Direct Image Link: $urlDownload');
+    } else {
+      print('No file selected');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,6 +288,56 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                 const SizedBox(height: 10),
+                Card(
+                      margin: EdgeInsets.zero,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: GestureDetector(
+                        onTap: () async {
+                          await selectFile();
+                          await uploadFile();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            children: [
+                              Icon(Icons.insert_photo, size: 24, color: AppColors.primary),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  pickedFile == null ? file : pickedFile!.name,
+                                  maxLines: 1, 
+                                  overflow: TextOverflow.ellipsis, 
+                                  style: const TextStyle(color: AppColors.primary),
+                                ),
+                              ),
+                              const Spacer(),
+                              Icon(Icons.add, size: 24, color: AppColors.primary),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                Visibility(
+                      visible: pickedFile != null,
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(5.0),
+                            child: LinearProgressIndicator(
+                              value: uploadProgress,
+                              minHeight: 10,
+                              backgroundColor: Colors.grey[300],
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                  AppColors.secondary),
+                            ),
+                          ),
+                        ],
+                      ),
+                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
                     if (password.length < 8 && passwordConfirm.length < 8) {
@@ -258,7 +353,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     });
 
                     try {
-                      await controller.postRegister(name, email, password, passwordConfirm, phone, address, role);
+                      await controller.postRegister(name, email, password, passwordConfirm, phone, address, role, attachment);
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',
@@ -393,4 +488,11 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
+
+class CustomFile {
+  final String path;
+  final String name;
+
+  CustomFile(this.path, this.name);
 }
