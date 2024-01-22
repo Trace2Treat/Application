@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:intl/intl.dart';
+import 'refresh_page.dart';
 import '../theme/app_colors.dart';
+import '../api/trash_service.dart';
 
 class TrashDetailPage extends StatefulWidget {
   final Map<String, dynamic> trashDetails;
@@ -13,6 +16,7 @@ class TrashDetailPage extends StatefulWidget {
 }
 
 class _TrashDetailPageState extends State<TrashDetailPage> {
+  TrashService controller = TrashService();
   double calculateDeliveryCost(double distance) {
     const double costPerKilometer = 5000;
     return distance * costPerKilometer;
@@ -20,6 +24,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    int id = widget.trashDetails['id'];
     String username = widget.trashDetails['user_name'];
     String type = widget.trashDetails['trash_type'];
     String weight = widget.trashDetails['trash_weight'];
@@ -31,7 +36,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail Penjemputan'),
+        title: const Text('Detail Penjemputan'),
         centerTitle: true,
       ),
       body: Padding(
@@ -39,7 +44,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Nama', 
               style: TextStyle(
                 fontSize: 14, 
@@ -49,12 +54,12 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               username, 
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12, 
               )
             ),
             const SizedBox(height: 10),
-            Text(
+            const Text(
               'Alamat Penjemputan', 
               style: TextStyle(
                 fontSize: 14, 
@@ -64,12 +69,12 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               address, 
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12, 
               )
             ),
             const SizedBox(height: 10),
-            Text(
+            const Text(
               'Tipe Sampah', 
               style: TextStyle(
                 fontSize: 14, 
@@ -79,12 +84,12 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               type, 
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12, 
               )
             ),
             const SizedBox(height: 10),
-            Text(
+            const Text(
               'Berat Sampah', 
               style: TextStyle(
                 fontSize: 14, 
@@ -94,12 +99,12 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               '$weight kg', 
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12, 
               )
             ),
             const SizedBox(height: 10),
-            Text(
+            const Text(
               'Jarak', 
               style: TextStyle(
                 fontSize: 14, 
@@ -109,12 +114,12 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               '$distance km dari lokasi saya', 
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12, 
               )
             ),
             const SizedBox(height: 10),
-            Text(
+            const Text(
               'Ongkos Kirim', 
               style: TextStyle(
                 fontSize: 14, 
@@ -124,7 +129,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             const SizedBox(height: 5),
             Text(
               formattedDeliveryCost, 
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12, 
               )
             ),
@@ -133,7 +138,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
               visible: status == 'Finished',
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Bukti Penerimaan', 
                     style: TextStyle(
                       fontSize: 14, 
@@ -141,13 +146,13 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                     )
                   ),
                   TextButton(
-                                      onPressed: () {
-                                        // post attachment
-                                      },
-                                      child: Text(
-                                        'Tambah lampiran',
-                                          style: const TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
-                                      ),
+                    onPressed: () {
+                      // add file
+                    },
+                    child: const Text(
+                      'Tambah lampiran',
+                      style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                    ),
                   ),
                 ],
               )
@@ -155,23 +160,24 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             Visibility(
               visible: status == 'Approved',
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Text(
-                      'Status', 
+                  const Text(
+                    'Status', 
                       style: TextStyle(
                         fontSize: 14, 
                         fontWeight: FontWeight.bold
                       )
                     ),
-                    const SizedBox(height: 5),
-                    Text(
+                  const SizedBox(height: 5),
+                  const Text(
                       'Selesai', 
                       style: TextStyle(
                         fontSize: 12, 
                       )
-                    ),
-                    const SizedBox(height: 10),
-                  Text(
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
                     'Bukti Penerimaan', 
                     style: TextStyle(
                       fontSize: 14, 
@@ -179,59 +185,72 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                     )
                   ),
                   TextButton(
-                                      onPressed: () {
-                                        // post attachment
-                                      },
-                                      child: Text(
-                                        'Lihat lampiran',
-                                          style: const TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
-                                      ),
+                    onPressed: () {
+                      // view attachment
+                    },
+                    child: const Text(
+                      'Lihat lampiran',
+                      style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                    ),
                   ),
                 ],
               )
             ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                // change status
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Jemput Sampah', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                )
-              ),
-            ),
+            const Spacer(),
             Visibility(
               visible: status == 'Pending',
               child: GestureDetector(
-                onTap: () {
-                  // change status
+                onTap: () async {
+                  setState(() {
+                    controller.isLoading = true;
+                  });
+
+                  try {
+                      await controller.postTrashUpdateStatus(id, 'In Pickup');
+                    
+                        AnimatedSnackBar.rectangle(
+                          'Sukses',
+                          'Anda akan menjemput sampah',
+                          type: AnimatedSnackBarType.success,
+                          brightness: Brightness.light,
+                        ).show(
+                          context,
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RefreshHomePage()), 
+                        );
+
+                  } catch (e) {
+                      print('Error during posting: $e');
+                      AnimatedSnackBar.material(
+                          'Gagal, coba lagi !',
+                          type: AnimatedSnackBarType.error,
+                        ).show(context);
+
+                      setState(() {
+                        controller.isLoading = false;
+                      });
+                  }
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Jemput Sampah', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        controller.isLoading
+                        ? const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                          )
+                        : const Text('Jemput Sampah', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   )
@@ -241,22 +260,57 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             Visibility(
               visible: status == 'In Pickup',
               child: GestureDetector(
-                onTap: () {
-                  // change status
+                onTap: () async {
+                  setState(() {
+                    controller.isLoading = true;
+                  });
+
+                  try {
+                      await controller.postTrashUpdateStatus(id, 'Received');
+                    
+                        AnimatedSnackBar.rectangle(
+                          'Sukses',
+                          'Sampah telah diterima',
+                          type: AnimatedSnackBarType.success,
+                          brightness: Brightness.light,
+                        ).show(
+                          context,
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RefreshHomePage()), 
+                        );
+
+                  } catch (e) {
+                      print('Error during posting: $e');
+                      AnimatedSnackBar.material(
+                          'Gagal, coba lagi !',
+                          type: AnimatedSnackBarType.error,
+                        ).show(context);
+
+                      setState(() {
+                        controller.isLoading = false;
+                      });
+                  }
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Diterima', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        controller.isLoading
+                        ? const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                          )
+                        : const Text('Diterima', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   )
@@ -266,22 +320,57 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             Visibility(
               visible: status == 'Received',
               child: GestureDetector(
-                onTap: () {
-                  // change status
+                onTap: () async {
+                  setState(() {
+                    controller.isLoading = true;
+                  });
+
+                  try {
+                      await controller.postTrashUpdateStatus(id, 'Delivered');
+                    
+                        AnimatedSnackBar.rectangle(
+                          'Sukses',
+                          'Sampah akan dikirim ke Pengepul',
+                          type: AnimatedSnackBarType.success,
+                          brightness: Brightness.light,
+                        ).show(
+                          context,
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RefreshHomePage()), 
+                        );
+
+                  } catch (e) {
+                      print('Error during posting: $e');
+                      AnimatedSnackBar.material(
+                          'Gagal, coba lagi !',
+                          type: AnimatedSnackBarType.error,
+                        ).show(context);
+
+                      setState(() {
+                        controller.isLoading = false;
+                      });
+                  }
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Kirim ke Pengepul', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        controller.isLoading 
+                        ? const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                          )
+                        : const Text('Kirim ke Pengepul', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   )
@@ -291,22 +380,57 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             Visibility(
               visible: status == 'Delivered',
               child: GestureDetector(
-                onTap: () {
-                  // change status
+                onTap: () async {
+                  setState(() {
+                    controller.isLoading = true;
+                  });
+
+                  try {
+                      await controller.postTrashUpdateStatus(id, 'Finished');
+                    
+                        AnimatedSnackBar.rectangle(
+                          'Sukses',
+                          'Sampah telah diterima oleh Pengepul',
+                          type: AnimatedSnackBarType.success,
+                          brightness: Brightness.light,
+                        ).show(
+                          context,
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RefreshHomePage()), 
+                        );
+
+                  } catch (e) {
+                      print('Error during posting: $e');
+                      AnimatedSnackBar.material(
+                          'Gagal, coba lagi !',
+                          type: AnimatedSnackBarType.error,
+                        ).show(context);
+
+                      setState(() {
+                        controller.isLoading = false;
+                      });
+                  }
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Diterima oleh Pengepul', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        controller.isLoading 
+                        ? const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                          )
+                        : const Text('Diterima oleh Pengepul', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   )
@@ -317,17 +441,16 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
               visible: status == 'Finished',
               child: GestureDetector(
                 onTap: () {
-                  // change status
                   // send form attachment
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.all(16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -123,24 +123,32 @@ class TrashService {
     }
   }
 
-  Future<void> postTrashUpdateStatus(String id, String status) async {
+  Future<void> postTrashUpdateStatus(int id, String status) async {
     try {
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests/change-status/$id');
+      final String accessToken = SessionManager().getAccess() ?? '';
 
       final response = await http.post(
         url,
+        headers: {'Authorization': 'Bearer $accessToken'},
         body: {
-          'id': id,
-          'status': status
+          'status': status,
         },
       );
 
       print(response.body);
 
       if (response.statusCode == 200) {
-        // success
+        final responseData = json.decode(response.body);
+
+        if (responseData['status'] == 'success') {
+          print(responseData['message']);
+        } else {
+          print('Failed to update status: ${responseData['message']}');
+        }
       } else {
-        // failed
+        print('Failed to update status - Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
       }
     } catch (error) {
       print('Error posting request: $error');
