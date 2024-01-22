@@ -186,7 +186,17 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // view attachment
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Image.network(
+                                widget.trashDetails['thumb'], 
+                                fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      );
                     },
                     child: const Text(
                       'Lihat lampiran',

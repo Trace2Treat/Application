@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'refresh_page.dart';
 import 'trashpickuplist_page.dart';
 import 'trashdetail_page.dart';
@@ -17,6 +18,14 @@ class DashboardDriverPage extends StatefulWidget {
 
 class _DashboardDriverPageState extends State<DashboardDriverPage> {
   final TrashService trashController = TrashService();
+
+  String formattedDate(String dateString) {
+    DateTime parsedDate = DateTime.parse(dateString);
+    final DateFormat formatter = DateFormat('EEEE, dd MMMM y', 'id_ID');
+    String formatted = formatter.format(parsedDate);
+
+    return formatted;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +99,8 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                             color: AppColors.secondary,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
+                          child: const Padding(
+                            padding: EdgeInsets.all(20),
                             child: Text(
                               'Lihat History', 
                               textAlign: TextAlign.center,
@@ -177,7 +186,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
       future: trashController.getTrashListForDriver(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: AppColors.primary));
         } else if (snapshot.hasError) {
           return Center(child: Text('No data available'));
         } else if (snapshot.data == null) {
@@ -210,7 +219,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(formattedDate(trashList[index]['created_at']), style: const TextStyle(fontWeight: FontWeight.bold)),
                           Text('Nama: ${trashList[index]['user_name']}'),
                           Text('Berat sampah: ${trashList[index]['trash_weight']} kg'),
                           Text('Lokasi: ${trashList[index]['place_name']}', overflow: TextOverflow.ellipsis),
@@ -230,7 +239,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                           ),
                         );
                       },
-                      icon: Icon(Icons.arrow_right_alt_rounded),
+                      icon: const Icon(Icons.arrow_right_alt_rounded),
                     ),
                   ],
                 ),

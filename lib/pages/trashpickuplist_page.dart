@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
-import 'trashdetail_page.dart';
 import '../theme/app_colors.dart';
 
 class TrashPickupListPage extends StatefulWidget {
