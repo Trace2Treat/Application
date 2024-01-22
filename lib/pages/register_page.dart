@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   CustomFile? pickedFile;
   String attachment = '';
-  String file = 'Add File';
+  String file = 'Add Profile Photo';
   double uploadProgress = 0.0;
   Future<void> selectFile() async {
     final result = await FilePicker.platform.pickFiles();
@@ -87,10 +87,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     'assets/logo.png', 
                     height: MediaQuery.of(context).size.height * 0.2, 
                   ),
-                ),
-                const Text(
-                  'Selamat datang di Trace2Treat!', 
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
                 TextField(
@@ -258,13 +254,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       margin: EdgeInsets.zero,
                       elevation: 2,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(26),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Row(
                           children: [
-                            Icon(Icons.person, color: Colors.grey[600]),
+                            Icon(Icons.people, color: Colors.grey[600]),
                             const SizedBox(width: 10),
                             DropdownButton<String>(
                               value: role,
@@ -289,10 +285,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                 const SizedBox(height: 10),
                 Card(
+                  color: Colors.grey[200],
                       margin: EdgeInsets.zero,
                       elevation: 2,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(26),
                       ),
                       child: GestureDetector(
                         onTap: () async {
@@ -303,26 +300,29 @@ class _RegisterPageState extends State<RegisterPage> {
                           padding: const EdgeInsets.all(16),
                           child: Row(
                             children: [
-                              Icon(Icons.insert_photo, size: 24, color: AppColors.primary),
+                              Icon(Icons.insert_photo, size: 24, color: Colors.grey[600]),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
                                   pickedFile == null ? file : pickedFile!.name,
                                   maxLines: 1, 
                                   overflow: TextOverflow.ellipsis, 
-                                  style: const TextStyle(color: AppColors.primary),
+                                  style: TextStyle(color: Colors.grey[600]),
                                 ),
                               ),
                               const Spacer(),
-                              Icon(Icons.add, size: 24, color: AppColors.primary),
+                              Icon(Icons.add, size: 24, color: Colors.grey[600]),
                             ],
                           ),
                         ),
                       ),
                     ),
+                const SizedBox(height: 10),
                 Visibility(
-                      visible: pickedFile != null,
-                      child: Column(
+                  visible: pickedFile != null,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(5.0),
@@ -336,6 +336,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ],
                       ),
+                  )
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
