@@ -214,7 +214,10 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
   Widget buildFoodCard(Map<String, dynamic> food) {
     return GestureDetector(
       onTap: () {
-        // food details page 
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const FoodOrderPage()), 
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(
