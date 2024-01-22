@@ -193,6 +193,17 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
           return Center(child: Text('No data available'));
         } else {
           List<Map<String, dynamic>> trashList = snapshot.data!;
+            trashList.sort((a, b) {
+            double distanceA = getDistanceFromCurrentUser(
+                double.parse(a['latitude']),
+                double.parse(a['longitude'])
+            );
+            double distanceB = getDistanceFromCurrentUser(
+                double.parse(b['latitude']),
+                double.parse(b['longitude'])
+            );
+            return distanceA.compareTo(distanceB);
+          });
 
           return ListView.builder(
             shrinkWrap: true,

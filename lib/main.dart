@@ -7,6 +7,7 @@ import 'theme/app_colors.dart';
 import 'pages/nointernet_page.dart';
 import 'pages/welcome_page.dart';
 import 'pages/home_page.dart';
+import 'pages/refresh_page.dart';
 import 'utils/session_manager.dart';
 
 void main() async {
@@ -68,7 +69,7 @@ class Trace2Treat extends StatelessWidget {
             return const Center(child: Text('Error checking internet connection'));
           } else {
             return snapshot.data == true
-              ? (isLoggedIn ? const HomePage() : const SplashScreen())
+              ? (isLoggedIn ? (SessionManager().getUserRole() == 'DRIVER' ? const RefreshHomePage() : const HomePage()) : const SplashScreen())
               : const NoInternetPage();
           }
         },

@@ -315,7 +315,7 @@ class _DashboardPageState extends State<DashboardPage> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: trashList.length,
             itemBuilder: (context, index) {
-              return Container(
+                return Container(
                   margin: const EdgeInsets.only(bottom: 6),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(

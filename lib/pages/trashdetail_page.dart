@@ -103,34 +103,42 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                 fontSize: 12, 
               )
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Jarak', 
-              style: TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold
-              )
-            ),
-            const SizedBox(height: 5),
-            Text(
-              '$distance km dari lokasi saya', 
-              style: const TextStyle(
-                fontSize: 12, 
-              )
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Ongkos Kirim', 
-              style: TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold
-              )
-            ),
-            const SizedBox(height: 5),
-            Text(
-              formattedDeliveryCost, 
-              style: const TextStyle(
-                fontSize: 12, 
+            Visibility(
+              visible: status == "Pending" || status == "In Pickup",
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Jarak', 
+                    style: TextStyle(
+                      fontSize: 14, 
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    '$distance km dari lokasi saya', 
+                    style: const TextStyle(
+                      fontSize: 12, 
+                    )
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Ongkos Kirim', 
+                    style: TextStyle(
+                      fontSize: 14, 
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    formattedDeliveryCost, 
+                    style: const TextStyle(
+                      fontSize: 12, 
+                    )
+                  ),
+                ],
               )
             ),
             const SizedBox(height: 10),
