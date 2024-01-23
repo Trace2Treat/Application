@@ -4,6 +4,7 @@ import 'exchangedetail_page.dart';
 import 'home_page.dart';
 import '../services/trash_service.dart';
 import '../themes/app_colors.dart';
+import '../themes/empty_data.dart';
 
 class ExchangeListPage extends StatefulWidget {
   const ExchangeListPage({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
           },
         ),
         centerTitle: true,
-        title: Text('Daftar Penukaran'),
+        title: const Text('Daftar Penukaran'),
       ),
       body: ListView(
         children: [
@@ -70,17 +71,17 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
             future: controller.getTrashList(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text('No data available'));
+                return const EmptyData();
               } else if (snapshot.data == null) {
-                return Center(child: Text('No data available'));
+                return const EmptyData();
               } else {
                 List<Map<String, dynamic>> trashList = snapshot.data!;
 
                 return ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: trashList.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -115,7 +116,7 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
                                 ),
                               );
                             }, 
-                            icon: Icon(Icons.arrow_right_alt_rounded)
+                            icon: const Icon(Icons.arrow_right_alt_rounded)
                           )
                         ]
                       )
