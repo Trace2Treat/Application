@@ -37,6 +37,47 @@ class FoodService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getFoodListRestaurant() async {
+    final String accessToken = SessionManager().getAccess() ?? '';
+    final int userid = SessionManager().getUserId() ?? 0;
+
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/foods?restaurant_id=$userid');
+
+    try {
+      final response = await http.get(
+        baseUrl,
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+
+      if (response.statusCode == 200) {
+        final foodDataList = json.decode(response.body)['data'];
+
+        return List<Map<String, dynamic>>.from(foodDataList.map((food) {
+          return {
+            'id': food['id'],
+            'name': food['name'],
+            'description': food['description'],
+            'price': food['price'],
+            'stock': food['stock'],
+            'thumb': food['thumb'],
+            'category_id': food['category_id'],
+            'restaurant_id': food['restaurant_id'],
+            'created_at': food['created_at'],
+            'updated_at': food['updated_at'],
+          };
+        }));
+      } else {
+        print('Failed to get food list - Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        throw Exception('Failed to get food list');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      print('aksessnya $accessToken $userid');
+      throw Exception('Failed to food list');
+    }
+  }
+
   Future<void> createFood(String name, String description, String price, String stock, String thumb, String categoryid) async {
     try {
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/foods/store');

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'foodorder_page.dart';
+import 'foodlist_page.dart';
 import 'managementorder_page.dart';
 import '../themes/app_colors.dart';
 import '../utils/session_manager.dart';
@@ -169,7 +170,17 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Makanan Tersedia', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          TextButton(onPressed: (){}, child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary)))
+                          TextButton(
+                            onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const FoodListPage()), 
+                              );
+                            }, 
+                            child: Text(
+                              'Lihat Semua', 
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary))
+                            )
                         ]
                       ),
                       const SizedBox(height: 10),
