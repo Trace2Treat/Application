@@ -188,24 +188,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 10),
             Visibility(
-              visible: status == 'Finished',
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      // add file
-                    },
-                    child: const Text(
-                      'Tambah lampiran',
-                      style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
-                    ),
-                  ),
-                ],
-              )
-            ),
-            Visibility(
-              visible: status == 'Approved',
+              visible: status == 'Approved' || status == 'Finished',
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -217,9 +200,9 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                       )
                     ),
                   const SizedBox(height: 5),
-                  const Text(
-                      'Selesai', 
-                      style: TextStyle(
+                  Text(
+                      status == 'Finished' ? 'Waiting for approvement' : 'Selesai', 
+                      style: const TextStyle(
                         fontSize: 12, 
                       )
                   ),
@@ -246,7 +229,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                       );
                     },
                     child: const Text(
-                      'Lihat lampiran',
+                      'Photo',
                       style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
                     ),
                   ),
@@ -592,31 +575,6 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                             valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
                           )
                         : const Text('Diterima oleh Pengepul', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  )
-                ),
-              ),
-            ),
-            Visibility(
-              visible: status == 'Finished',
-              child: GestureDetector(
-                onTap: () async {
-                  // change status
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Selesai', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   )

@@ -41,7 +41,7 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                 Navigator.pop(context);
               },
         ),
-        title: Text('Daftar Orderan'),
+        title: const Text('Daftar Orderan'),
         centerTitle: true,
       ),
       body: Padding(
@@ -88,13 +88,14 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
       future: trashController.getTrashListOngoing(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: AppColors.primary));
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
         } else if (snapshot.hasError) {
           return const EmptyData();
         } else if (snapshot.data == null) {
           return const EmptyData();
         } else {
           List<Map<String, dynamic>> trashList = snapshot.data!;
+          trashList.sort((a, b) => b['id'].compareTo(a['id']));
 
           return Expanded(
             child: ListView.builder(
@@ -105,10 +106,17 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                 double distance = getDistanceFromCurrentUser(trashLat, trashLong);
 
                       return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 1,
+                            ),
+                          ],
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(16),
@@ -138,50 +146,84 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text('Order Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                                                  const Text('Order Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
                                                   const SizedBox(height: 8),
-                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                    Text('Id'),
-                                                    Text('#${trashList[index]['id'].toString()}'),
-                                                  ]),
-                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      const Text('Id'),
+                                                      Text('#${trashList[index]['id'].toString()}'),
+                                                    ]
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                    Text('Status'),
-                                                    Text(trashList[index]['status']),
-                                                  ]),
-                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      const Text('Status'),
+                                                      Text(trashList[index]['status']),
+                                                    ]
+                                                  ),
+                                                  const Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                    Text('Delivery Payment'),
-                                                    Text('Cash'),
-                                                  ]),
+                                                      Text('Delivery Payment'),
+                                                      Text('Cash'),
+                                                    ]
+                                                  ),
                                                   const SizedBox(height: 18),
-                                                  Text('Pickup Address', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                                                  const Text('Pickup Address', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
                                                   const SizedBox(height: 8),
                                                   Text(trashList[index]['place_name']),
                                                   const SizedBox(height: 18),
-                                                  Text('User Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                                                  const Text('User Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
                                                   const SizedBox(height: 8),
                                                   Text(trashList[index]['user_name']),
                                                   Text(trashList[index]['phone']),
                                                   Text('Jarak: ${distance.toStringAsFixed(2).toString()} km'),
+                                                  Visibility(
+                                                    visible: trashList[index]['status'] == 'Approved' || trashList[index]['status'] == 'Finished',
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext context) {
+                                                                return AlertDialog(
+                                                                  content: Image.network(
+                                                                      trashList[index]['thumb'], 
+                                                                      fit: BoxFit.cover,
+                                                                  ),
+                                                                );
+                                                              },
+                                                            );
+                                                          },
+                                                          child: const Text(
+                                                            'Lihat bukti',
+                                                            style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ),
                                                   const SizedBox(height: 20),
                                                   Center(
-                                                    child:ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                      primary: AppColors.secondary,
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(20),
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                        primary: AppColors.secondary,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(20),
+                                                        ),
+                                                      ),
+                                                      child: const Text(
+                                                        'Back',
+                                                        style: TextStyle(color: Colors.white),
                                                       ),
                                                     ),
-                                                    child: Text(
-                                                      'Back',
-                                                      style: TextStyle(color: Colors.white),
-                                                    ),
-                                                  ),)
+                                                  )
                                                 ],
                                               ),
                                             ),
@@ -196,7 +238,7 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     'Detail',
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -232,34 +274,37 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child:ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => TrashDetailPage(
-                                            trashDetails: trashList[index], 
-                                            trashDistance: distance.toStringAsFixed(2),
+                              Visibility(
+                                visible: trashList[index]['status'] != 'Approved',
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child:ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => TrashDetailPage(
+                                              trashDetails: trashList[index], 
+                                              trashDistance: distance.toStringAsFixed(2),
+                                            ),
                                           ),
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: AppColors.primary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
                                         ),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      primary: AppColors.primary,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Text(
+                                        'Update Status',
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                     ),
-                                    child: Text(
-                                      'Update Status',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              )
                             )
                           ]
                         )
