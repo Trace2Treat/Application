@@ -1,6 +1,11 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:bottom_navigation_view/bottom_navigation_view.dart';
+import 'package:intl/intl.dart';
+import 'trashdetail_page.dart';
 import '../themes/app_colors.dart';
+import '../themes/empty_data.dart';
+import '../utils/globals.dart';
+import '../services/trash_service.dart';
 
 class TrashPickupListPage extends StatefulWidget {
   const TrashPickupListPage({Key? key}) : super(key: key);
@@ -10,7 +15,15 @@ class TrashPickupListPage extends StatefulWidget {
 }
 
 class _TrashPickupListPageState extends State<TrashPickupListPage> {
-  late final BottomNavigationController _controller;
+  final TrashService trashController = TrashService();
+
+  String formattedDate(String dateString) {
+    DateTime parsedDate = DateTime.parse(dateString);
+    final DateFormat formatter = DateFormat('EEEE, dd MMMM y', 'id_ID');
+    String formatted = formatter.format(parsedDate);
+
+    return formatted;
+  }
   DateTime? currentBackPressTime;
 
   @override
@@ -19,64 +32,78 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    late List<Map<String, String>> items = [
-      {
-        'status': 'Order In Pickup',
-        'date': '18 Jan 2023, 09:30 AM',
-        'name': 'Diva Ariani',
-        'address': 'Cibinong',
-        'phone': '0888 1111 2222'
-      },
-      {
-        'status': 'Finished',
-        'date': '17 Jan 2023, 09:30 AM',
-        'name': 'Agus',
-        'address': 'SV IPB',
-        'phone': '0888 4444 2222'
-      },
-      {
-        'status': 'Finished',
-        'date': '16 Jan 2023, 09:30 AM',
-        'name': 'Rafi',
-        'address': 'Gunung Putri',
-        'phone': '0888 3333 2222'
-      },
-      {
-        'status': 'Finished',
-        'date': '15 Jan 2023, 09:30 AM',
-        'name': 'Reksa',
-        'address': 'Bogor Utara',
-        'phone': '0888 5555 2222'
-      }
-    ];
-
     return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
               },
-            ),
-            title: Text('Pesanan Masuk'),
-            centerTitle: true,
-          ),
-          body: Padding(
-            padding: EdgeInsets.all(20),
+        ),
+        title: Text('Daftar Orderan'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
+                buildTrashList(),
+              ],
+            ),
+      ),
+    );
+  }
+
+  double calculateDistance(double startLat, double startLong, double endLat, double endLong) {
+    const double radius = 6371.0; 
+
+    double toRadians(double degree) {
+      return degree * (pi / 180.0);
+    }
+
+    double dLat = toRadians(endLat - startLat);
+    double dLon = toRadians(endLong - startLong);
+    double a = sin(dLat / 2) * sin(dLat / 2) + cos(toRadians(startLat)) * cos(toRadians(endLat)) * sin(dLon / 2) * sin(dLon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    return radius * c;
+  }
+
+  double getDistanceFromCurrentUser(double trashLat, double trashLong) {
+    try {
+      double userLat = double.parse(globalLat);
+      double userLong = double.parse(globalLong);
+
+      return calculateDistance(userLat, userLong, trashLat, trashLong);
+    } catch (e) {
+      print('Error parsing latitude or longitude: $e');
+      return 0.0; 
+    }
+  }
+
+  Widget buildTrashList() {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: trashController.getTrashListOngoing(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator(color: AppColors.primary));
+        } else if (snapshot.hasError) {
+          return const EmptyData();
+        } else if (snapshot.data == null) {
+          return const EmptyData();
+        } else {
+          List<Map<String, dynamic>> trashList = snapshot.data!;
+
+          return Expanded(
+            child: ListView.builder(
+              itemCount: trashList.length,
+              itemBuilder: (context, index) {
+                double trashLat = double.parse(trashList[index]['latitude']);
+                double trashLong = double.parse(trashList[index]['longitude']);
+                double distance = getDistanceFromCurrentUser(trashLat, trashLong);
+
                       return Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -90,8 +117,8 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                               Row(children: [
                                 Column(crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                  Text(items[index]['status']!, style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                                  Text(items[index]['date']!,)
+                                  Text(trashList[index]['status'], style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                                  Text(formattedDate(trashList[index]['created_at']))
                                 ]),
                                 Spacer(),
                                 ElevatedButton(
@@ -104,55 +131,61 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                             borderRadius: BorderRadius.circular(20),
                                           ),
                                           backgroundColor: Colors.white,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(30),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text('Order Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
-                                                const SizedBox(height: 8),
-                                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                  Text('Id'),
-                                                  Text('#3333'),
-                                                ]),
-                                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                  Text('Status'),
-                                                  Text('Delivery'),
-                                                ]),
-                                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                  Text('Payment'),
-                                                  Text('Point'),
-                                                ]),
-                                                const SizedBox(height: 18),
-                                                Text('User Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
-                                                const SizedBox(height: 8),
-                                                Text(items[index]['name']!),
-                                                Text(items[index]['address']!),
-                                                Text(items[index]['phone']!),
-                                                const SizedBox(height: 8),
-                                                Center(
-                                                  child:ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    primary: AppColors.secondary,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(20),
+                                          child: SingleChildScrollView(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(30),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('Order Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                                                  const SizedBox(height: 8),
+                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                    Text('Id'),
+                                                    Text('#${trashList[index]['id'].toString()}'),
+                                                  ]),
+                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                    Text('Status'),
+                                                    Text(trashList[index]['status']),
+                                                  ]),
+                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                    Text('Delivery Payment'),
+                                                    Text('Cash'),
+                                                  ]),
+                                                  const SizedBox(height: 18),
+                                                  Text('Pickup Address', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                                                  const SizedBox(height: 8),
+                                                  Text(trashList[index]['place_name']),
+                                                  const SizedBox(height: 18),
+                                                  Text('User Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                                                  const SizedBox(height: 8),
+                                                  Text(trashList[index]['user_name']),
+                                                  Text(trashList[index]['phone']),
+                                                  Text('Jarak: ${distance.toStringAsFixed(2).toString()} km'),
+                                                  const SizedBox(height: 20),
+                                                  Center(
+                                                    child:ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    style: ElevatedButton.styleFrom(
+                                                      primary: AppColors.secondary,
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  child: Text(
-                                                    'Back',
-                                                    style: TextStyle(color: Colors.white),
-                                                  ),
-                                                ),)
-                                              ],
+                                                    child: Text(
+                                                      'Back',
+                                                      style: TextStyle(color: Colors.white),
+                                                    ),
+                                                  ),)
+                                                ],
+                                              ),
                                             ),
-                                          ),
+                                          )
                                         );
                                       },
                                     );
@@ -172,10 +205,10 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                               const SizedBox(height: 10),
                               Row(
                                 children: [
-                                  const CircleAvatar(
+                                  CircleAvatar(
                                     radius: 30,
                                     backgroundColor: AppColors.secondary,
-                                    backgroundImage: AssetImage('assets/avatar.jpg'),
+                                    backgroundImage: NetworkImage(trashList[index]['avatar']),
                                   ),
                                   const SizedBox(width: 20),
                                   Expanded(
@@ -183,18 +216,14 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          items[index]['name']!,
+                                          trashList[index]['user_name'],
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
-                                          items[index]['address']!,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(color: Colors.black)),
-                                        Text(
-                                          items[index]['phone']!,
+                                          trashList[index]['phone'],
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(color: Colors.black)),
                                       ],
@@ -208,32 +237,15 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                   Expanded(
                                     child:ElevatedButton(
                                     onPressed: () {
-                                      setState(() {
-                                        items.removeAt(index); 
-                                      });
-                                    },
-                                    
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      onPrimary: AppColors.secondary,
-                                      side: BorderSide(color: AppColors.secondary, width: 2),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Cancel',
-                                      style: TextStyle(color: AppColors.secondary),
-                                    ),
-                                  ),),
-                                  SizedBox(width: 16), 
-                                  Expanded(
-                                    child:ElevatedButton(
-                                    onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(builder: (context) => TrashDetailPage()),
-                                      // );
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => TrashDetailPage(
+                                            trashDetails: trashList[index], 
+                                            trashDistance: distance.toStringAsFixed(2),
+                                          ),
+                                        ),
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: AppColors.primary,
@@ -242,22 +254,22 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                       ),
                                     ),
                                     child: Text(
-                                      'Deliver',
+                                      'Update Status',
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                  ),)
-                                ],
-                              )
-                            ]
-                          )
+                                  ),
+                                )
+                              ],
+                            )
+                          ]
                         )
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+                      )
+                    );
+                  },
+            )
+          );
+        }
+      },
+    );
   }
 }
