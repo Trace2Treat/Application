@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 
 class TrackOrderPage extends StatefulWidget {
   const TrackOrderPage({Key? key}) : super(key: key);

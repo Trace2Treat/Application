@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'exchangedetail_page.dart';
 import 'exchangelist_page.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 import '../utils/session_manager.dart';
-import '../api/trash_service.dart';
+import '../services/trash_service.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);

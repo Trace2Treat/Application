@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'config.dart';
+import 'api_config.dart';
 import 'dart:convert';
 import '../utils/session_manager.dart';
 
@@ -52,7 +52,7 @@ class TrashService {
   Future<List<Map<String, dynamic>>> getTrashListForDriver() async {
     final String accessToken = SessionManager().getAccess() ?? '';
 
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests');
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests?status=Pending');
 
     try {
       final response = await http.get(
@@ -166,7 +166,7 @@ class TrashService {
         headers: {'Authorization': 'Bearer $accessToken'},
         body: {
           'status': status,
-          'thumb': thumb
+          'proof_payment': thumb
         },
       );
 

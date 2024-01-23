@@ -7,7 +7,7 @@ import 'search_page.dart';
 import 'favorite_page.dart';
 import 'profile_page.dart';
 import 'foodorderqr_page.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 import '../utils/session_manager.dart';
 
 class HomePage extends StatefulWidget {

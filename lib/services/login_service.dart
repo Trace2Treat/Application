@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'config.dart';
+import 'api_config.dart';
 import '../utils/session_manager.dart';
 
 class LoginService {

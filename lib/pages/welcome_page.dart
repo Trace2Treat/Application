@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'login_page.dart';
 import 'register_page.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);

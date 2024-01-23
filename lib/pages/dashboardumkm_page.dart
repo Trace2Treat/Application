@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'foodorder_page.dart';
 import 'managementorder_page.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 import '../utils/session_manager.dart';
-import '../api/food_service.dart';
+import '../services/food_service.dart';
 
 class DashboardUmkmPage extends StatefulWidget {
   const DashboardUmkmPage({Key? key}) : super(key: key);

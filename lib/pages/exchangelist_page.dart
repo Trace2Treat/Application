@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'refresh_page.dart';
 import 'exchangedetail_page.dart';
 import 'home_page.dart';
-import '../api/trash_service.dart';
-import '../theme/app_colors.dart';
+import '../services/trash_service.dart';
+import '../themes/app_colors.dart';
 
 class ExchangeListPage extends StatefulWidget {
   const ExchangeListPage({Key? key}) : super(key: key);

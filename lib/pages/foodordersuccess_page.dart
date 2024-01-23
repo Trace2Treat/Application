@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trace2treat/pages/home_page.dart';
 //import 'foodtrackorder_page.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 
 class OrderSuccessPage extends StatefulWidget {
   const OrderSuccessPage({Key? key}) : super(key: key);

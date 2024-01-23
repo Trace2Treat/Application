@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:trace2treat/main.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 import '../utils/session_manager.dart';
 
 class NoInternetPage extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'exchangelist_page.dart';
-import '../theme/app_colors.dart';
-import '../api/trash_service.dart';
+import '../themes/app_colors.dart';
+import '../services/trash_service.dart';
 import '../utils/globals.dart';
 
 class ExchangeFormPage extends StatefulWidget {

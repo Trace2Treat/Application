@@ -3,8 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'register_page.dart';
 import 'home_page.dart';
-import '../api/login_service.dart';
-import '../theme/app_colors.dart';
+import '../services/login_service.dart';
+import '../themes/app_colors.dart';
 import '../utils/session_manager.dart';
 
 class LoginPage extends StatefulWidget {

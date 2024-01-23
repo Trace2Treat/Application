@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'foodorder_page.dart';
-import '../theme/app_colors.dart';
-import '../api/food_service.dart';
+import '../themes/app_colors.dart';
+import '../services/food_service.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

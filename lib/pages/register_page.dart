@@ -5,9 +5,9 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'login_page.dart';
-import '../theme/app_colors.dart';
-import '../api/register_service.dart';
-
+import '../themes/app_colors.dart';
+import '../themes/custom_file.dart';
+import '../services/register_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -489,11 +489,4 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-}
-
-class CustomFile {
-  final String path;
-  final String name;
-
-  CustomFile(this.path, this.name);
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'foodordersuccess_page.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
 
 class FoodCartPage extends StatefulWidget {
   final int counterFromOrder;

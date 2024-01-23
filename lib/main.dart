@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'theme/app_colors.dart';
+import 'themes/app_colors.dart';
 import 'pages/nointernet_page.dart';
 import 'pages/welcome_page.dart';
 import 'pages/home_page.dart';

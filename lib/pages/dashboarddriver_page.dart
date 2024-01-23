@@ -4,10 +4,11 @@ import 'package:intl/intl.dart';
 import 'refresh_page.dart';
 import 'trashpickuplist_page.dart';
 import 'trashdetail_page.dart';
-import '../theme/app_colors.dart';
+import '../themes/app_colors.dart';
+import '../themes/empty_data.dart';
 import '../utils/session_manager.dart';
 import '../utils/globals.dart';
-import '../api/trash_service.dart';
+import '../services/trash_service.dart';
 
 class DashboardDriverPage extends StatefulWidget {
   const DashboardDriverPage({Key? key}) : super(key: key);
@@ -102,7 +103,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
                           child: const Padding(
                             padding: EdgeInsets.all(20),
                             child: Text(
-                              'Lihat History', 
+                              'Lihat Orderan', 
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -188,9 +189,9 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator(color: AppColors.primary));
         } else if (snapshot.hasError) {
-          return Center(child: Text('No data available'));
+          return const EmptyData();
         } else if (snapshot.data == null) {
-          return Center(child: Text('No data available'));
+          return const EmptyData();
         } else {
           List<Map<String, dynamic>> trashList = snapshot.data!;
             trashList.sort((a, b) {
