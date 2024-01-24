@@ -283,7 +283,7 @@ class _RefreshRegistFormState extends State<RefreshRegistForm> {
       _getCurrentLocation().then((value) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const ExchangeFormPage(),
+            builder: (context) => const RegisterRestaurantPage(),
           ),
         );
       });

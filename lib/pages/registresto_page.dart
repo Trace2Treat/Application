@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
@@ -79,7 +78,20 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Center(
+                  child: Image.asset(
+                    'assets/logo.png', 
+                    height: MediaQuery.of(context).size.height * 0.2, 
+                  ),
+                ),
+                const SizedBox(height: 5),
+                const Text(
+                  'Daftar keterangan resto terlebih dahulu.', 
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal), 
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
                 TextField(
                   onChanged: (value) {
                           setState(() {
@@ -259,52 +271,6 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
                             style: TextStyle(color: AppColors.white),
                           ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                RichText(
-                  textAlign: TextAlign.left, 
-                  text: TextSpan(
-                    text: 'Saya menyetujui ',
-                    style: TextStyle(
-                      color: Colors.black, 
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Ketentuan Layanan',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // ketentuan layanan page
-                          },
-                      ),
-                      TextSpan(
-                        text: ' & ',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Kebijakan Privasi ',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // kebijakan privasi page
-                          },
-                      ),
-                      TextSpan(
-                        text: 'Trace2Treat.',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
                 const SizedBox(height: 30),

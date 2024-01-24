@@ -359,6 +359,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       return;
                     }
 
+                    if (name.isEmpty || email.isEmpty || password.isEmpty || passwordConfirm.isEmpty || phone.isEmpty || address.isEmpty || role.isEmpty || attachment.isEmpty) {
+                      AnimatedSnackBar.material(
+                        'Semua form harus terisi',
+                        type: AnimatedSnackBarType.warning,
+                      ).show(context);
+                      return;
+                    }
+
                     setState(() {
                       controller.isLoading = true;
                     });
