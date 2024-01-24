@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'refresh_page.dart';
 import 'foodform_page.dart';
 import 'home_page.dart';
 import '../services/food_service.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
+import '../utils/session_manager.dart';
 
 class FoodListPage extends StatefulWidget {
   const FoodListPage({Key? key}) : super(key: key);
@@ -37,10 +39,17 @@ class _FoodListPagePageState extends State<FoodListPage> {
             padding: const EdgeInsets.all(16),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  if (SessionManager().getRestaurantName()!.isNotEmpty){
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const FoodFormPage()), 
                     );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const RefreshRegistForm()), 
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero,

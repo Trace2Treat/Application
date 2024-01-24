@@ -5,34 +5,30 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'login_page.dart';
-import 'refresh_page.dart';
 import '../themes/app_colors.dart';
 import '../themes/custom_file.dart';
 import '../services/register_service.dart';
+import '../utils/globals.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class RegisterRestaurantPage extends StatefulWidget {
+  const RegisterRestaurantPage({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterRestaurantPage> createState() => _RegisterRestaurantPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
   RegisterService controller = RegisterService();
 
   bool isPasswordVisible = false;
   bool isPasswordConfirmVisible = false;
   String name = '';
-  String email = '';
-  String password = '';
-  String passwordConfirm = '';
+  String description = '';
   String phone = '';
-  String address = '';
-  String role = 'USER';
 
   CustomFile? pickedFile;
   String attachment = '';
-  String file = 'Add Profile Photo';
+  String file = 'Add Logo';
   double uploadProgress = 0.0;
   Future<void> selectFile() async {
     final result = await FilePicker.platform.pickFiles();
@@ -83,13 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: Image.asset(
-                    'assets/logo.png', 
-                    height: MediaQuery.of(context).size.height * 0.2, 
-                  ),
-                ),
-                const SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.3),
                 TextField(
                   onChanged: (value) {
                           setState(() {
@@ -108,48 +98,16 @@ class _RegisterPageState extends State<RegisterPage> {
                       Icons.person, 
                       color: Colors.grey[600],
                     ),
-                    hintText: 'Enter your username',
-                  ),
-                ),
-                const SizedBox(height: 5),
-                TextFormField(
-                  onChanged: (value) {
-                    setState(() {
-                      email = value;
-                    });
-                  },
-                  validator: (value) {
-                    final emailRegex =
-                        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-
-                    if (!emailRegex.hasMatch(value ?? '')) {
-                      return 'Enter a valid email address';
-                    }
-                    return null; 
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(26),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.email,
-                      color: Colors.grey[600],
-                    ),
-                    hintText: 'Enter your email',
+                    hintText: 'Enter restaurant name',
                   ),
                 ),
                 const SizedBox(height: 5),
                 TextField(
                   onChanged: (value) {
                           setState(() {
-                            password = value;
+                            description = value;
                           });
                         },
-                  obscureText: !isPasswordVisible,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -159,60 +117,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(
-                      Icons.lock,
+                      Icons.email, 
                       color: Colors.grey[600],
                     ),
-                    hintText: 'Enter your Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.grey[600],
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                    ),
-                  )
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  onChanged: (value) {
-                          setState(() {
-                            passwordConfirm = value;
-                          });
-                        },
-                  obscureText: !isPasswordConfirmVisible,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(26),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.lock,
-                      color: Colors.grey[600],
-                    ),
-                    hintText: 'Enter your Password Confirm',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isPasswordConfirmVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.grey[600],
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isPasswordConfirmVisible = !isPasswordConfirmVisible;
-                        });
-                      },
-                    ),
-                  )
+                    hintText: 'Enter description',
+                  ),
                 ),
                 const SizedBox(height: 5),
                 TextField(
@@ -233,67 +142,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       Icons.phone,
                       color: Colors.grey[600],
                     ),
-                    hintText: 'Enter your Phone Number',
+                    hintText: 'Enter restaurant call number',
                   )
                 ),
                 const SizedBox(height: 5),
-                TextField(
-                  onChanged: (value) {
-                          setState(() {
-                            address = value;
-                          });
-                        },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(26),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.map, 
-                      color: Colors.grey[600],
-                    ),
-                    hintText: 'Enter your Address',
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Card(
-                  color: Colors.grey[200],
-                      margin: EdgeInsets.zero,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(26),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          children: [
-                            Icon(Icons.people, color: Colors.grey[600]),
-                            const SizedBox(width: 10),
-                            DropdownButton<String>(
-                              value: role,
-                              onChanged: (String? newValue) {
-                                if (newValue != null) {
-                                  setState(() {
-                                    role = newValue;
-                                  });
-                                }
-                              },
-                              items: <String>['USER', 'DRIVER', 'RESTAURANT_OWNER', 'WASTE_COLLECTOR'].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value,
-                                      style: TextStyle(color: Colors.grey[600])),
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                const SizedBox(height: 10),
                 Card(
                   color: Colors.grey[200],
                       margin: EdgeInsets.zero,
@@ -331,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Visibility(
                   visible: pickedFile != null,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                         children: [
                           ClipRRect(
@@ -351,43 +203,28 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
-                    if (password.length < 8 && passwordConfirm.length < 8) {
-                      AnimatedSnackBar.material(
-                        'Password minimal 8 karakter',
-                        type: AnimatedSnackBarType.warning,
-                      ).show(context);
-                      return;
-                    }
 
                     setState(() {
                       controller.isLoading = true;
                     });
 
                     try {
-                      await controller.postRegister(name, email, password, passwordConfirm, phone, address, role, attachment);
+                      await controller.postRestaurantRegister(name, description, phone, attachment, globalLat, globalLong);
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',
-                          'Anda berhasil mendaftar',
+                          'Anda berhasil mendaftarkan resto',
                           type: AnimatedSnackBarType.success,
                           brightness: Brightness.light,
                         ).show(
                           context,
                         );
 
-                        if (role == 'RESTAURANT_OWNER'){
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const RefreshRegistForm(),
-                            ),
-                          );
-                        } else {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                          );
-                        }
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
 
                     } catch (e) {
                       print('Error during register: $e');
@@ -471,35 +308,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Sudah punya akun?',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Masuk',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
               ],
             ),
           ),

@@ -52,6 +52,7 @@ class LoginService {
         'avatar': userData['avatar'],
         'role': userData['role'],
         'balance_coin': userData['balance_coin'],
+        'restaurant': userData['restaurant']?['name'] ?? '',
       };
 
       return filteredData;

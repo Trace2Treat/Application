@@ -127,6 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                       final avatar = loginResult['avatar'];
                       final role = loginResult['role'];
                       final status = loginResult['status'];
+                      final restaurant = loginResult['restaurant'];
 
                       SessionManager().saveUserData(
                         userId: id ?? '',
@@ -138,6 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                         userAddress: address ?? '',
                         userAvatar: avatar ?? '',
                         userStatus: status ?? '',
+                        userRestaurant: restaurant ?? ''
                       );
                     
                       AnimatedSnackBar.rectangle(
@@ -159,6 +161,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       print('idnya $id, namanya $name, emailnya $email');
                       print('role $role, poinnya $balanceCoin, phonenya $phone');
+                      print('status restaurant: $restaurant');
                     } catch (e) {
                       print('Error during login: $e');
                       AnimatedSnackBar.material(

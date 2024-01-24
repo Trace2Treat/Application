@@ -12,6 +12,7 @@ class SessionManager {
   static const String userAddressKey = 'userAddress';
   static const String userAvatarKey = 'userAvatar';
   static const String userStatusKey = 'userStatus';
+  static const String userRestaurantKey = 'userRestaurant';
 
   static final SessionManager _instance = SessionManager._internal();
 
@@ -46,7 +47,8 @@ class SessionManager {
     required String userRole,
     required String userAddress,
     required String userAvatar,
-    required String userStatus
+    required String userStatus,
+    required String userRestaurant, 
   }) {
     _prefs.setInt(userIdKey, userId);
     _prefs.setString(userNameKey, userName);
@@ -57,6 +59,7 @@ class SessionManager {
     _prefs.setString(userAddressKey, userAddress);
     _prefs.setString(userAvatarKey, userAvatar);
     _prefs.setString(userStatusKey, userStatus);
+    _prefs.setString(userRestaurantKey, userRestaurant);
   }
 
   void saveAccess({
@@ -104,6 +107,10 @@ class SessionManager {
     return _prefs.getString(userStatusKey) ?? '';
   }
 
+  String? getRestaurantName() {
+    return _prefs.getString(userRestaurantKey) ?? '';
+  }
+
   void logout() {
     _prefs.remove(userIdKey);
     _prefs.remove(userNameKey);
@@ -114,6 +121,7 @@ class SessionManager {
     _prefs.remove(userAddressKey);
     _prefs.remove(userAvatarKey);
     _prefs.remove(userStatusKey);
+    _prefs.remove(userRestaurantKey);
     _prefs.remove(_keyAccessToken);
     setLoggedIn(false);
   }
