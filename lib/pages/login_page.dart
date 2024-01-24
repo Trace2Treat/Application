@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // will pop scope to welcome
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -128,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                       final role = loginResult['role'];
                       final status = loginResult['status'];
                       final restaurant = loginResult['restaurant'];
+                      final restaurantid = loginResult['restaurant_id'];
 
                       SessionManager().saveUserData(
                         userId: id ?? '',
@@ -139,7 +141,8 @@ class _LoginPageState extends State<LoginPage> {
                         userAddress: address ?? '',
                         userAvatar: avatar ?? '',
                         userStatus: status ?? '',
-                        userRestaurant: restaurant ?? ''
+                        userRestaurant: restaurant ?? '',
+                        userRestaurantId: restaurantid ?? 0
                       );
                     
                       AnimatedSnackBar.rectangle(
@@ -161,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       print('idnya $id, namanya $name, emailnya $email');
                       print('role $role, poinnya $balanceCoin, phonenya $phone');
-                      print('status restaurant: $restaurant');
+                      print('status restaurant: $restaurant, idnya $restaurantid');
                     } catch (e) {
                       print('Error during login: $e');
                       AnimatedSnackBar.material(

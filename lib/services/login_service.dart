@@ -53,6 +53,7 @@ class LoginService {
         'role': userData['role'],
         'balance_coin': userData['balance_coin'],
         'restaurant': userData['restaurant']?['name'] ?? '',
+        'restaurant_id': userData['restaurant']?['id'] ?? 0,
       };
 
       return filteredData;

@@ -37,7 +37,7 @@ class RegisterService {
     }
   }
 
-  Future<void> postRestaurantRegister(String name, String description, String phone, String logo, String latitude, String longitude) async {
+  Future<void> postRestaurantRegister(String name, String description, String phone, String logo, String latitude, String longitude, String address) async {
     try {
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/restaurant/store');
       final accessToken = SessionManager().getAccess();
@@ -52,6 +52,7 @@ class RegisterService {
           'logo': logo,
           'latitude': latitude,
           'longitude': longitude,
+          'address': address
         },
       );
 

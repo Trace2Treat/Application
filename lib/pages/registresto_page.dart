@@ -107,7 +107,7 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
                       borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(
-                      Icons.person, 
+                      Icons.restaurant_menu, 
                       color: Colors.grey[600],
                     ),
                     hintText: 'Enter restaurant name',
@@ -129,7 +129,7 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
                       borderSide: BorderSide.none,
                     ),
                     prefixIcon: Icon(
-                      Icons.email, 
+                      Icons.description, 
                       color: Colors.grey[600],
                     ),
                     hintText: 'Enter description',
@@ -221,7 +221,7 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
                     });
 
                     try {
-                      await controller.postRestaurantRegister(name, description, phone, attachment, globalLat, globalLong);
+                      await controller.postRestaurantRegister(name, description, phone, attachment, globalLat, globalLong, globalLocationName);
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',

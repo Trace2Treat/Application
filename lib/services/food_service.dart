@@ -39,7 +39,7 @@ class FoodService {
 
   Future<List<Map<String, dynamic>>> getFoodListRestaurant() async {
     final String accessToken = SessionManager().getAccess() ?? '';
-    final int userid = SessionManager().getUserId() ?? 0;
+    final int userid = SessionManager().getRestaurantId() ?? 0;
 
     final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/foods?restaurant_id=$userid');
 
@@ -78,19 +78,21 @@ class FoodService {
     }
   }
 
-  Future<void> createFood(String name, String description, String price, String stock, String thumb, String categoryid) async {
+  Future<void> createFood(String name, String description, String price, String stock, String thumb) async {
     try {
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/foods/store');
+      final accessToken = SessionManager().getAccess();
 
       final response = await http.post(
         url,
+        headers: {'Authorization': 'Bearer $accessToken'},
         body: {
           'name': name,
           'description': description,
           'price': price,
           'stock': stock,
           'thumb': thumb,
-          'category_id': categoryid
+          'category_id': '1'
         },
       );
 

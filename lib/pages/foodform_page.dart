@@ -83,7 +83,7 @@ class _FoodFormPageState extends State<FoodFormPage> {
             );
           },
         ),
-        title: Text('Tukar Sampah'),
+        title: Text('Tambah Menu'),
         centerTitle: true,
       ),
       body: Padding(
@@ -235,7 +235,7 @@ class _FoodFormPageState extends State<FoodFormPage> {
                     });
 
                     try {
-                      await controller.createFood(name, description, price.toString(), stock.toString(), attachment, '1');
+                      await controller.createFood(name, description, price.toString(), stock.toString(), attachment);
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',

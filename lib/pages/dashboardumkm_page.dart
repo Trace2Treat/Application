@@ -239,10 +239,10 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-              'assets/makanan.png', 
-              // child: Image.network(
-              //   food['thumb'] ?? '-',
+              // child: Image.asset(
+              // 'assets/makanan.png', 
+              child: Image.network(
+                food['thumb'] ?? '-',
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 90,
