@@ -141,6 +141,50 @@ class TrashService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getTrashListForAdmin() async {
+    final String accessToken = SessionManager().getAccess() ?? '';
+
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/trash-requests?status=Finished');
+
+    try {
+      final response = await http.get(
+        baseUrl,
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+
+      if (response.statusCode == 200) {
+        final trashDataList = json.decode(response.body)['data'];
+
+        return List<Map<String, dynamic>>.from(trashDataList.map((trashData) {
+          return {
+            'id': trashData['id'],
+            'user_id': trashData['user_id'],
+            'trash_type': trashData['trash_type'],
+            'trash_weight': trashData['trash_weight'],
+            'latitude': trashData['latitude'],
+            'longitude': trashData['longitude'],
+            'status': trashData['status'],
+            'driver_id': trashData['driver_id'],
+            'thumb': trashData['thumb'],
+            'created_at': trashData['created_at'],
+            'updated_at': trashData['updated_at'],
+            'date': trashData['date'],
+            'place_name': trashData['place_name'],
+            'user_name': trashData['user']['name'],
+          };
+        }));
+      } else {
+        print('Failed to get trash request list - Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        throw Exception('Failed to get trash request list');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      print('aksessnya $accessToken');
+      throw Exception('Failed to get trash request list');
+    }
+  }
+
   Future<void> postTrashRequest(String type, String weight, String latitude, String longitude, String locationName) async {
     try {
       final String accessToken = SessionManager().getAccess() ?? '';
