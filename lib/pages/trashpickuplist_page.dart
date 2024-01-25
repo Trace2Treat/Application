@@ -146,6 +146,16 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
+                                                  Visibility(
+                                                    visible: trashList[index]['status'] == 'Approved',
+                                                    child: const Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text('Telah disetujui oleh Admin!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                                                      ]
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 16),
                                                   const Text('Order Detail', style: TextStyle(decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
                                                   const SizedBox(height: 8),
                                                   Row(
@@ -191,7 +201,7 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                                                               builder: (BuildContext context) {
                                                                 return AlertDialog(
                                                                   content: Image.network(
-                                                                      trashList[index]['thumb'], 
+                                                                      trashList[index]['proof_payment'], 
                                                                       fit: BoxFit.cover,
                                                                   ),
                                                                 );
@@ -275,7 +285,7 @@ class _TrashPickupListPageState extends State<TrashPickupListPage> {
                               ),
                               const SizedBox(height: 10),
                               Visibility(
-                                visible: trashList[index]['status'] != 'Approved',
+                                visible: trashList[index]['status'] != 'Approved' && trashList[index]['status'] != 'Finished',
                                 child: Row(
                                   children: [
                                     Expanded(

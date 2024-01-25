@@ -28,7 +28,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
 
   CustomFile? pickedFile;
   String attachment = '';
-  String file = 'Bukti Pembayaran Diterima';
+  String file = 'Tambah Foto';
   double uploadProgress = 0.0;
   Future<void> selectFile() async {
     final result = await FilePicker.platform.pickFiles();
@@ -188,6 +188,54 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
             ),
             const SizedBox(height: 10),
             Visibility(
+              visible: status == 'Delivered',
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Bukti Penerimaan', 
+                    style: TextStyle(
+                      fontSize: 14, 
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      await selectFile();
+                      await uploadFile();
+                    },
+                    child: Text(
+                      pickedFile == null ? file : pickedFile!.name,
+                      style: const TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                    ),
+                  ),   
+                                    const SizedBox(height: 10),
+                                    Visibility(
+                                      visible: pickedFile != null,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                                        child: Column(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.circular(5.0),
+                                                child: LinearProgressIndicator(
+                                                  value: uploadProgress,
+                                                  minHeight: 10,
+                                                  backgroundColor: Colors.grey[300],
+                                                  valueColor: const AlwaysStoppedAnimation<Color>(
+                                                      AppColors.secondary),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                      )
+                                    ),
+                            ],
+                          )
+            ),
+            const SizedBox(height: 10),
+            Visibility(
               visible: status == 'Approved' || status == 'Finished',
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +269,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             content: Image.network(
-                                widget.trashDetails['thumb'], 
+                                widget.trashDetails['proof_payment'], 
                                 fit: BoxFit.cover,
                             ),
                           );
@@ -421,87 +469,7 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
               visible: status == 'Delivered',
               child: GestureDetector(
                 onTap: () async {
-                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Dialog(
-                                        backgroundColor: AppColors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Card(
-                                      color: Colors.grey[200],
-                                      margin: EdgeInsets.zero,
-                                      elevation: 2,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(26),
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          await selectFile();
-                                          await uploadFile();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.insert_photo, size: 24, color: Colors.grey[600]),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Text(
-                                                  pickedFile == null ? file : pickedFile!.name,
-                                                  maxLines: 1, 
-                                                  overflow: TextOverflow.ellipsis, 
-                                                  style: TextStyle(color: Colors.grey[600]),
-                                                ),
-                                              ),
-                                              const Spacer(),
-                                              Icon(Icons.add, size: 24, color: Colors.grey[600]),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Visibility(
-                                      visible: pickedFile != null,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                                        child: Column(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(5.0),
-                                                child: LinearProgressIndicator(
-                                                  value: uploadProgress,
-                                                  minHeight: 10,
-                                                  backgroundColor: Colors.grey[300],
-                                                  valueColor: const AlwaysStoppedAnimation<Color>(
-                                                      AppColors.primary),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                      )
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(); 
-                                          },
-                                          child: const Text('Cancel', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-                                        ),
-                                        const SizedBox(width: 20),
-                                        TextButton(
-                                          onPressed: () async {
-                                            setState(() {
+                  setState(() {
                                               controller.isLoading = true;
                                             });
 
@@ -515,10 +483,9 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                                                 controller.isLoading = false;
                                               });
 
-                                              Navigator.of(context).pop(); 
                                             } else {
                                               try {
-                                                await controller.postTrashFinished(id, 'Delivered', attachment);
+                                                await controller.postTrashFinished(id, 'Finished', attachment);
                                               
                                                   AnimatedSnackBar.rectangle(
                                                     'Sukses',
@@ -546,17 +513,6 @@ class _TrashDetailPageState extends State<TrashDetailPage> {
                                                   });
                                               }
                                             }
-                                          },
-                                          child: const Text('Selesai', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                                        ),
-                                      ],
-                                    )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),

@@ -118,7 +118,7 @@ class TrashService {
             'longitude': trashData['longitude'],
             'status': trashData['status'],
             'driver_id': trashData['driver_id'],
-            'thumb': trashData['thumb'],
+            'proof_payment': trashData['proof_payment'],
             'created_at': trashData['created_at'],
             'updated_at': trashData['updated_at'],
             'date': trashData['date'],
