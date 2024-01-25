@@ -12,6 +12,7 @@ class _AdministratorState extends State<Administrator> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text('Trace2Treat Admin Dashboard'),

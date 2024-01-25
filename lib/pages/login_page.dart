@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'administrator.dart';
 import 'register_page.dart';
 import 'home_page.dart';
 import '../services/login_service.dart';
@@ -154,11 +155,19 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                         );
 
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
+                        if (role == 'ADMIN') {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const Administrator(),
+                            ),
+                          );
+                        } else{
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
+                        }
 
                         SessionManager().setLoggedIn(true);
 
