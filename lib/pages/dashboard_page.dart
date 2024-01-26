@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'exchangedetail_page.dart';
 import 'exchangelist_page.dart';
 import '../themes/app_colors.dart';
+import '../themes/empty_data.dart';
 import '../utils/session_manager.dart';
 import '../services/trash_service.dart';
 
@@ -302,11 +303,11 @@ class _DashboardPageState extends State<DashboardPage> {
       future: trashController.getTrashList(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
         } else if (snapshot.hasError) {
-          return Center(child: Text('No data available'));
+          return const EmptyData();
         } else if (snapshot.data == null) {
-          return Center(child: Text('No data available'));
+          return const EmptyData();
         } else {
           List<Map<String, dynamic>> trashList = snapshot.data!;
 
