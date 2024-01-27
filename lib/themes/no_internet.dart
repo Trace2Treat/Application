@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:trace2treat/main.dart';
-import '../themes/app_colors.dart';
+import 'app_colors.dart';
 import '../utils/session_manager.dart';
 
-class NoInternetPage extends StatefulWidget {
-  const NoInternetPage({Key? key}) : super(key: key);
+class NoInternet extends StatefulWidget {
+  const NoInternet({Key? key}) : super(key: key);
 
   @override
-  State<NoInternetPage> createState() => _NoInternetPageState();
+  State<NoInternet> createState() => _NoInternetState();
 }
 
-class _NoInternetPageState extends State<NoInternetPage> with TickerProviderStateMixin {
+class _NoInternetState extends State<NoInternet> with TickerProviderStateMixin {
   late bool isLoggedIn;
 
   @override

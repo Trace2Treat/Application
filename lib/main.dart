@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'themes/app_colors.dart';
-import 'pages/nointernet_page.dart';
+import 'themes/no_internet.dart';
 import 'pages/welcome_page.dart';
 import 'pages/home_page.dart';
 import 'pages/refresh_page.dart';
@@ -76,7 +76,7 @@ class Trace2Treat extends StatelessWidget {
           } else {
             return snapshot.data == true
               ? (isLoggedIn ? (SessionManager().getUserRole() == 'DRIVER' ? const RefreshHomePage() : (SessionManager().getUserRole() == 'ADMIN' ? const Administrator(): const HomePage())) : const SplashScreen())
-              : const NoInternetPage();
+              : const NoInternet();
           }
         },
       ),
