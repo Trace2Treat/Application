@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'refresh_page.dart';
-import 'exchangedetail_page.dart';
+import 'restaurantmenu_page.dart';
 import 'home_page.dart';
 import '../services/restaurant_service.dart';
 import '../themes/app_colors.dart';
@@ -68,28 +67,33 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
-                                child: Image.network(restaurantList[index]['logo'], height: 100, width: 100),
+                                child: Image.network(
+                                  restaurantList[index]['logo'],
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               const SizedBox(width: 16),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(restaurantList[index]['name'], style: TextStyle(fontWeight: FontWeight.bold)),
-                                  Text(restaurantList[index]['description'], style: TextStyle(fontWeight: FontWeight.normal)),
-                                ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(restaurantList[index]['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Text(restaurantList[index]['description'], style: TextStyle(fontWeight: FontWeight.normal), overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
                               ),
-                              Spacer(),
                               IconButton(
                                 onPressed: () {
-                                  // navigate to detail
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => ExchangeDetailPage(
-                                  //       selectedData: trashList[index],
-                                  //     ),
-                                  //   ),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RestoMenuPage(
+                                        restaurantId: restaurantList[index]['id'],
+                                      ),
+                                    ),
+                                  );
                                 }, 
                                 icon: const Icon(Icons.arrow_right_alt_rounded)
                               )
@@ -104,12 +108,29 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
             ],
           ),
           // ongoing here
-          // Positioned(
-          //   left: 16,
-          //   right: 16,
-          //   bottom: 26,
-          //   child: 
-          // ),
+          Positioned(
+            right: 26,
+            bottom: 36,
+            child: GestureDetector(
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => CartPage()),
+                // );
+              },
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                ),
+              )
+            )
+          ),
         ]
       )
     );
