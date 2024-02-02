@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'restaurants_page.dart';
 import 'exchangedetail_page.dart';
 import 'exchangelist_page.dart';
 import '../themes/app_colors.dart';
@@ -180,7 +181,16 @@ class _DashboardPageState extends State<DashboardPage> {
                                         ),
                                         Positioned(
                                           right: 0,
-                                          child: SizedBox(
+                                          child: GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => const RestaurantsPage(),
+                                                ),
+                                              );
+                                            },
+                                            child: SizedBox(
                                             height: 40,
                                             child: Card(
                                               shape: RoundedRectangleBorder(
@@ -204,6 +214,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                               ),
                                             ),
                                           ),
+                                          )
                                         ),
                                       ],
                                     ),
