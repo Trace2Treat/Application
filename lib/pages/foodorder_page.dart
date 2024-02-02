@@ -64,7 +64,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Cheese Burger', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text('100 Poin', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text('100 Koin', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   ],
                 ),
               )

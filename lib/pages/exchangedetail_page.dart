@@ -41,7 +41,7 @@ class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
                   buildDivider(),
                   buildRow('Berat Sampah', '${widget.selectedData['trash_weight'].toString()} (kg)'),
                   buildDivider(),
-                  buildRow('Poin Didapat', '${widget.selectedData['point'] ?? 'Pending'}'),
+                  buildRow('Koin Didapat', '${widget.selectedData['point'] ?? 'Pending'}'),
                   buildDivider(),
                   buildRow('Status', widget.selectedData['status']),
                   buildDivider(),

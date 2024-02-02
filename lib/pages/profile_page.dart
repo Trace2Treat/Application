@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   buildDivider(),
                                   buildRow('Alamat', SessionManager().getUserAddress() ?? ''),
                                   buildDivider(),
-                                  buildRow('Poin', '${SessionManager().getUserPoin()}'),
+                                  buildRow('Koin', '${SessionManager().getUserPoin()}'),
                                 ],
                               )
                           ),

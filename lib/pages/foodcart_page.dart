@@ -124,7 +124,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                             ],
                           ),
                           Text(
-                            'Total Poin: $totalPoin',
+                            'Total Koin: $totalPoin',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -162,7 +162,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Total poin', style: TextStyle(color: Colors.white)),
+                          Text('Total Koin', style: TextStyle(color: Colors.white)),
                           SizedBox(height: 5),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
