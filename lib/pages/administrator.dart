@@ -67,7 +67,7 @@ class _AdministratorState extends State<Administrator> {
                         itemCount: trashList.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -316,7 +316,7 @@ class _AdministratorState extends State<Administrator> {
             ),
             Card(
               child: ListTile(
-                title: Text('Approved Request'),
+                title: Text('Approved'),
                 leading: Icon(Icons.checklist),
                 onTap: () {
                   setState(() {
@@ -341,7 +341,7 @@ class _AdministratorState extends State<Administrator> {
                         itemCount: trashList.length,
                         itemBuilder: (context, index) {
                           return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -389,8 +389,14 @@ class _AdministratorState extends State<Administrator> {
                                                         child: const Row(
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
-                                                            Text('Anda telah menyetujui request ini!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                                                          ]
+                                                            Flexible(
+                                                              child: Text(
+                                                                'Anda telah menyetujui request ini!',
+                                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                                                overflow: TextOverflow.ellipsis,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                       const SizedBox(height: 16),
