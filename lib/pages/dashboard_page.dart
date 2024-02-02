@@ -40,23 +40,13 @@ class _DashboardPageState extends State<DashboardPage> {
         fit: StackFit.expand,
         children: [
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/dashboard.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
+            color: Colors.white,
           ),
           SingleChildScrollView(
             child: SafeArea(
               child: Column(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                    ),
-                    child: Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 30, right: 10),
                     child: Column(
                       children: [
@@ -66,7 +56,6 @@ class _DashboardPageState extends State<DashboardPage> {
                             Text(
                               'Halo, ${SessionManager().getUserName()}',
                               style: const TextStyle(
-                                color: AppColors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -75,7 +64,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             IconButton(
                               icon: const Icon(
                                 Icons.notifications,
-                                color: AppColors.white,
+                                color: Colors.black,
                               ),
                               onPressed: () {
                                 // Notification page
@@ -86,7 +75,6 @@ class _DashboardPageState extends State<DashboardPage> {
                       ],
                     )
                   ),
-                ),
                 Padding(
                     padding: const EdgeInsets.only(left: 30, right: 10),
                     child: Column(
@@ -96,7 +84,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           height: 146,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: AppColors.white,
+                            color: AppColors.primary,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
@@ -113,6 +101,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         Text(
                                           'Metode ',
                                           style: TextStyle(
+                                            color: Colors.white,
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold
                                           ),
@@ -120,6 +109,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         Text(
                                           'Pembayaran',
                                           style: TextStyle(
+                                            color: Colors.white,
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold
                                           ),
@@ -135,15 +125,16 @@ class _DashboardPageState extends State<DashboardPage> {
                                             Image.asset('assets/point.png', height: 16, width: 16),
                                             const SizedBox(width: 5),
                                             Text(
-                                              'Poin Kamu',
+                                              'Koin Kamu',
                                               style: TextStyle(
+                                                color: Colors.white,
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.bold
                                               ),
                                             )
                                           ]
                                         ),
-                                        Text('${SessionManager().getUserPoin()}', style: TextStyle(fontSize: 14))
+                                        Text('${SessionManager().getUserPoin()}', style: TextStyle(color: Colors.white, fontSize: 14))
                                       ],
                                     )
                                   ]
@@ -153,7 +144,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   height: 50,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary,
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Padding(
@@ -167,19 +158,20 @@ class _DashboardPageState extends State<DashboardPage> {
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(8),
                                               ),
-                                              color: Colors.white,
+                                              color: AppColors.primary,
                                               child: const Row(
                                                   children: [
                                                     SizedBox(width: 10),
                                                     Text(
-                                                      'Rumah',
+                                                      'Resto terdekat',
                                                       style: TextStyle(
                                                         fontSize: 12,
+                                                        color: Colors.white,
                                                         fontWeight: FontWeight.bold
                                                       ),
                                                     ),
                                                     Spacer(),
-                                                    Icon(Icons.arrow_drop_down_circle, color: AppColors.secondary),
+                                                    Icon(Icons.arrow_drop_down_circle, color: Colors.white),
                                                     SizedBox(width: 70)
                                                   ]
                                                 )
@@ -320,18 +312,20 @@ class _DashboardPageState extends State<DashboardPage> {
                   margin: const EdgeInsets.only(bottom: 6),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.grey,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Row(children: [
-                    Image.asset('assets/trash.png', height: 16, width: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    Image.asset('assets/trash.png', height: 24, width: 24),
                     const SizedBox(width: 16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
                         Text('Tipe sampah: ${trashList[index]['trash_type']}'),
-                        Text('Poin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
+                        Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
                         Text('Status: ${trashList[index]['status']}')
                       ],
                     ),
