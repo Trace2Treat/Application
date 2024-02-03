@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'foodordersuccess_page.dart';
+import 'restaurantmenu_page.dart';
 import '../themes/app_colors.dart';
 import '../utils/globals.dart';
+import '../utils/cart_data.dart';
 
 class FoodCartPage extends StatefulWidget {
-  //final String restaurantId;
+  final int restaurantId;
   final int counterFromOrder;
 
   const FoodCartPage({
     required this.counterFromOrder, 
-    //required this.restaurantId, 
+    required this.restaurantId, 
     Key? key}) : super(key: key);
 
   @override
@@ -57,166 +60,201 @@ class _FoodCartPageState extends State<FoodCartPage> {
         centerTitle: true,
       ),
       body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Restoran',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                    ),
-                    Divider(),
-                    Text(
-                                '$grestaurantName ($grestaurantPhone)',
-                                style: TextStyle(fontSize: 14),
-                    ),
-                    Text(
-                                grestaurantAddress,
-                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                ]
-              )
-            ),
-            Container(
-              color: Colors.grey[200],
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text(
-                  'Pesananmu',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          'assets/makanan.png',
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Restoran',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Cheese Burger',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        Divider(),
+                        Text(
+                          '$grestaurantName ($grestaurantPhone)',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        Text(
+                          grestaurantAddress,
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.grey[200],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Pesananmu',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.remove),
-                                      onPressed: () {
-                                        decrementCounter(); 
-                                      },
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text('$counter'), 
-                                    const SizedBox(width: 8),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        incrementCounter(); 
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'Total Koin: $totalPoin',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RestoMenuPage(
+                                    restaurantId: widget.restaurantId,
                                   ),
                                 ),
-                              ],
+                              );
+                            },
+                            child: Text('+ Tambah', style: TextStyle(color: AppColors.primary)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Consumer<CartProvider>(
+                          builder: (context, cartProvider, child) {
+                            return Column(
+                              children: cartProvider.items.map((item) {
+                                return Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        item['thumb'],
+                                        width: 80,
+                                        height: 80,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            item['name'],
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  IconButton(
+                                                    icon: const Icon(Icons.remove),
+                                                    onPressed: () {
+                                                      // Implement decrement logic
+                                                    },
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text('${item['qty']}'),
+                                                  const SizedBox(width: 8),
+                                                  IconButton(
+                                                    icon: const Icon(Icons.add),
+                                                    onPressed: () {
+                                                      // Implement increment logic
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                'Total Koin: ${item['price']}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const OrderSuccessPage(),
+                ),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Total Koin', style: TextStyle(color: Colors.white)),
+                        SizedBox(height: 5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset('assets/point.png', height: 16, width: 16, color: Colors.white),
+                            const SizedBox(width: 5),
+                            Text(
+                              '$totalPoin',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                ]
-              )
-            ),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => const OrderSuccessPage()
-                  ), 
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(8),
+                      ],
+                    ),
+                    Text('Tukar ($counter)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Total Koin', style: TextStyle(color: Colors.white)),
-                          SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.asset('assets/point.png', height: 16, width: 16, color: Colors.white),
-                                          const SizedBox(width: 5),
-                                          Text(
-                                            '$totalPoin',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white
-                                            ),
-                                          )
-                            ]
-                          )
-                        ],
-                      ),
-                      Text('Tukar ($counter)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                )
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

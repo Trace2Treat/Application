@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trace2treat/themes/app_colors.dart';
+import 'package:provider/provider.dart';
 import 'foodcart_page.dart';
+import '../utils/cart_data.dart';
+import '../themes/app_colors.dart';
 
 class FoodOrderPage extends StatefulWidget {
   final int foodId;
@@ -43,51 +45,55 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.065),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              alignment: Alignment.topLeft,
-              children: [
-                Image.network(
-                  widget.foodImage,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 250,
-                ),
-                Positioned(
-                  top: 8,
-                  left: 8,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: AppColors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+      body: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: Alignment.topLeft,
+                children: [
+                  Image.network(
+                    widget.foodImage,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 250,
+                  ),
+                  Positioned(
+                    top: 36,
+                    left: 10,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: AppColors.white),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: double.infinity,
+                color: AppColors.primary,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(widget.foodName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text(widget.formattedPrice, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            Container(
-              width: double.infinity,
-              color: AppColors.primary,
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.foodName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text(widget.formattedPrice, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              )
-            ),
-            const Spacer(),
-            Row(
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 20,
+            left: 16,
+            right: 16,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 6),
                 Row(
                   children: [
                     IconButton(
@@ -105,14 +111,26 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                         incrementCounter(); 
                       },
                     ),
-                  ],
+                  ]
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+
+                    final foodData = {
+                      "food_id": widget.foodId,
+                      "qty": counter,
+                      "thumb": widget.foodImage,
+                      "name": widget.foodName,
+                      "price": widget.formattedPrice,
+                    };
+
+                    cartProvider.addToCart(foodData);
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => FoodCartPage(
-                        //restaurantId: widget.restaurantId,
+                        restaurantId: widget.restaurantId,
                         counterFromOrder: counter,
                       )), 
                     );
@@ -125,12 +143,10 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                     ],
                   ),
                 ),
-                const SizedBox(width: 6),
               ],
             ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

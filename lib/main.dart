@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'themes/app_colors.dart';
 import 'themes/no_internet.dart';
 import 'pages/welcome_page.dart';
@@ -12,6 +13,7 @@ import 'pages/refresh_page.dart';
 import 'pages/administrator.dart';
 import 'utils/session_manager.dart';
 import 'utils/firebase_options.dart';
+import 'utils/cart_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,12 @@ void main() async {
 
   final isLoggedIn = await sessionManager.isLoggedIn();
 
-  runApp(Trace2Treat(isLoggedIn: isLoggedIn));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CartProvider(),
+      child: Trace2Treat(isLoggedIn: isLoggedIn),
+    ),
+  );
 }
 
 class Trace2Treat extends StatelessWidget {
