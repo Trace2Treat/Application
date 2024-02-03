@@ -3,7 +3,21 @@ import 'package:trace2treat/themes/app_colors.dart';
 import 'foodcart_page.dart';
 
 class FoodOrderPage extends StatefulWidget {
-  const FoodOrderPage({Key? key}) : super(key: key);
+  final int foodId;
+  final String foodName;
+  final String formattedPrice;
+  final String foodImage;
+  final int restaurantId;
+  // final int stock;
+
+  const FoodOrderPage({
+    required this.foodId,
+    required this.foodName,
+    required this.formattedPrice,
+    required this.foodImage,
+    required this.restaurantId,
+    // required this.stock,
+    Key? key}) : super(key: key);
 
   @override
   State<FoodOrderPage> createState() => _FoodOrderPageState();
@@ -37,11 +51,11 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
             Stack(
               alignment: Alignment.topLeft,
               children: [
-                Image.asset(
-                  'assets/makanan.png',
+                Image.network(
+                  widget.foodImage,
                   fit: BoxFit.cover,
                   width: double.infinity,
-                  height: 200,
+                  height: 250,
                 ),
                 Positioned(
                   top: 8,
@@ -58,13 +72,13 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
             Container(
               width: double.infinity,
               color: AppColors.primary,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Cheese Burger', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text('100 Koin', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text(widget.foodName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    Text(widget.formattedPrice, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   ],
                 ),
               )
@@ -98,6 +112,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => FoodCartPage(
+                        //restaurantId: widget.restaurantId,
                         counterFromOrder: counter,
                       )), 
                     );

@@ -93,12 +93,24 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget buildFoodCard(Map<String, dynamic> food) {
+    double price = (double.parse(food['price'] ?? 0)) / 100;
+    String formattedPrice = price.toStringAsFixed(0);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const FoodOrderPage()), 
-        );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FoodOrderPage(
+                              foodId: food['id'] ?? '-',
+                              foodName: food['name'] ?? '-',
+                              formattedPrice: formattedPrice,
+                              foodImage: food['thumb'] ?? '-',
+                              restaurantId: food['restaurant_id'],
+                              // stock: food['stock'] ?? 0,
+                            ),
+                          ),
+                        );
       },
       child: Card(
         shape: RoundedRectangleBorder(

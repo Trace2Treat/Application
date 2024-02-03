@@ -4,6 +4,7 @@ import 'home_page.dart';
 import '../services/restaurant_service.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
+import '../utils/globals.dart';
 
 class RestaurantsPage extends StatefulWidget {
   const RestaurantsPage({Key? key}) : super(key: key);
@@ -56,49 +57,60 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: restaurantList.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: AppColors.grey, 
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(14),
-                                child: Image.network(
-                                  restaurantList[index]['logo'],
-                                  height: 100,
-                                  width: 100,
-                                  fit: BoxFit.cover,
-                                ),
+                        return Column(
+                          children: [
+                            if (index == 0) const SizedBox(height: 12),
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: AppColors.grey, 
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(restaurantList[index]['name'], style: TextStyle(fontWeight: FontWeight.bold)),
-                                    Text(restaurantList[index]['description'], style: TextStyle(fontWeight: FontWeight.normal), overflow: TextOverflow.ellipsis),
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RestoMenuPage(
-                                        restaurantId: restaurantList[index]['id'],
-                                      ),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(14),
+                                    child: Image.network(
+                                      restaurantList[index]['logo'],
+                                      height: 100,
+                                      width: 100,
+                                      fit: BoxFit.cover,
                                     ),
-                                  );
-                                }, 
-                                icon: const Icon(Icons.arrow_right_alt_rounded)
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(restaurantList[index]['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+                                        Text(restaurantList[index]['description'], style: TextStyle(fontWeight: FontWeight.normal), overflow: TextOverflow.ellipsis),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        grestaurantAddress = restaurantList[index]['address'];
+                                        grestaurantName = restaurantList[index]['name'];
+                                        grestaurantPhone = restaurantList[index]['phone'];
+                                      });
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => RestoMenuPage(
+                                            restaurantId: restaurantList[index]['id'],
+                                          ),
+                                        ),
+                                      );
+                                    }, 
+                                    icon: const Icon(Icons.arrow_right_alt_rounded)
+                                  )
+                                ]
                               )
-                            ]
-                          )
+                            ),
+                            if (index == restaurantList.length - 1) const SizedBox(height: 12)
+                          ]
                         );
                       },
                     );

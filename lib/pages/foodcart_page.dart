@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'foodordersuccess_page.dart';
 import '../themes/app_colors.dart';
+import '../utils/globals.dart';
 
 class FoodCartPage extends StatefulWidget {
+  //final String restaurantId;
   final int counterFromOrder;
 
-  const FoodCartPage({required this.counterFromOrder, Key? key}) : super(key: key);
+  const FoodCartPage({
+    required this.counterFromOrder, 
+    //required this.restaurantId, 
+    Key? key}) : super(key: key);
 
   @override
   State<FoodCartPage> createState() => _FoodCartPageState();
@@ -51,91 +56,113 @@ class _FoodCartPageState extends State<FoodCartPage> {
         title: Text('Keranjang'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
+      body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Alamat Pengiriman',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Restoran',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                    ),
+                    Divider(),
+                    Text(
+                                '$grestaurantName ($grestaurantPhone)',
+                                style: TextStyle(fontSize: 14),
+                    ),
+                    Text(
+                                grestaurantAddress,
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                ]
+              )
             ),
-            Divider(),
-            Text(
-              'Cibinong, Kabupaten Bogor, Jawa Barat, Indonesia, 16912',
-              style: TextStyle(fontSize: 14.0),
-            ),
-            SizedBox(height: 26),
-            Text(
-              'Pesananmu',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Divider(),
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    'assets/makanan.png',
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
+            Container(
+              color: Colors.grey[200],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                  'Pesananmu',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Text(
-                        'Cheese Burger',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'assets/makanan.png',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.remove),
-                                onPressed: () {
-                                  decrementCounter(); 
-                                },
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Cheese Burger',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                              const SizedBox(width: 8),
-                              Text('$counter'), 
-                              const SizedBox(width: 8),
-                              IconButton(
-                                icon: const Icon(Icons.add),
-                                onPressed: () {
-                                  incrementCounter(); 
-                                },
-                              ),
-                            ],
-                          ),
-                          Text(
-                            'Total Koin: $totalPoin',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ],
+                            SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.remove),
+                                      onPressed: () {
+                                        decrementCounter(); 
+                                      },
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text('$counter'), 
+                                    const SizedBox(width: 8),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        incrementCounter(); 
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  'Total Koin: $totalPoin',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ]
+              )
             ),
             Spacer(),
             GestureDetector(
@@ -147,7 +174,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                 );
               },
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
@@ -190,7 +217,6 @@ class _FoodCartPageState extends State<FoodCartPage> {
             )
           ],
         ),
-      ),
     );
   }
 }

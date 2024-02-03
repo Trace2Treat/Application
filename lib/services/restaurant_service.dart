@@ -18,18 +18,18 @@ class RestaurantService {
       );
 
       if (response.statusCode == 200) {
-        final trashDataList = json.decode(response.body)['data'];
+        final restaurantDataList = json.decode(response.body)['data'];
 
-        return List<Map<String, dynamic>>.from(trashDataList.map((trashData) {
+        return List<Map<String, dynamic>>.from(restaurantDataList.map((restaurantData) {
           return {
-            'id': trashData['id'],
-            'name': trashData['name'],
-            'description': trashData['description'],
-            'address': trashData['address'],
-            'latitude': trashData['latitude'],
-            'longitude': trashData['longitude'],
-            'phone': trashData['phone'],
-            'logo': trashData['logo'],
+            'id': restaurantData['id'],
+            'name': restaurantData['name'],
+            'description': restaurantData['description'],
+            'address': restaurantData['address'],
+            'latitude': restaurantData['latitude'],
+            'longitude': restaurantData['longitude'],
+            'phone': restaurantData['phone'],
+            'logo': restaurantData['logo'],
           };
         }));
       } else {
