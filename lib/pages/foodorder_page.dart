@@ -9,6 +9,7 @@ class FoodOrderPage extends StatefulWidget {
   final String foodName;
   final String formattedPrice;
   final String foodImage;
+  final String foodDescription;
   final int restaurantId;
   // final int stock;
 
@@ -17,6 +18,7 @@ class FoodOrderPage extends StatefulWidget {
     required this.foodName,
     required this.formattedPrice,
     required this.foodImage,
+    required this.foodDescription,
     required this.restaurantId,
     // required this.stock,
     Key? key}) : super(key: key);
@@ -85,6 +87,15 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 10),
+                  Text(widget.foodDescription),
+                  const SizedBox(width: 10),
+                ],
+              )
             ],
           ),
           Positioned(

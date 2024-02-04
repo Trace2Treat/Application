@@ -54,6 +54,7 @@ class _RestoMenuPageState extends State<RestoMenuPage> {
                               foodName: foodList[index]['name'] ?? '-',
                               formattedPrice: formattedPrice,
                               foodImage: foodList[index]['thumb'] ?? '-',
+                              foodDescription: foodList[index]['description'] ?? '-',
                               restaurantId: foodList[index]['restaurant_id'],
                               // stock: foodList[index]['stock'] ?? 0,
                             ),

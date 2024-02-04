@@ -106,6 +106,7 @@ class _SearchPageState extends State<SearchPage> {
                               foodName: food['name'] ?? '-',
                               formattedPrice: formattedPrice,
                               foodImage: food['thumb'] ?? '-',
+                              foodDescription: food['description'] ?? '-',
                               restaurantId: food['restaurant_id'],
                               // stock: food['stock'] ?? 0,
                             ),
