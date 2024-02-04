@@ -21,7 +21,7 @@ class FoodCartPage extends StatefulWidget {
 
 class _FoodCartPageState extends State<FoodCartPage> {
   late int counter;
-  late int totalPoin;
+  int totalPoin = 0;
 
   int calculateTotalPoin(int quantity, String price) {
     int numericPrice = int.tryParse(price) ?? 0;
@@ -29,12 +29,27 @@ class _FoodCartPageState extends State<FoodCartPage> {
     return quantity * numericPrice;
   }
 
-
   @override
   void initState() {
     super.initState();
-    counter = widget.counterFromOrder;
-    totalPoin = 100 * counter;
+    updateTotalPoin();
+  }
+
+  void updateTotalPoin() {
+    int finalTotalPoin = 0;
+    int finalCounter = 0;
+
+    final cartProvider = context.read<CartProvider>();
+
+    for (var item in cartProvider.items) {
+      finalTotalPoin += int.tryParse(item['totalPoin'].toString()) ?? 0;
+    }
+
+    setState(() {
+      finalCounter = cartProvider.items.length;
+      counter = finalCounter;
+      totalPoin = finalTotalPoin;
+    });
   }
 
   @override
@@ -77,7 +92,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                         ),
                         Text(
                           grestaurantAddress,
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
@@ -120,8 +135,13 @@ class _FoodCartPageState extends State<FoodCartPage> {
                       children: [
                         Consumer<CartProvider>(
                           builder: (context, cartProvider, child) {
+                            int finalTotalPoin = 0;
+
                             return Column(
                               children: cartProvider.items.map((item) {
+                                finalTotalPoin += int.tryParse(item['totalPoin'].toString()) ?? 0;
+                                totalPoin = finalTotalPoin;
+
                                 return Row(
                                   children: [
                                     ClipRRect(
@@ -158,6 +178,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                         if (item['qty'] > 1) {
                                                           item['qty']--;
                                                           item['totalPoin'] = calculateTotalPoin(item['qty'], item['price']);
+                                                          updateTotalPoin();
                                                         }
                                                       });
                                                     },
@@ -171,6 +192,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                       setState(() {
                                                         item['qty']++;
                                                         item['totalPoin'] = calculateTotalPoin(item['qty'], item['price']);
+                                                        updateTotalPoin();
                                                       });
                                                     },
                                                   ),
@@ -185,12 +207,14 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                               ),
                                             ],
                                           ),
+                                          const SizedBox(height: 8),
                                         ],
                                       ),
                                     ),
+                                    
                                   ],
                                 );
-                              }).toList(),
+                              }).toList() 
                             );
                           },
                         ),
