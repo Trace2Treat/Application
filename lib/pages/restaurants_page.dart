@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'restaurantmenu_page.dart';
 import 'home_page.dart';
+import 'foodcart_page.dart';
 import '../services/restaurant_service.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
@@ -119,7 +120,6 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
               ),
             ],
           ),
-          // ongoing here
           Positioned(
             right: 26,
             bottom: 36,
@@ -127,7 +127,10 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
               onTap: () {
                 // Navigator.push(
                 //   context,
-                //   MaterialPageRoute(builder: (context) => CartPage()),
+                //   MaterialPageRoute(builder: (context) => FoodCartPage(
+                //     restaurantId: grestaurantId,
+                //     counterFromOrder: 0,
+                //   )), 
                 // );
               },
               child: Container(

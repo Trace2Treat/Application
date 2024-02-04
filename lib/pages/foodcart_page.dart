@@ -23,27 +23,18 @@ class _FoodCartPageState extends State<FoodCartPage> {
   late int counter;
   late int totalPoin;
 
+  int calculateTotalPoin(int quantity, String price) {
+    int numericPrice = int.tryParse(price) ?? 0;
+    
+    return quantity * numericPrice;
+  }
+
+
   @override
   void initState() {
     super.initState();
     counter = widget.counterFromOrder;
     totalPoin = 100 * counter;
-  }
-
-  void incrementCounter() {
-    setState(() {
-      counter++;
-      totalPoin = 100 * counter;
-    });
-  }
-
-  void decrementCounter() {
-    if (counter > 1) {
-      setState(() {
-        counter--;
-        totalPoin = 100 * counter;
-      });
-    }
   }
 
   @override
@@ -163,7 +154,12 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                   IconButton(
                                                     icon: const Icon(Icons.remove),
                                                     onPressed: () {
-                                                      // Implement decrement logic
+                                                      setState(() {
+                                                        if (item['qty'] > 1) {
+                                                          item['qty']--;
+                                                          item['totalPoin'] = calculateTotalPoin(item['qty'], item['price']);
+                                                        }
+                                                      });
                                                     },
                                                   ),
                                                   const SizedBox(width: 8),
@@ -172,13 +168,16 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                   IconButton(
                                                     icon: const Icon(Icons.add),
                                                     onPressed: () {
-                                                      // Implement increment logic
+                                                      setState(() {
+                                                        item['qty']++;
+                                                        item['totalPoin'] = calculateTotalPoin(item['qty'], item['price']);
+                                                      });
                                                     },
                                                   ),
                                                 ],
                                               ),
                                               Text(
-                                                'Total Koin: ${item['price']}',
+                                                'Total Koin: ${item['totalPoin']}',
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,

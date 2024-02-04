@@ -123,6 +123,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                       "thumb": widget.foodImage,
                       "name": widget.foodName,
                       "price": widget.formattedPrice,
+                      "totalPoin": int.parse(widget.formattedPrice) * counter
                     };
 
                     cartProvider.addToCart(foodData);
