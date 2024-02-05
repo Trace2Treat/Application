@@ -88,14 +88,17 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 10),
-                  Text(widget.foodDescription),
-                  const SizedBox(width: 10),
-                ],
-              )
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    widget.foodDescription,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.fade,
+                    maxLines: null,
+                  ),
+                ),
+              ),
             ],
           ),
           Positioned(

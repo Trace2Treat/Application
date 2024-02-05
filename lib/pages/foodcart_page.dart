@@ -142,6 +142,8 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                 finalTotalPoin += int.tryParse(item['totalPoin'].toString()) ?? 0;
                                 totalPoin = finalTotalPoin;
 
+                                List<Map<String, dynamic>> formattedItems = cartProvider.formatItemsForSending();
+
                                 return Row(
                                   children: [
                                     ClipRRect(
@@ -179,8 +181,13 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                           item['qty']--;
                                                           item['totalPoin'] = calculateTotalPoin(item['qty'], item['price']);
                                                           updateTotalPoin();
+                                                        } else {
+                                                          cartProvider.items.remove(item);
+                                                          updateTotalPoin();
                                                         }
                                                       });
+                                                      print('List panjang: ${cartProvider.items}');
+                                                      print('List pengiriman ke API: $formattedItems');
                                                     },
                                                   ),
                                                   const SizedBox(width: 8),

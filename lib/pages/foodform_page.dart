@@ -147,7 +147,7 @@ class _FoodFormPageState extends State<FoodFormPage> {
                   borderRadius: BorderRadius.circular(26),
                   borderSide: BorderSide.none,
                 ),
-                hintText: 'Harga menu...',
+                hintText: 'Harga menu (rupiah)...',
               ),
             ),
             const SizedBox(height: 10),
@@ -235,7 +235,7 @@ class _FoodFormPageState extends State<FoodFormPage> {
                     });
 
                     try {
-                      await controller.createFood(name, description, price.toString(), stock.toString(), attachment);
+                      await controller.createFood(name, description, (price/100).toString(), stock.toString(), attachment);
                     
                         AnimatedSnackBar.rectangle(
                           'Sukses',

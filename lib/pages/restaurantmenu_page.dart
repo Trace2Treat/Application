@@ -38,7 +38,7 @@ class _RestoMenuPageState extends State<RestoMenuPage> {
             return ListView.builder(
               itemCount: foodList.length,
               itemBuilder: (context, index) {
-                double price = (double.parse(foodList[index]['price'] ?? 0)) / 100;
+                double price = (double.parse(foodList[index]['price'] ?? 0));
                 String formattedPrice = price.toStringAsFixed(0);
 
                 return Column(
