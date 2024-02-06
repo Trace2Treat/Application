@@ -29,9 +29,8 @@ class TransactionService {
             'total': transactionData['total'],
             'note': transactionData['note'],
             'transaction_date': transactionData['transaction_date'],
-            'userid': transactionData['userid'],
-            'driver_id': transactionData['driver_id'],
-            'orders_id': transactionData['orders_id'],
+            'userid': transactionData['user_id'],
+            'restaurant_id': transactionData['restaurant_id'],
             'created_at': transactionData['created_at'],
             'updated_at': transactionData['updated_at'],
           };
