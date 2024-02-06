@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
-import 'home_page.dart';
 import '../themes/app_colors.dart';
-import '../themes/empty_data.dart';
 import '../services/transaction_service.dart';
 import '../services/restaurant_service.dart';
-import '../utils/session_manager.dart';
 
 class TrackOrderPage extends StatefulWidget {
   const TrackOrderPage({Key? key}) : super(key: key);
@@ -16,14 +13,67 @@ class TrackOrderPage extends StatefulWidget {
 
 class _TrackOrderPageState extends State<TrackOrderPage> {
   final TransactionService controller = TransactionService();
+  List<Map<String, dynamic>> transactions = [];
+  List<Map<String, dynamic>> restaurant = [];
+
+  int restaurantId = 0;
 
   String formatDateTime(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
-
     String formattedDate = "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year} "
         "[${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}]";
-
     return formattedDate;
+  }
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      await fetchTransactionData();
+      await fetchRestaurantData();
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> fetchTransactionData() async {
+    try {      
+      transactions = await controller.getTransaction();
+      if (mounted) {
+        setState(() {
+          transactions = transactions;
+          restaurantId = transactions[0]['restaurant_id'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching transaction data: $e');
+    }
+  }
+
+  Future<void> fetchRestaurantData() async {
+    try {
+      print('resto id $restaurantId');
+      restaurant = await RestaurantService().getRestaurant(restaurantId);
+      if (mounted) {
+        setState(() {
+          restaurant = restaurant;
+        });
+      }
+    } catch (e) {
+      print('Error fetching restaurant data: $e');
+    }
   }
 
   @override
@@ -33,7 +83,9 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
         title: Text('Track Order'),
         centerTitle: true,
       ),
-      body: DraggableScrollableSheet(
+      body: isLoading
+        ? Center(child: CircularProgressIndicator())
+        : DraggableScrollableSheet(
           builder: (context, scrollController) {
             return Container(
               decoration: BoxDecoration(
@@ -63,31 +115,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  FutureBuilder<List<Map<String, dynamic>>>(
-                    future: controller.getTransaction(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return const EmptyData();
-                      } else if (snapshot.data == null) {
-                        return const EmptyData();
-                      } else {
-                        List<Map<String, dynamic>> transaction = snapshot.data!;
-
-                        return FutureBuilder<List<Map<String, dynamic>>>(
-                          future: RestaurantService().getRestaurant(transaction[0]['restaurant_id']),
-                          builder: (context, restaurantSnapshot) {
-                            if (restaurantSnapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
-                            } else if (restaurantSnapshot.hasError) {
-                              return const EmptyData();
-                            } else if (restaurantSnapshot.data == null) {
-                              return const EmptyData();
-                            } else {
-                              List<Map<String, dynamic>> restaurant = restaurantSnapshot.data!;
-
-                              return Row(
+                  Row(
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
@@ -109,14 +137,14 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                                         ),
                                       ),
                                       Text(
-                                        'Dipesan pada ${formatDateTime(transaction[0]['created_at'])}',
+                                        'Dipesan pada ${formatDateTime(transactions[0]['created_at'])}',
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey,
                                         ),
                                       ),
                                       Text(
-                                        transaction[0]['transaction_code'],
+                                        transactions[0]['transaction_code'],
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey,
@@ -125,13 +153,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                                     ],
                                   )
                                 ],
-                              );
-                            }
-                          },
-                        );
-                      }
-                    },
-                  ),
+                              ),
                   SizedBox(height: 50),
                   Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -260,8 +282,9 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Restaurant Name'), // restaurant name
+                          Text(restaurant[0]['name']),
                           Text('Admin'),
+                          //Text(transactions[0]['transaction_code'])
                         ],
                       ),
                       Spacer(),
