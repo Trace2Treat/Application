@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'foodorderqr_page.dart';
 import '../themes/app_colors.dart';
 import '../services/transaction_service.dart';
 import '../services/restaurant_service.dart';
@@ -269,7 +270,20 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
+                  TextButton(
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const FoodOrderQrPage()), 
+                      );
+                    },
+                    child: Text(
+                      'Bayar',
+                      style: const TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                    ),
+                  ),   
+                  SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

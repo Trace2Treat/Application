@@ -74,7 +74,7 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
                                   Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
                                   Text('Tipe sampah: ${trashList[index]['trash_type']}'),
                                   Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
-                                  Text('Status: ${trashList[index]['status']}')
+                                  Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black))
                                 ],
                               ),
                               Spacer(),
