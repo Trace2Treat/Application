@@ -233,7 +233,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         iconData: Icons.done,
                       ),
                       width: 20,
-                      color: transactions[0]['transaction_code'] == 'success' ? AppColors.secondary : Colors.grey,
+                      color: transactions[0]['status'] == 'success' ? AppColors.secondary : Colors.grey,
                       indicatorXY: 0.3,
                     ),
                     endChild: Container(
@@ -241,7 +241,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                       child: Text(
                         'Koin berhasil ditukar !', 
                         style: TextStyle(
-                          color: transactions[0]['transaction_code'] == 'success' ? AppColors.secondary : Colors.grey,
+                          color: transactions[0]['status'] == 'success' ? AppColors.secondary : Colors.grey,
                           fontSize: 14
                         ),
                       ),
