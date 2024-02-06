@@ -57,21 +57,11 @@ class TransactionService {
     }
   }
 
-  Future<void> payTransaction(String code, String status, String total, String userid, String foodid, String driverid) async {
+  Future<void> payTransaction(String code) async {
     try {
-      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/purchase-food');
+      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/pay/$code');
 
-      final response = await http.post(
-        url,
-        body: {
-          'transaction_code': code,
-          'status': status,
-          'total': total,
-          'user_id': userid,
-          'food_id': foodid,
-          'driver_id': driverid
-        },
-      );
+      final response = await http.post(url);
 
       print(response.body);
 

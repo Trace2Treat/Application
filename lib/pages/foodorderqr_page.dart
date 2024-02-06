@@ -3,6 +3,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'foodordersuccess_page.dart';
 import 'home_page.dart';
 import '../themes/app_colors.dart';
+import '../services/transaction_service.dart';
 
 class FoodOrderQrPage extends StatefulWidget {
   const FoodOrderQrPage({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class FoodOrderQrPage extends StatefulWidget {
 }
 
 class _FoodOrderQrPageState extends State<FoodOrderQrPage> {
+  final TransactionService controller = TransactionService();
+
   Future<void> _scanBarcode() async {
     String barcodeResult = await FlutterBarcodeScanner.scanBarcode(
       '#FF0000',
@@ -20,13 +23,20 @@ class _FoodOrderQrPageState extends State<FoodOrderQrPage> {
       ScanMode.BARCODE,
     );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            OrderSuccessPage(),
-      ),
-    );
+    if (barcodeResult.isNotEmpty) {
+      try {
+        await controller.payTransaction(barcodeResult);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderSuccessPage(),
+          ),
+        );
+      } catch (error) {
+        print('Payment failed: $error');
+      }
+    }
   }
 
   @override
