@@ -146,7 +146,6 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                       context,
                       MaterialPageRoute(builder: (context) => FoodCartPage(
                         restaurantId: widget.restaurantId,
-                        counterFromOrder: counter,
                       )), 
                     );
                   },

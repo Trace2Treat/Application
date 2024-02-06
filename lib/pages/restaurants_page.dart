@@ -149,8 +149,9 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
                                   IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        grestaurantAddress = restaurantList[index]['address'];
+                                        grestaurantId = restaurantList[index]['id'];
                                         grestaurantName = restaurantList[index]['name'];
+                                        grestaurantAddress = restaurantList[index]['address'];
                                         grestaurantPhone = restaurantList[index]['phone'];
                                       });
                                       Navigator.push(

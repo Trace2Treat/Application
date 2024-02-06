@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:trace2treat/pages/foodcart_page.dart';
+import 'package:trace2treat/utils/globals.dart';
 import 'restaurants_page.dart';
 import 'exchangedetail_page.dart';
 import 'exchangelist_page.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
 import '../utils/session_manager.dart';
+import '../utils/cart_data.dart';
 import '../services/trash_service.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -35,6 +39,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
+    
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -183,12 +189,21 @@ class _DashboardPageState extends State<DashboardPage> {
                                           right: 0,
                                           child: GestureDetector(
                                             onTap: (){
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => const RestaurantsPage(),
-                                                ),
-                                              );
+                                              if (cartProvider.items.isEmpty) {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => const RestaurantsPage(),
+                                                  ),
+                                                );
+                                              } else {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => FoodCartPage(restaurantId: grestaurantId),
+                                                  ),
+                                                );
+                                              }
                                             },
                                             child: SizedBox(
                                             height: 40,
