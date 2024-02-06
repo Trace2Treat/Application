@@ -187,30 +187,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         iconData: Icons.done,
                       ),
                       width: 20,
-                      color: transactions[0]['transaction_code'] == 'Pending' ? AppColors.secondary : Colors.grey,
-                      indicatorXY: 0.3,
-                    ),
-                    endChild: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Order telah diterima oleh Restoran',
-                        style: TextStyle(
-                          color: transactions[0]['transaction_code'] == 'Pending' ? AppColors.secondary : Colors.grey,
-                          fontSize: 14
-                        ),
-                      ),
-                    ),
-                  ),
-                  TimelineTile(
-                    alignment: TimelineAlign.start,
-                    lineXY: 0.3,
-                    indicatorStyle: IndicatorStyle(
-                      iconStyle: IconStyle(
-                        color: Colors.white,
-                        iconData: Icons.done,
-                      ),
-                      width: 20,
-                      color: transactions[0]['transaction_code'] == 'Preparing' ? AppColors.secondary : Colors.grey,
+                      color: (transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
                       indicatorXY: 0.3,
                     ),
                     endChild: Container(
@@ -218,7 +195,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                       child: Text(
                         'Restoran sedang menyiapkan pesanan',
                         style: TextStyle(
-                          color: transactions[0]['transaction_code'] == 'Preparing' ? AppColors.secondary : Colors.grey,
+                          color: (transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
                           fontSize: 14
                         ),
                       ),
@@ -233,7 +210,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         iconData: Icons.done,
                       ),
                       width: 20,
-                      color: transactions[0]['transaction_code'] == 'Prepared' ? AppColors.secondary : Colors.grey,
+                      color: (transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
                       indicatorXY: 0.3,
                     ),
                     endChild: Container(
@@ -241,7 +218,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                       child: Text(
                         'Pesanan Anda telah jadi !', 
                         style: TextStyle(
-                          color: transactions[0]['transaction_code'] == 'Prepared' ? AppColors.secondary : Colors.grey,
+                          color: (transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
                           fontSize: 14
                         ),
                       ),
@@ -256,7 +233,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         iconData: Icons.done,
                       ),
                       width: 20,
-                      color: transactions[0]['transaction_code'] == 'Success' ? AppColors.secondary : Colors.grey,
+                      color: transactions[0]['transaction_code'] == 'success' ? AppColors.secondary : Colors.grey,
                       indicatorXY: 0.3,
                     ),
                     endChild: Container(
@@ -264,14 +241,14 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                       child: Text(
                         'Koin berhasil ditukar !', 
                         style: TextStyle(
-                          color: transactions[0]['transaction_code'] == 'Success' ? AppColors.secondary : Colors.grey,
+                          color: transactions[0]['transaction_code'] == 'success' ? AppColors.secondary : Colors.grey,
                           fontSize: 14
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 30),
-                  TextButton(
+                  if (transactions[0]['status'] == 'prepared') SizedBox(height: 30),
+                  if (transactions[0]['status'] == 'prepared') TextButton(
                     onPressed: () async {
                       Navigator.push(
                         context,

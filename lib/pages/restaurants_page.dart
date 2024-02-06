@@ -3,9 +3,11 @@ import 'foodtrackorder_page.dart';
 import 'restaurantmenu_page.dart';
 import 'home_page.dart';
 import '../services/restaurant_service.dart';
+import '../services/transaction_service.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
 import '../utils/globals.dart';
+import '../utils/session_manager.dart';
 
 class RestaurantsPage extends StatefulWidget {
   const RestaurantsPage({Key? key}) : super(key: key);
@@ -16,6 +18,61 @@ class RestaurantsPage extends StatefulWidget {
 
 class _RestaurantsPageState extends State<RestaurantsPage> {
   final RestaurantService controller = RestaurantService();
+  final TransactionService controllerTransaction = TransactionService();
+  List<Map<String, dynamic>> transactions = [];
+  Map<String, dynamic> restaurant = {};
+
+  int restaurantId = 0;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      await fetchTransactionData();
+      await fetchRestaurantData();
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> fetchTransactionData() async {
+    try {      
+      transactions = await controllerTransaction.getTransaction();
+      if (mounted) {
+        setState(() {
+          transactions = transactions;
+          restaurantId = transactions[0]['restaurant_id'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching transaction data: $e');
+    }
+  }
+
+  Future fetchRestaurantData() async {
+    print(transactions[0]['items']);
+    final String accessToken = SessionManager().getAccess() ?? '';
+
+    try {
+      final restaurantService = RestaurantService();
+
+      restaurant = await restaurantService.fetchRestaurantData(restaurantId, accessToken);
+
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,10 +182,14 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
             bottom: 36,
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TrackOrderPage()), 
-                );
+                if (transactions[0]['items'].isNotEmpty) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TrackOrderPage()), 
+                  );
+                } else {
+                  //history page
+                }
               },
               child: Container(
                 padding: EdgeInsets.all(10),
