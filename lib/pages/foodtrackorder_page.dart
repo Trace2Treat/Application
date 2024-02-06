@@ -1,13 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:timeline_tile/timeline_tile.dart';
 import '../themes/app_colors.dart';
 import '../services/transaction_service.dart';
 import '../services/restaurant_service.dart';
-
 import '../utils/session_manager.dart';
-import '../services/api_config.dart';
 
 class TrackOrderPage extends StatefulWidget {
   const TrackOrderPage({Key? key}) : super(key: key);
@@ -68,41 +64,16 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
   }
 
   Future fetchRestaurantData() async {
+    print(transactions[0]['items']);
     final String accessToken = SessionManager().getAccess() ?? '';
 
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/restaurant?id=$restaurantId');
-
     try {
-      final response = await http.get(
-        baseUrl,
-        headers: {'Authorization': 'Bearer $accessToken'},
-      );
+      final restaurantService = RestaurantService();
 
-      if (response.statusCode == 200) {
-        final restaurantDataList = json.decode(response.body)['data'];
-        restaurant = restaurantDataList;
+      restaurant = await restaurantService.fetchRestaurantData(restaurantId, accessToken);
 
-        return List<Map<String, dynamic>>.from(restaurantDataList.map((restaurantData) {
-          return {
-            'id': restaurantData['id'],
-            'name': restaurantData['name'],
-            'description': restaurantData['description'],
-            'address': restaurantData['address'],
-            'latitude': restaurantData['latitude'],
-            'longitude': restaurantData['longitude'],
-            'phone': restaurantData['phone'],
-            'logo': restaurantData['logo'],
-          };
-        }));
-      } else {
-        print('Failed to get restaurant - Status Code: ${response.statusCode}');
-        print('Response Body: ${response.body}');
-        throw Exception('Failed to get restaurant');
-      }
     } catch (e) {
-      print('Exception: $e');
-      print('aksessnya $accessToken');
-      throw Exception('Failed to get restaurant');
+      print('Error fetching data: $e');
     }
   }
 
@@ -161,7 +132,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        restaurant['name'], // error
+                                        restaurant['name'],
                                         style: TextStyle(
                                           fontSize: 18,
                                         ),
@@ -183,29 +154,29 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                                     ],
                                   )
                                 ],
-                              ),
-                  SizedBox(height: 50),
-                  Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '20 Min',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          Text(
-                            'Estimasi',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey
-                            ),
-                          ),
-                        ],
                   ),
-                  SizedBox(height: 50),
-                  // tambahkan list pesanan detail disini
+                  SizedBox(height: 20),
+                  // Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         Text(
+                  //           '20 Min',
+                  //           style: TextStyle(
+                  //             fontSize: 30,
+                  //             fontWeight: FontWeight.bold
+                  //           ),
+                  //         ),
+                  //         Text(
+                  //           'Estimasi',
+                  //           style: TextStyle(
+                  //             fontSize: 14,
+                  //             color: Colors.grey
+                  //           ),
+                  //         ),
+                  //       ],
+                  // ),
+                  buildFoodItemsList(transactions[0]['items']),
+                  SizedBox(height: 20),
                   TimelineTile(
                     alignment: TimelineAlign.start,
                     lineXY: 0.3,
@@ -215,38 +186,15 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         iconData: Icons.done,
                       ),
                       width: 20,
-                      color: AppColors.secondary,
+                      color: transactions[0]['transaction_code'] == 'Pending' ? AppColors.secondary : Colors.grey,
                       indicatorXY: 0.3,
                     ),
                     endChild: Container(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'Order telah diterima oleh Restoran', // default jika status pending
+                        'Order telah diterima oleh Restoran',
                         style: TextStyle(
-                          color: AppColors.secondary,
-                          fontSize: 14
-                        ),
-                      ),
-                    ),
-                  ),
-                  TimelineTile(
-                    alignment: TimelineAlign.start,
-                    lineXY: 0.3,
-                    indicatorStyle: IndicatorStyle(
-                      iconStyle: IconStyle(
-                        color: Colors.white,
-                        iconData: Icons.circle_outlined,
-                      ),
-                      width: 20,
-                      color: AppColors.secondary,
-                      indicatorXY: 0.3,
-                    ),
-                    endChild: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Restoran sedang menyiapkan pesanan', // jika status=preparing maka warna menjadi secondary
-                        style: TextStyle(
-                          color: Colors.grey,
+                          color: transactions[0]['transaction_code'] == 'Pending' ? AppColors.secondary : Colors.grey,
                           fontSize: 14
                         ),
                       ),
@@ -261,15 +209,15 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         iconData: Icons.done,
                       ),
                       width: 20,
-                      color: Colors.grey,
+                      color: transactions[0]['transaction_code'] == 'Preparing' ? AppColors.secondary : Colors.grey,
                       indicatorXY: 0.3,
                     ),
                     endChild: Container(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'Pesanan Anda telah jadi !', // jika status prepared  maka AppColors.secondary
+                        'Restoran sedang menyiapkan pesanan',
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: transactions[0]['transaction_code'] == 'Preparing' ? AppColors.secondary : Colors.grey,
                           fontSize: 14
                         ),
                       ),
@@ -284,15 +232,38 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         iconData: Icons.done,
                       ),
                       width: 20,
-                      color: Colors.grey,
+                      color: transactions[0]['transaction_code'] == 'Prepared' ? AppColors.secondary : Colors.grey,
                       indicatorXY: 0.3,
                     ),
                     endChild: Container(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'Koin berhasil ditukar !', // jika status success  maka AppColors.secondary
+                        'Pesanan Anda telah jadi !', 
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: transactions[0]['transaction_code'] == 'Prepared' ? AppColors.secondary : Colors.grey,
+                          fontSize: 14
+                        ),
+                      ),
+                    ),
+                  ),
+                  TimelineTile(
+                    alignment: TimelineAlign.start,
+                    lineXY: 0.3,
+                    indicatorStyle: IndicatorStyle(
+                      iconStyle: IconStyle(
+                        color: Colors.white,
+                        iconData: Icons.done,
+                      ),
+                      width: 20,
+                      color: transactions[0]['transaction_code'] == 'Success' ? AppColors.secondary : Colors.grey,
+                      indicatorXY: 0.3,
+                    ),
+                    endChild: Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Koin berhasil ditukar !', 
+                        style: TextStyle(
+                          color: transactions[0]['transaction_code'] == 'Success' ? AppColors.secondary : Colors.grey,
                           fontSize: 14
                         ),
                       ),
@@ -314,7 +285,6 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                         children: [
                           Text(restaurant['name']),
                           Text('Admin'),
-                          //Text(transactions[0]['transaction_code'])
                         ],
                       ),
                       Spacer(),
@@ -338,6 +308,32 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
           );
         },
       ),
+    );
+  }
+
+  Widget buildFoodItemsList(List<Map<String, dynamic>> items) {
+    return Container(
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.grey, 
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: items.map((item) {
+          return ListTile(
+            leading: Image.network(
+              item['food']['thumb'],
+              width: 40,
+              height: 40,
+              fit: BoxFit.cover,
+            ),
+            title: Text(item['food']['name']),
+            subtitle: Text('Jumlah: ${item['qty']}'),
+          );
+        }).toList(),
+      )
     );
   }
 }

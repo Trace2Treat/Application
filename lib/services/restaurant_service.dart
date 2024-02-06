@@ -44,10 +44,8 @@ class RestaurantService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getRestaurant(int id) async {
-    final String accessToken = SessionManager().getAccess() ?? '';
-
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/restaurant?user_id=$id');
+  Future<Map<String, dynamic>> fetchRestaurantData(int restaurantId, String accessToken) async {
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/restaurant?id=$restaurantId');
 
     try {
       final response = await http.get(
@@ -56,20 +54,18 @@ class RestaurantService {
       );
 
       if (response.statusCode == 200) {
-        final restaurantDataList = json.decode(response.body)['data'];
+        final restaurantData = json.decode(response.body)['data'];
 
-        return List<Map<String, dynamic>>.from(restaurantDataList.map((restaurantData) {
-          return {
-            'id': restaurantData['id'],
-            'name': restaurantData['name'],
-            'description': restaurantData['description'],
-            'address': restaurantData['address'],
-            'latitude': restaurantData['latitude'],
-            'longitude': restaurantData['longitude'],
-            'phone': restaurantData['phone'],
-            'logo': restaurantData['logo'],
-          };
-        }));
+        return {
+          'id': restaurantData['id'],
+          'name': restaurantData['name'],
+          'description': restaurantData['description'],
+          'address': restaurantData['address'],
+          'latitude': restaurantData['latitude'],
+          'longitude': restaurantData['longitude'],
+          'phone': restaurantData['phone'],
+          'logo': restaurantData['logo'],
+        };
       } else {
         print('Failed to get restaurant - Status Code: ${response.statusCode}');
         print('Response Body: ${response.body}');
@@ -77,48 +73,10 @@ class RestaurantService {
       }
     } catch (e) {
       print('Exception: $e');
-      print('aksessnya $accessToken');
+      print('Access token: $accessToken');
       throw Exception('Failed to get restaurant');
     }
   }
-
-  // Future<Map<String, dynamic>> getRestaurant(int id) async {
-  //   final String accessToken = SessionManager().getAccess() ?? '';
-
-  //   final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/restaurant?id=$id');
-
-  //   try {
-  //     final response = await http.get(
-  //       baseUrl,
-  //       headers: {'Authorization': 'Bearer $accessToken'},
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final restaurantDataList = json.decode(response.body)['data'];
-
-  //       return Map<String, dynamic>.from(restaurantDataList.map((restaurantData) {
-  //         return {
-  //           'id': restaurantData['id'],
-  //           'name': restaurantData['name'],
-  //           'description': restaurantData['description'],
-  //           'address': restaurantData['address'],
-  //           'latitude': restaurantData['latitude'],
-  //           'longitude': restaurantData['longitude'],
-  //           'phone': restaurantData['phone'],
-  //           'logo': restaurantData['logo'],
-  //         };
-  //       }));
-  //     } else {
-  //       print('Failed to get restaurant list - Status Code: ${response.statusCode}');
-  //       print('Response Body: ${response.body}');
-  //       throw Exception('Failed to get restaurant list');
-  //     }
-  //   } catch (e) {
-  //     print('Exception: $e');
-  //     print('aksessnya $accessToken');
-  //     throw Exception('Failed to get restaurant list');
-  //   }
-  // }
 
   Future<List<Map<String, dynamic>>> getFoodEachRestaurant(String id) async {
     final String accessToken = SessionManager().getAccess() ?? '';

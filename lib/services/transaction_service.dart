@@ -33,6 +33,16 @@ class TransactionService {
             'restaurant_id': transactionData['restaurant_id'],
             'created_at': transactionData['created_at'],
             'updated_at': transactionData['updated_at'],
+            'items': List<Map<String, dynamic>>.from(
+              transactionData['items'].map((item) => {
+                'qty': item['qty'],
+                'food': {
+                  'name': item['food']['name'],
+                  'thumb': item['food']['thumb'],
+                },
+              },
+              ),
+            ),
           };
         }));
       } else {
