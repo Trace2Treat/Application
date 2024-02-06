@@ -1,8 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:timeline_tile/timeline_tile.dart';
 import '../themes/app_colors.dart';
 import '../services/transaction_service.dart';
 import '../services/restaurant_service.dart';
+
+import '../utils/session_manager.dart';
+import '../services/api_config.dart';
 
 class TrackOrderPage extends StatefulWidget {
   const TrackOrderPage({Key? key}) : super(key: key);
@@ -14,7 +19,7 @@ class TrackOrderPage extends StatefulWidget {
 class _TrackOrderPageState extends State<TrackOrderPage> {
   final TransactionService controller = TransactionService();
   List<Map<String, dynamic>> transactions = [];
-  List<Map<String, dynamic>> restaurant = [];
+  Map<String, dynamic> restaurant = {};
 
   int restaurantId = 0;
 
@@ -62,17 +67,42 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
     }
   }
 
-  Future<void> fetchRestaurantData() async {
+  Future fetchRestaurantData() async {
+    final String accessToken = SessionManager().getAccess() ?? '';
+
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/restaurant?id=$restaurantId');
+
     try {
-      print('resto id $restaurantId');
-      restaurant = await RestaurantService().getRestaurant(restaurantId);
-      if (mounted) {
-        setState(() {
-          restaurant = restaurant;
-        });
+      final response = await http.get(
+        baseUrl,
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+
+      if (response.statusCode == 200) {
+        final restaurantDataList = json.decode(response.body)['data'];
+        restaurant = restaurantDataList;
+
+        return List<Map<String, dynamic>>.from(restaurantDataList.map((restaurantData) {
+          return {
+            'id': restaurantData['id'],
+            'name': restaurantData['name'],
+            'description': restaurantData['description'],
+            'address': restaurantData['address'],
+            'latitude': restaurantData['latitude'],
+            'longitude': restaurantData['longitude'],
+            'phone': restaurantData['phone'],
+            'logo': restaurantData['logo'],
+          };
+        }));
+      } else {
+        print('Failed to get restaurant - Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        throw Exception('Failed to get restaurant');
       }
     } catch (e) {
-      print('Error fetching restaurant data: $e');
+      print('Exception: $e');
+      print('aksessnya $accessToken');
+      throw Exception('Failed to get restaurant');
     }
   }
 
@@ -120,7 +150,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.network(
-                                      restaurant[0]['logo'],
+                                      restaurant['logo'],
                                       width: 80,
                                       height: 80,
                                       fit: BoxFit.cover,
@@ -131,7 +161,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        restaurant[0]['name'],
+                                        restaurant['name'], // error
                                         style: TextStyle(
                                           fontSize: 18,
                                         ),
@@ -282,7 +312,7 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(restaurant[0]['name']),
+                          Text(restaurant['name']),
                           Text('Admin'),
                           //Text(transactions[0]['transaction_code'])
                         ],
