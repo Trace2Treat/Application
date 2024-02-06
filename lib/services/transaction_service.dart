@@ -6,34 +6,44 @@ import '../utils/session_manager.dart';
 class TransactionService {
   bool isLoading = false;
 
-  Future<Map<String, dynamic>> getTransaction() async {
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction');
-    final accessToken = SessionManager().getAccess();
+  Future<List<Map<String, dynamic>>> getTransaction() async {
+    final String accessToken = SessionManager().getAccess() ?? '';
+    final int userid = SessionManager().getUserId() ?? 0;
 
-    final response = await http.get(
-      baseUrl,
-      headers: {'Authorization': 'Bearer $accessToken'},
-    );
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?user_id=$userid');
 
-    if (response.statusCode == 200) {
-      final transactionData = json.decode(response.body);
+    try {
+      final response = await http.get(
+        baseUrl,
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
 
-      final filteredData = {
-        'id': transactionData['id'],
-        'transaction_code': transactionData['transaction_code'],
-        'status': transactionData['status'],
-        'total': transactionData['total'],
-        'note': transactionData['note'],
-        'transaction_date': transactionData['transaction_date'],
-        'userid': transactionData['userid'],
-        'driver_id': transactionData['driver_id'],
-        'orders_id': transactionData['orders_id'],
-        'created_at': transactionData['created_at'],
-        'updated_at': transactionData['updated_at'],
-      };
+      if (response.statusCode == 200) {
+        final transactionDataList = json.decode(response.body)['data'];
 
-      return filteredData;
-    } else {
+        return List<Map<String, dynamic>>.from(transactionDataList.map((transactionData) {
+          return {
+            'id': transactionData['id'],
+            'transaction_code': transactionData['transaction_code'],
+            'status': transactionData['status'],
+            'total': transactionData['total'],
+            'note': transactionData['note'],
+            'transaction_date': transactionData['transaction_date'],
+            'userid': transactionData['userid'],
+            'driver_id': transactionData['driver_id'],
+            'orders_id': transactionData['orders_id'],
+            'created_at': transactionData['created_at'],
+            'updated_at': transactionData['updated_at'],
+          };
+        }));
+      } else {
+        print('Failed to get transaction - Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        throw Exception('Failed to get transaction');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      print('aksessnya $accessToken');
       throw Exception('Failed to get transaction');
     }
   }

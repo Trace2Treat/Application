@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'foodtrackorder_page.dart';
 import 'restaurantmenu_page.dart';
 import 'home_page.dart';
-import 'foodcart_page.dart';
 import '../services/restaurant_service.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
@@ -125,13 +125,10 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
             bottom: 36,
             child: GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => FoodCartPage(
-                //     restaurantId: grestaurantId,
-                //     counterFromOrder: 0,
-                //   )), 
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TrackOrderPage()), 
+                );
               },
               child: Container(
                 padding: EdgeInsets.all(10),
