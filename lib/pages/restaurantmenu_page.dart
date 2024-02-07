@@ -22,6 +22,7 @@ class _RestoMenuPageState extends State<RestoMenuPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Daftar Menu'),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: RestaurantService().getFoodEachRestaurant(widget.restaurantId.toString()),

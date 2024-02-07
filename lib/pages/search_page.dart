@@ -93,7 +93,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget buildFoodCard(Map<String, dynamic> food) {
-    double price = (double.parse(food['price'] ?? 0)) / 100;
+    double price = (double.parse(food['price'] ?? 0));
     String formattedPrice = price.toStringAsFixed(0);
 
     return GestureDetector(
@@ -122,10 +122,10 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-              'assets/makanan.png', 
-              // child: Image.network(
-              //   food['thumb'] ?? '-',
+              //child: Image.asset(
+              //'assets/makanan.png', 
+              child: Image.network(
+                food['thumb'] ?? '-',
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 90,
@@ -146,7 +146,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   Text(
-                    'Rp ${food['price'] ?? 0}',
+                    '$formattedPrice koin',
                     style: TextStyle(
                       color: AppColors.primary,
                       fontSize: 10,
@@ -158,13 +158,13 @@ class _SearchPageState extends State<SearchPage> {
                     children: [ 
                       Container(
                         padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.symmetric(vertical: 5),
+                        margin: EdgeInsets.symmetric(vertical: 15),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          'Tersedia',
+                          'Tersedia stok: ${food['stock'] ?? 0}',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,

@@ -63,6 +63,8 @@ class _AdministratorState extends State<Administrator> {
                       return const EmptyData();
                     } else {
                       List<Map<String, dynamic>> trashList = snapshot.data!;
+                      trashList.sort((a, b) => b['id'].compareTo(a['id']));
+                      
                       return ListView.builder(
                         itemCount: trashList.length,
                         itemBuilder: (context, index) {
@@ -217,7 +219,7 @@ class _AdministratorState extends State<Administrator> {
                                                                 
                                                                     AnimatedSnackBar.rectangle(
                                                                       'Sukses',
-                                                                      'Sampah akan dikirim ke Pengepul',
+                                                                      'Anda telah menyetujui !',
                                                                       type: AnimatedSnackBarType.success,
                                                                       brightness: Brightness.light,
                                                                     ).show(
@@ -337,6 +339,8 @@ class _AdministratorState extends State<Administrator> {
                       return const EmptyData();
                     } else {
                       List<Map<String, dynamic>> trashList = snapshot.data!;
+                      trashList.sort((a, b) => b['id'].compareTo(a['id']));
+                      
                       return ListView.builder(
                         itemCount: trashList.length,
                         itemBuilder: (context, index) {

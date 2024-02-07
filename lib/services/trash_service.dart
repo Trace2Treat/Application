@@ -24,6 +24,7 @@ class TrashService {
         return List<Map<String, dynamic>>.from(trashDataList.map((trashData) {
           return {
             'id': trashData['id'],
+            'point': trashData['balance_coin'], // still error
             'user_id': trashData['user_id'],
             'trash_type': trashData['trash_type'],
             'trash_weight': trashData['trash_weight'],
@@ -165,7 +166,7 @@ class TrashService {
             'longitude': trashData['longitude'],
             'status': trashData['status'],
             'driver_id': trashData['driver_id'],
-            'thumb': trashData['thumb'],
+            'proof_payment': trashData['proof_payment'],
             'created_at': trashData['created_at'],
             'updated_at': trashData['updated_at'],
             'date': trashData['date'],

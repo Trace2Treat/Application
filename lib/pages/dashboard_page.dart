@@ -328,6 +328,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return const EmptyData();
         } else {
           List<Map<String, dynamic>> trashList = snapshot.data!;
+          trashList.sort((a, b) => b['id'].compareTo(a['id']));
 
           return ListView.builder(
             shrinkWrap: true,
@@ -352,7 +353,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
                         Text('Tipe sampah: ${trashList[index]['trash_type']}'),
                         Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
-                        Text('Status: ${trashList[index]['status']}')
+                        Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black))
                       ],
                     ),
                     Spacer(),

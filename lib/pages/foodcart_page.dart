@@ -6,6 +6,7 @@ import 'restaurantmenu_page.dart';
 import '../themes/app_colors.dart';
 import '../utils/globals.dart';
 import '../utils/cart_data.dart';
+import '../services/transaction_service.dart';
 
 class FoodCartPage extends StatefulWidget {
   final int restaurantId;
@@ -19,6 +20,8 @@ class FoodCartPage extends StatefulWidget {
 }
 
 class _FoodCartPageState extends State<FoodCartPage> {
+  final CartProvider cartProvider = CartProvider();
+  final TransactionService transactionService = TransactionService();
   late int counter;
   int totalPoin = 0;
 
@@ -245,13 +248,22 @@ class _FoodCartPageState extends State<FoodCartPage> {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const OrderSuccessPage(),
-                  ),
-                );
+              onTap: () async {
+                try {
+                  final purchaseList = cartProvider.formatItemsForSending();
+                  final restoId = widget.restaurantId.toString();
+
+                  await transactionService.purchaseFood(restoId, purchaseList);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderSuccessPage(),
+                    ),
+                  );
+                } catch (error) {
+                  print('Error occurred while purchasing: $error');
+                }
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),

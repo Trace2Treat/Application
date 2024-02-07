@@ -102,21 +102,21 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                   child: Column(
                     children: [
                       GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const ManagementOrderPage()), 
-                                        );
-                              },
-                              child: Container(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                              MaterialPageRoute(builder: (context) => const ManagementOrderPage()), 
+                            );
+                          },
+                          child: Container(
                                 margin: const EdgeInsets.symmetric(horizontal: 10),
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: AppColors.secondary,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(20),
                                   child: Text(
                                     'Lihat Pesanan', 
                                     textAlign: TextAlign.center,
@@ -223,7 +223,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
   }
 
   Widget buildFoodCard(Map<String, dynamic> food) {
-    double price = (double.parse(food['price'] ?? 0)) / 100;
+    double price = (double.parse(food['price'] ?? 0));
     String formattedPrice = price.toStringAsFixed(0);
 
     return GestureDetector(
@@ -276,7 +276,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                     ),
                   ),
                   Text(
-                    'Rp ${food['price'] ?? 0}',
+                    '$formattedPrice koin',
                     style: TextStyle(
                       color: AppColors.primary,
                       fontSize: 10,
@@ -288,13 +288,13 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                     children: [ 
                       Container(
                         padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.symmetric(vertical: 5),
+                        margin: EdgeInsets.symmetric(vertical: 15),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          'Tersedia',
+                          'Tersedia stok: ${food['stock'] ?? 0}',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,

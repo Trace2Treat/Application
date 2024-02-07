@@ -92,6 +92,9 @@ class _FavoritePageState extends State<FavoritePage> {
   }
 
   Widget buildFoodCard(Map<String, dynamic> food) {
+    double price = (double.parse(food['price'] ?? 0));
+    String formattedPrice = price.toStringAsFixed(0);
+
     return GestureDetector(
       onTap: () {
         // food details page 
@@ -105,10 +108,10 @@ class _FavoritePageState extends State<FavoritePage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-              'assets/makanan.png', 
-              // child: Image.network(
-              //   food['thumb'] ?? '-',
+              //child: Image.asset(
+              //'assets/makanan.png', 
+              child: Image.network(
+                food['thumb'] ?? '-',
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 90,
@@ -129,7 +132,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     ),
                   ),
                   Text(
-                    'Rp ${food['price'] ?? 0}',
+                    '$formattedPrice koin',
                     style: TextStyle(
                       color: AppColors.primary,
                       fontSize: 10,
