@@ -288,7 +288,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                     children: [ 
                       Container(
                         padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.symmetric(vertical: 15),
+                        margin: EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(10),

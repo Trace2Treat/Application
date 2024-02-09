@@ -30,6 +30,7 @@ class RestaurantService {
             'longitude': restaurantData['longitude'],
             'phone': restaurantData['phone'],
             'logo': restaurantData['logo'],
+            'owner_name': restaurantData['owner']['name']
           };
         }));
       } else {

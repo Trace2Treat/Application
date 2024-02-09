@@ -346,7 +346,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                     Image.asset('assets/trash.png', height: 24, width: 24),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

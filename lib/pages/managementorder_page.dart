@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bottom_navigation_view/bottom_navigation_view.dart';
 import '../themes/app_colors.dart';
+import '../services/transaction_service.dart';
 
 class ManagementOrderPage extends StatefulWidget {
   const ManagementOrderPage({Key? key}) : super(key: key);
@@ -10,120 +11,100 @@ class ManagementOrderPage extends StatefulWidget {
 }
 
 class _ManagementOrderPageState extends State<ManagementOrderPage> {
-  late final BottomNavigationController _controller;
+  final TransactionService controller = TransactionService();
+  List<Map<String, dynamic>> transactionList = [];
   DateTime? currentBackPressTime;
 
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      List<Map<String, dynamic>> transactions = await controller.getTransactionList();
+      setState(() {
+        transactionList = transactions;
+      });
+    } catch (e) {
+      print('Error fetching transaction list: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    late List<Map<String, String>> items = [
-      {
-        'name': 'Korean Corn Sausage',
-        'price': '100 Koin',
-        'image': 'assets/makanan.png',
-        'id': '#16234'
-      },
-      {
-        'name': 'Burger',
-        'price': '400 Koin',
-        'image': 'assets/makanan.png',
-        'id': '#16234'
-      }
-    ];
-
-    return WillPopScope(
-        onWillPop: () async {
-          DateTime now = DateTime.now();
-          if (currentBackPressTime == null ||
-              now.difference(currentBackPressTime!) >
-                  const Duration(seconds: 2)) {
-            currentBackPressTime = now;
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Press back again to exit the app'),
-              ),
-            );
-            return false;
-          }
-          return true;
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            title: Text('Management Pesanan'),
-            centerTitle: true,
-          ),
-          body: Padding(
-            padding: EdgeInsets.all(20),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pesanan'),
+      ),
+      body: transactionList.isEmpty ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+        : Padding(
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: items.length,
+                    itemCount: transactionList.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
+
+                    Map<String, dynamic> transaction = transactionList[index];
+                    double price = (double.parse(transaction['total'] ?? 0));
+                    String formattedPrice = price.toStringAsFixed(0);
+
+                    return Column(
+                      children: [
                           Row(
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  'assets/makanan.png',
+                                child: Image.network(
+                                  transaction['items'][0]['food']['thumb'],
                                   width: 80,
                                   height: 80,
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              const SizedBox(width: 16),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      items[index]['name']!,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
+                                    Text('#${transaction['transaction_code']}'),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              items[index]['price']!,
-                                              style: TextStyle(
-                                                fontSize: 16,
+                                        Text(
+                                          transaction['userName'],
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Text(
+                                          ' (${transaction['userPhone']})',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        
+                                      ]
+                                    ),
+                                    Text(
+                                      'Total: $formattedPrice',
+                                              style: const TextStyle(
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold,
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),
-                              Text('#16234')
                             ],
                           ),
                           Row(
@@ -131,7 +112,7 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                             children: [
                               GestureDetector(
                                 onTap: (){
-                                  Navigator.pop(context);
+                                  // change status
                                 },
                                 child: SizedBox(
                                 height: 40,
@@ -142,8 +123,7 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                   ),
                                   color: AppColors.primary,
                                   child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         SizedBox(width: 10),
                                         Text(
@@ -165,14 +145,13 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  color: AppColors.secondary,
+                                  color: const Color(0xFFBC5757),
                                   child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         SizedBox(width: 10),
                                         Text(
-                                          'Reject',
+                                          'Tolak',
                                           style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.white,
@@ -184,17 +163,15 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          SizedBox(height: 20),
                         ],
                       );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ));
+                },
+              ),
+            )
+          ]
+        )
+      )
+    );
   }
 }

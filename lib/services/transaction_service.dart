@@ -59,9 +59,9 @@ class TransactionService {
 
   Future<List<Map<String, dynamic>>> getTransactionList() async {
     final String accessToken = SessionManager().getAccess() ?? '';
-    final int userid = SessionManager().getUserId() ?? 0;
+    final int restoid = SessionManager().getRestaurantId() ?? 0;
 
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$userid&status=pending');
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$restoid&status=pending');
 
     try {
       final response = await http.get(
@@ -73,6 +73,8 @@ class TransactionService {
         final transactionDataList = json.decode(response.body)['data'];
 
         return List<Map<String, dynamic>>.from(transactionDataList.map((transactionData) {
+          final user = transactionData['user'];
+          
           return {
             'id': transactionData['id'],
             'transaction_code': transactionData['transaction_code'],
@@ -81,6 +83,8 @@ class TransactionService {
             'note': transactionData['note'],
             'transaction_date': transactionData['transaction_date'],
             'userid': transactionData['user_id'],
+            'userName': user['name'],
+            'userPhone': user['phone'],
             'restaurant_id': transactionData['restaurant_id'],
             'created_at': transactionData['created_at'],
             'updated_at': transactionData['updated_at'],
@@ -110,9 +114,9 @@ class TransactionService {
 
   Future<List<Map<String, dynamic>>> getHistoryList() async {
     final String accessToken = SessionManager().getAccess() ?? '';
-    final int userid = SessionManager().getUserId() ?? 0;
+    final int restoid = SessionManager().getRestaurantId() ?? 0;
 
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$userid&status=success');
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$restoid&status=success');
 
     try {
       final response = await http.get(
