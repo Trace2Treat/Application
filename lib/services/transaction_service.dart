@@ -129,7 +129,7 @@ class TransactionService {
 
         return List<Map<String, dynamic>>.from(transactionDataList.map((transactionData) {
           final user = transactionData['user'];
-          
+
           return {
             'id': transactionData['id'],
             'transaction_code': transactionData['transaction_code'],
@@ -196,25 +196,6 @@ class TransactionService {
     }
   }
 
-  Future<void> payTransaction(String code) async {
-    try {
-      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/pay/$code');
-
-      final response = await http.post(url);
-
-      print(response.body);
-
-      if (response.statusCode == 200) {
-        // success
-      } else {
-        // failed
-      }
-    } catch (error) {
-      print('Error pay request: $error');
-      rethrow;
-    }
-  }
-
   Future<void> transactionUpdateStatus(int id, String status) async {
     final String accessToken = SessionManager().getAccess() ?? '';
 
@@ -238,6 +219,50 @@ class TransactionService {
       }
     } catch (error) {
       print('Error update request: $error');
+      rethrow;
+    }
+  }
+
+  Future<String> getQrCode(String id) async {
+    final String accessToken = SessionManager().getAccess() ?? '';
+
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/generate-qr-code/$id');
+
+    try {
+      final response = await http.get(
+        baseUrl,
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        print('Failed to get transaction - Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+        throw Exception('Failed to get transaction');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      print('aksessnya $accessToken');
+      throw Exception('Failed to get transaction');
+    }
+  }
+
+  Future<void> payTransaction(String code) async {
+    try {
+      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/pay/$code');
+
+      final response = await http.post(url);
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        // success
+      } else {
+        // failed
+      }
+    } catch (error) {
+      print('Error pay request: $error');
       rethrow;
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'managementorder_page.dart';
 import '../themes/app_colors.dart';
+import '../services/transaction_service.dart';
 
 class ManagementDetailPage extends StatefulWidget {
   final Map<String, dynamic> transaction;
@@ -12,6 +13,7 @@ class ManagementDetailPage extends StatefulWidget {
 }
 
 class _ManagementDetailPageState extends State<ManagementDetailPage> {
+  final TransactionService controller = TransactionService();
   late Map<String, dynamic> transaction;
   String formatDateTime(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
@@ -112,55 +114,80 @@ class _ManagementDetailPageState extends State<ManagementDetailPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   GestureDetector(
-                                    onTap: (){
-                                      // change status to preparing
+                                    onTap: () async {
+                                      try {
+                                        await controller.transactionUpdateStatus(transaction['id'], 'preparing');
+                                        
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => ManagementOrderPage()), 
+                                        );
+
+                                      } catch (error) {
+                                        print('Error accepting transaction: $error');
+                                      }
                                     },
                                     child: SizedBox(
-                                    height: 40,
-                                    width: 100,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
+                                      height: 40,
+                                      width: 100,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        color: AppColors.primary,
+                                        child: const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(width: 10),
+                                              Text(
+                                                'Terima',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              SizedBox(width: 10),
+                                            ]),
                                       ),
-                                      color: AppColors.primary,
-                                      child: const Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'Terima',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(width: 10),
-                                          ]),
                                     ),
                                   ),
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                    width: 100,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      try {
+                                        await controller.transactionUpdateStatus(transaction['id'], 'failed');
+                                        
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => ManagementOrderPage()), 
+                                        );
+
+                                      } catch (error) {
+                                        print('Error accepting transaction: $error');
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      height: 40,
+                                      width: 100,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        color: const Color(0xFFBC5757),
+                                        child: const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(width: 10),
+                                              Text(
+                                                'Tolak',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              SizedBox(width: 10),
+                                            ]),
                                       ),
-                                      color: const Color(0xFFBC5757),
-                                      child: const Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'Tolak',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(width: 10),
-                                          ]),
-                                    ),
+                                    )
                                   )
                                 ],
                               ),
@@ -168,8 +195,18 @@ class _ManagementDetailPageState extends State<ManagementDetailPage> {
             Visibility(
               visible: transaction['status'] == 'preparing',
               child: ElevatedButton(
-                onPressed: () {
-                  // change status to prepared
+                onPressed: () async {
+                  try {
+                                        await controller.transactionUpdateStatus(transaction['id'], 'prepared');
+                                        
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => ManagementOrderPage()), 
+                                        );
+
+                                      } catch (error) {
+                                        print('Error accepting transaction: $error');
+                                      }
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero,
@@ -197,7 +234,27 @@ class _ManagementDetailPageState extends State<ManagementDetailPage> {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      // qr code
+                      String qrCodeBody = await controller.getQrCode(transaction['transaction_code']);
+                      print('qr nya $qrCodeBody');
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('QR Pembayaran'),
+                            content: Image.network(qrCodeBody),
+                            //content: Image.memory(base64Decode(qrCodeBody)),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Close'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: const Text(
                       'QR Pembayaran',
