@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:bottom_navigation_view/bottom_navigation_view.dart';
+import 'home_page.dart';
+import 'managementhistory_page.dart';
 import '../themes/app_colors.dart';
+import '../themes/empty_data.dart';
 import '../services/transaction_service.dart';
 
 class ManagementOrderPage extends StatefulWidget {
@@ -41,9 +43,25 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pesanan'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()), 
+            );
+          },
+        ),
+        centerTitle: true,
+        title: const Text('Pesanan'),
       ),
-      body: transactionList.isEmpty ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.white,
+          ),
+          transactionList.isEmpty ? const EmptyData()
+      // body: transactionList.isEmpty ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
         : Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -166,11 +184,36 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                           SizedBox(height: 20),
                         ],
                       );
-                },
-              ),
+                    },
+                  ),
+                ),
+              ]
+            ),
+          ),
+          Positioned(
+            right: 26,
+            bottom: 36,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ManagementHistoryPage()), 
+                  );
+              },
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.history,
+                  color: Colors.white,
+                ),
+              )
             )
-          ]
-        )
+          ),
+        ]
       )
     );
   }
