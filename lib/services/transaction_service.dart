@@ -61,7 +61,7 @@ class TransactionService {
     final String accessToken = SessionManager().getAccess() ?? '';
     final int restoid = SessionManager().getRestaurantId() ?? 0;
 
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$restoid&status=pending');
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$restoid');
 
     try {
       final response = await http.get(
@@ -74,7 +74,7 @@ class TransactionService {
 
         return List<Map<String, dynamic>>.from(transactionDataList.map((transactionData) {
           final user = transactionData['user'];
-          
+
           return {
             'id': transactionData['id'],
             'transaction_code': transactionData['transaction_code'],
@@ -128,6 +128,8 @@ class TransactionService {
         final transactionDataList = json.decode(response.body)['data'];
 
         return List<Map<String, dynamic>>.from(transactionDataList.map((transactionData) {
+          final user = transactionData['user'];
+          
           return {
             'id': transactionData['id'],
             'transaction_code': transactionData['transaction_code'],
@@ -136,6 +138,8 @@ class TransactionService {
             'note': transactionData['note'],
             'transaction_date': transactionData['transaction_date'],
             'userid': transactionData['user_id'],
+            'userName': user['name'],
+            'userPhone': user['phone'],
             'restaurant_id': transactionData['restaurant_id'],
             'created_at': transactionData['created_at'],
             'updated_at': transactionData['updated_at'],
@@ -211,14 +215,16 @@ class TransactionService {
     }
   }
 
-  Future<void> transactionUpdateStatus(String id, String status) async {
+  Future<void> transactionUpdateStatus(int id, String status) async {
+    final String accessToken = SessionManager().getAccess() ?? '';
+
     try {
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/change-status/$id');
 
       final response = await http.post(
         url,
+        headers: {'Authorization': 'Bearer $accessToken'},
         body: {
-          'id': id,
           'status': status
         },
       );

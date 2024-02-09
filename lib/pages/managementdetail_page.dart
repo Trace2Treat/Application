@@ -107,6 +107,65 @@ class _ManagementDetailPageState extends State<ManagementDetailPage> {
             buildFoodItemsList(transaction['items']),
             const SizedBox(height: 10),
             Visibility(
+                              visible: transaction['status'] == 'pending',
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
+                                      // change status to preparing
+                                    },
+                                    child: SizedBox(
+                                    height: 40,
+                                    width: 100,
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      color: AppColors.primary,
+                                      child: const Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(width: 10),
+                                            Text(
+                                              'Terima',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(width: 10),
+                                          ]),
+                                    ),
+                                  ),
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                    width: 100,
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      color: const Color(0xFFBC5757),
+                                      child: const Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(width: 10),
+                                            Text(
+                                              'Tolak',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(width: 10),
+                                          ]),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+            Visibility(
               visible: transaction['status'] == 'preparing',
               child: ElevatedButton(
                 onPressed: () {

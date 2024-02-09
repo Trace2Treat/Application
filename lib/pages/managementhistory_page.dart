@@ -28,7 +28,7 @@ class _ManagementHistoryPageState extends State<ManagementHistoryPage> {
 
   Future<void> fetchData() async {
     try {
-      List<Map<String, dynamic>> transactions = await controller.getTransactionList();
+      List<Map<String, dynamic>> transactions = await controller.getHistoryList();
       setState(() {
         transactionList = transactions;
       });

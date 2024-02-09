@@ -19,6 +19,7 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
   List<Map<String, dynamic>> transactionList = [];
   List<Map<String, dynamic>> filteredList = [];
   DateTime? currentBackPressTime;
+  String selectedStatus = 'All';
 
   @override
   void initState() {
@@ -53,6 +54,71 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
     });
   }
 
+  void filterListByStatus(String status) {
+    String selectedStatusText;
+
+    switch (status) {
+      case 'Semua':
+        selectedStatusText = 'Semua';
+        break;
+      case 'pending':
+        selectedStatusText = 'Order masuk';
+        break;
+      case 'preparing':
+        selectedStatusText = 'Sedang disiapkan';
+        break;
+      case 'prepared':
+        selectedStatusText = 'Pesanan jadi';
+        break;
+      default:
+        selectedStatusText = 'Semua';
+        break;
+    }
+
+    setState(() {
+      selectedStatus = selectedStatusText;
+      filteredList = transactionList
+          .where((transaction) => status == 'Semua' || transaction['status'] == status)
+          .toList();
+    });
+  }
+
+  void showStatusDropdown(BuildContext context) {
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(500, 1000, 0, 0),
+      items: ['Semua', 'pending', 'preparing', 'prepared']
+        .map<PopupMenuEntry<String>>(
+          (String value) => PopupMenuItem<String>(
+            value: value,
+            child: Text(
+              getStatusDropdownText(value),
+            ),
+          ),
+        )
+        .toList(),
+    ).then((value) {
+      if (value != null) {
+        filterListByStatus(value);
+      }
+    });
+  }
+
+  String getStatusDropdownText(String status) {
+    switch (status) {
+      case 'Semua':
+        return 'Semua';
+      case 'pending':
+        return 'Order masuk';
+      case 'preparing':
+        return 'Sedang disiapkan';
+      case 'prepared':
+        return 'Pesanan jadi';
+      default:
+        return 'Semua';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,14 +147,14 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextField(
-                  controller: searchController,
-                  onChanged: (query) {
-                    filterList(query);
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Search customer name...',
-                    prefixIcon: Icon(Icons.search),
-                  ),
+                      controller: searchController,
+                      onChanged: (query) {
+                        filterList(query);
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Search customer name...',
+                        prefixIcon: Icon(Icons.search),
+                      ),
                 ),
                 const SizedBox(height: 16),
                 Expanded(
@@ -164,42 +230,59 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   GestureDetector(
-                                    onTap: (){
-                                      // change status
+                                    onTap: () async {
+                                      try {
+                                        await controller.transactionUpdateStatus(transaction['id'], 'preparing');
+
+                                        fetchData();
+                                      } catch (error) {
+                                        print('Error accepting transaction: $error');
+                                      }
                                     },
                                     child: SizedBox(
-                                    height: 40,
-                                    width: 100,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                      ),
-                                      color: AppColors.primary,
-                                      child: const Row(
+                                      height: 40,
+                                      width: 100,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        color: AppColors.primary,
+                                        child: const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'Terima',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(width: 10),
-                                          ]),
+                                            children: [
+                                              SizedBox(width: 10),
+                                              Text(
+                                                'Terima',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              SizedBox(width: 10),
+                                            ]
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                    width: 100,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                      ),
-                                      color: const Color(0xFFBC5757),
-                                      child: const Row(
+                                  GestureDetector(
+                                    onTap: () async {
+                                      try {
+                                        await controller.transactionUpdateStatus(transaction['id'], 'failed');
+
+                                        fetchData();
+                                      } catch (error) {
+                                        print('Error accepting transaction: $error');
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      height: 40,
+                                      width: 100,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        color: const Color(0xFFBC5757),
+                                        child: const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             SizedBox(width: 10),
@@ -211,9 +294,11 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(width: 10),
-                                          ]),
-                                    ),
-                                  )
+                                          ]
+                                        ),
+                                      ),
+                                    )
+                                  ),
                                 ],
                               ),
                             ),
@@ -230,24 +315,45 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
           Positioned(
             right: 26,
             bottom: 36,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ManagementHistoryPage()), 
-                  );
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    showStatusDropdown(context);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.filter_alt_rounded,
+                      color: Colors.white,
+                    ),
+                  )
                 ),
-                child: Icon(
-                  Icons.history,
-                  color: Colors.white,
-                ),
-              )
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ManagementHistoryPage()), 
+                      );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.history,
+                      color: Colors.white,
+                    ),
+                  )
+                )
+              ],
             )
           ),
         ]
