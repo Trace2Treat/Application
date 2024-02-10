@@ -22,16 +22,22 @@ class TrashService {
         final trashDataList = json.decode(response.body)['data'];
 
         return List<Map<String, dynamic>>.from(trashDataList.map((trashData) {
+          final driverId = trashData['driver_id'] ?? 0;
+          final driverName = (trashData['driver'] != null && trashData['driver']['name'] != null)
+              ? trashData['driver']['name']
+              : 'Pending';
+
           return {
             'id': trashData['id'],
-            'point': trashData['balance_coin'], // still error
+            'point': trashData['point'],
             'user_id': trashData['user_id'],
             'trash_type': trashData['trash_type'],
             'trash_weight': trashData['trash_weight'],
             'latitude': trashData['latitude'],
             'longitude': trashData['longitude'],
             'status': trashData['status'],
-            'driver_id': trashData['driver_id'],
+            'driver_id': driverId,
+            'driver_name': driverName,
             'thumb': trashData['thumb'],
             'created_at': trashData['created_at'],
             'updated_at': trashData['updated_at'],

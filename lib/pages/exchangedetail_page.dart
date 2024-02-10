@@ -6,7 +6,7 @@ class ExchangeDetailPage extends StatefulWidget {
   const ExchangeDetailPage({Key? key, required this.selectedData}) : super(key: key);
 
   @override
-  _ExchangeDetailPageState createState() => _ExchangeDetailPageState();
+  State<ExchangeDetailPage> createState() => _ExchangeDetailPageState();
 }
 
 class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
@@ -20,11 +20,11 @@ class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
             Navigator.pop(context);
           },
         ),
-        title: Text('Detail Penjemputan'),
+        title: const Text('Detail Pengumpulan'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -45,7 +45,7 @@ class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
                   buildDivider(),
                   buildRow('Status', widget.selectedData['status']),
                   buildDivider(),
-                  buildRow('Driver', widget.selectedData['driver_id'].toString() == 'null' ? 'Pending' : widget.selectedData['driver_id'].toString()), 
+                  buildRow('Driver', widget.selectedData['driver_name'].isEmpty ? 'Pending' : widget.selectedData['driver_name']), 
                   buildDivider(),
                   buildRow('Tanggal', widget.selectedData['date']),
                 ],
