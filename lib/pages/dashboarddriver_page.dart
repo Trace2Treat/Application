@@ -187,7 +187,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
       future: trashController.getTrashListForDriver(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: AppColors.primary));
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
         } else if (snapshot.hasError) {
           return const EmptyData();
         } else if (snapshot.data == null) {
@@ -208,7 +208,7 @@ class _DashboardDriverPageState extends State<DashboardDriverPage> {
 
           return ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: trashList.length,
             itemBuilder: (context, index) {
               

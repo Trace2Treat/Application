@@ -121,138 +121,181 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()), 
-            );
-          },
-        ),
-        centerTitle: true,
-        title: const Text('Pesanan'),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()), 
+              );
+            },
           ),
-          transactionList.isEmpty ? const EmptyData()
-        : Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextField(
-                      controller: searchController,
-                      onChanged: (query) {
-                        filterList(query);
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Search customer name...',
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredList.length,
-                    itemBuilder: (context, index) {
+          centerTitle: true,
+          title: const Text('Pesanan'),
+        ),
+        body: Stack(
+          children: [
+            Container(
+              color: Colors.white,
+            ),
+            transactionList.isEmpty ? const EmptyData()
+          : Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextField(
+                        controller: searchController,
+                        onChanged: (query) {
+                          filterList(query);
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Caru...',
+                          prefixIcon: Icon(Icons.search),
+                        ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: filteredList.length,
+                      itemBuilder: (context, index) {
 
-                    Map<String, dynamic> transaction = filteredList[index];
-                    double price = (double.parse(transaction['total'] ?? 0));
-                    String formattedPrice = price.toStringAsFixed(0);
+                      Map<String, dynamic> transaction = filteredList[index];
+                      double price = (double.parse(transaction['total'] ?? 0));
+                      String formattedPrice = price.toStringAsFixed(0);
 
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ManagementDetailPage(transaction: transaction),
-                          ),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                            Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    transaction['items'][0]['food']['thumb'],
-                                    width: 80,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('#${transaction['transaction_code']}'),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            transaction['userName'],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Text(
-                                            ' (${transaction['userPhone']})',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                          
-                                        ]
-                                      ),
-                                      Text(
-                                        'Total: $formattedPrice',
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ManagementDetailPage(transaction: transaction),
                             ),
-                            Visibility(
-                              visible: transaction['status'] == 'pending',
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                          );
+                        },
+                        child: Column(
+                          children: [
+                              Row(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () async {
-                                      try {
-                                        await controller.transactionUpdateStatus(transaction['id'], 'preparing');
-
-                                        fetchData();
-                                      } catch (error) {
-                                        print('Error accepting transaction: $error');
-                                      }
-                                    },
-                                    child: SizedBox(
-                                      height: 40,
-                                      width: 100,
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      transaction['items'][0]['food']['thumb'],
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('#${transaction['transaction_code']}'),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              transaction['userName'],
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Text(
+                                              ' (${transaction['userPhone']})',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            
+                                          ]
                                         ),
-                                        color: AppColors.primary,
-                                        child: const Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                        Text(
+                                          'Total: $formattedPrice',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Visibility(
+                                visible: transaction['status'] == 'pending',
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        try {
+                                          await controller.transactionUpdateStatus(transaction['id'], 'preparing');
+
+                                          fetchData();
+                                        } catch (error) {
+                                          print('Error accepting transaction: $error');
+                                        }
+                                      },
+                                      child: SizedBox(
+                                        height: 40,
+                                        width: 100,
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          color: AppColors.primary,
+                                          child: const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(width: 10),
+                                                Text(
+                                                  'Terima',
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                SizedBox(width: 10),
+                                              ]
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        try {
+                                          await controller.transactionUpdateStatus(transaction['id'], 'failed');
+
+                                          fetchData();
+                                        } catch (error) {
+                                          print('Error accepting transaction: $error');
+                                        }
+                                      },
+                                      child: SizedBox(
+                                        height: 40,
+                                        width: 100,
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          color: const Color(0xFFBC5757),
+                                          child: const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               SizedBox(width: 10),
                                               Text(
-                                                'Terima',
+                                                'Tolak',
                                                 style: TextStyle(
                                                     fontSize: 14,
                                                     color: Colors.white,
@@ -260,103 +303,69 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                               ),
                                               SizedBox(width: 10),
                                             ]
+                                          ),
                                         ),
-                                      ),
+                                      )
                                     ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      try {
-                                        await controller.transactionUpdateStatus(transaction['id'], 'failed');
-
-                                        fetchData();
-                                      } catch (error) {
-                                        print('Error accepting transaction: $error');
-                                      }
-                                    },
-                                    child: SizedBox(
-                                      height: 40,
-                                      width: 100,
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
-                                        ),
-                                        color: const Color(0xFFBC5757),
-                                        child: const Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'Tolak',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(width: 10),
-                                          ]
-                                        ),
-                                      ),
-                                    )
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      );
-                    },
+                              const SizedBox(height: 20),
+                            ],
+                          )
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ]
+                ]
+              ),
             ),
-          ),
-          Positioned(
-            right: 26,
-            bottom: 36,
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showStatusDropdown(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.filter_alt_rounded,
-                      color: Colors.white,
-                    ),
+            Positioned(
+              right: 26,
+              bottom: 36,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showStatusDropdown(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.filter_alt_rounded,
+                        color: Colors.white,
+                      ),
+                    )
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ManagementHistoryPage()), 
+                        );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.history,
+                        color: Colors.white,
+                      ),
+                    )
                   )
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ManagementHistoryPage()), 
-                      );
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.history,
-                      color: Colors.white,
-                    ),
-                  )
-                )
-              ],
-            )
-          ),
-        ]
+                ],
+              )
+            ),
+          ]
+        )
       )
     );
   }

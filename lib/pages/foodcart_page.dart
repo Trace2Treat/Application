@@ -77,7 +77,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
               );
             },
           ),
-          title: Text('Keranjang'),
+          title: const Text('Keranjang'),
           centerTitle: true,
         ),
         body: Column(
@@ -93,21 +93,21 @@ class _FoodCartPageState extends State<FoodCartPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Restoran',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Divider(),
+                          const Divider(),
                           Text(
                             '$grestaurantName ($grestaurantPhone)',
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Text(
                             grestaurantAddress,
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                         ],
                       ),
@@ -119,7 +119,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Pesananmu',
                               style: TextStyle(
                                 fontSize: 16,
@@ -137,7 +137,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                   ),
                                 );
                               },
-                              child: Text('+ Tambah', style: TextStyle(color: AppColors.primary)),
+                              child: const Text('+ Tambah', style: TextStyle(color: AppColors.primary)),
                             ),
                           ],
                         ),
@@ -170,19 +170,19 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                           fit: BoxFit.cover,
                                         ),
                                       ),
-                                      SizedBox(width: 16),
+                                      const SizedBox(width: 16),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               item['name'],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            SizedBox(height: 8),
+                                            const SizedBox(height: 8),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
@@ -222,7 +222,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                 ),
                                                 Text(
                                                   'Total Koin: ${item['totalPoin']}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -233,7 +233,6 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                           ],
                                         ),
                                       ),
-                                      
                                     ],
                                   );
                                 }).toList() 
@@ -281,8 +280,8 @@ class _FoodCartPageState extends State<FoodCartPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Total Koin', style: TextStyle(color: Colors.white)),
-                          SizedBox(height: 5),
+                          const Text('Total Koin', style: TextStyle(color: Colors.white)),
+                          const SizedBox(height: 5),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,7 +290,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                               const SizedBox(width: 5),
                               Text(
                                 '$totalPoin',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -301,7 +300,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                           ),
                         ],
                       ),
-                      Text('Tukar ($counter)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text('Tukar ($counter)', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),

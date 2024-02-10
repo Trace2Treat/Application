@@ -77,12 +77,12 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                 width: double.infinity,
                 color: AppColors.primary,
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(widget.foodName, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      Text(widget.formattedPrice, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text(widget.foodName, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text(widget.formattedPrice, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),

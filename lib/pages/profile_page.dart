@@ -17,7 +17,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('PROFILE', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('PROFILE', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
       backgroundColor: Colors.transparent,

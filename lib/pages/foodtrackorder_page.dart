@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'restaurants_page.dart';
 import 'foodorderqr_page.dart';
 import '../themes/app_colors.dart';
 import '../services/transaction_service.dart';
@@ -80,232 +81,249 @@ class _TrackOrderPageState extends State<TrackOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Track Order'),
-        centerTitle: true,
-      ),
-      body: isLoading
-        ? Center(child: CircularProgressIndicator())
-        : DraggableScrollableSheet(
-          builder: (context, scrollController) {
-            return Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 5,
-                    offset: Offset(0, -5),
-                  ),
-                ],
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 26),
-                child: ListView(
-                controller: scrollController,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 100),
-                    child: Container(
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RestaurantsPage()),
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RestaurantsPage()), 
+              );
+            },
+          ),
+          title: const Text('Pesanan'),
+          centerTitle: true,
+        ),
+        body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : DraggableScrollableSheet(
+            builder: (context, scrollController) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5,
+                      offset: Offset(0, -5),
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          restaurant['logo'],
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
+                  ],
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 26),
+                  child: ListView(
+                  controller: scrollController,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 100),
+                      child: Container(
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            restaurant['logo'],
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 8),
+                              Text(
+                                restaurant['name'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Dipesan pada ${formatDateTime(transactions[0]['created_at'])}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Text(
+                                transactions[0]['transaction_code'],
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: [
+                    //         Text(
+                    //           '20 Min',
+                    //           style: TextStyle(
+                    //             fontSize: 30,
+                    //             fontWeight: FontWeight.bold
+                    //           ),
+                    //         ),
+                    //         Text(
+                    //           'Estimasi',
+                    //           style: TextStyle(
+                    //             fontSize: 14,
+                    //             color: Colors.grey
+                    //           ),
+                    //         ),
+                    //       ],
+                    // ),
+                    buildFoodItemsList(transactions[0]['items']),
+                    const SizedBox(height: 20),
+                    TimelineTile(
+                      alignment: TimelineAlign.start,
+                      lineXY: 0.3,
+                      indicatorStyle: IndicatorStyle(
+                        iconStyle: IconStyle(
+                          color: Colors.white,
+                          iconData: Icons.done,
+                        ),
+                        width: 20,
+                        color: (transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
+                        indicatorXY: 0.3,
+                      ),
+                      endChild: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          'Restoran sedang menyiapkan pesanan',
+                          style: TextStyle(
+                            color: (transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
+                            fontSize: 14
+                          ),
+                        ),
+                      ),
+                    ),
+                    TimelineTile(
+                      alignment: TimelineAlign.start,
+                      lineXY: 0.3,
+                      indicatorStyle: IndicatorStyle(
+                        iconStyle: IconStyle(
+                          color: Colors.white,
+                          iconData: Icons.done,
+                        ),
+                        width: 20,
+                        color: (transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
+                        indicatorXY: 0.3,
+                      ),
+                      endChild: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          'Pesanan Anda telah jadi !', 
+                          style: TextStyle(
+                            color: (transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
+                            fontSize: 14
+                          ),
+                        ),
+                      ),
+                    ),
+                    TimelineTile(
+                      alignment: TimelineAlign.start,
+                      lineXY: 0.3,
+                      indicatorStyle: IndicatorStyle(
+                        iconStyle: IconStyle(
+                          color: Colors.white,
+                          iconData: Icons.done,
+                        ),
+                        width: 20,
+                        color: transactions[0]['status'] == 'success' ? AppColors.secondary : Colors.grey,
+                        indicatorXY: 0.3,
+                      ),
+                      endChild: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          'Koin berhasil ditukar !', 
+                          style: TextStyle(
+                            color: transactions[0]['status'] == 'success' ? AppColors.secondary : Colors.grey,
+                            fontSize: 14
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (transactions[0]['status'] == 'prepared') const SizedBox(height: 30),
+                    if (transactions[0]['status'] == 'prepared') TextButton(
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const FoodOrderQrPage()), 
+                        );
+                      },
+                      child: const Text(
+                        'Bayar',
+                        style: const TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                      ),
+                    ),   
+                    const SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: AppColors.secondary,
+                                  backgroundImage:
+                                      AssetImage('assets/avatar.jpg'),
+                        ),
+                        const SizedBox(width: 16),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(height: 8),
-                            Text(
-                              restaurant['name'],
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Dipesan pada ${formatDateTime(transactions[0]['created_at'])}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              transactions[0]['transaction_code'],
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
+                            Text(restaurant['name']),
+                            const Text('Admin'),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 20),
-                  // Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       children: [
-                  //         Text(
-                  //           '20 Min',
-                  //           style: TextStyle(
-                  //             fontSize: 30,
-                  //             fontWeight: FontWeight.bold
-                  //           ),
-                  //         ),
-                  //         Text(
-                  //           'Estimasi',
-                  //           style: TextStyle(
-                  //             fontSize: 14,
-                  //             color: Colors.grey
-                  //           ),
-                  //         ),
-                  //       ],
-                  // ),
-                  buildFoodItemsList(transactions[0]['items']),
-                  SizedBox(height: 20),
-                  TimelineTile(
-                    alignment: TimelineAlign.start,
-                    lineXY: 0.3,
-                    indicatorStyle: IndicatorStyle(
-                      iconStyle: IconStyle(
-                        color: Colors.white,
-                        iconData: Icons.done,
-                      ),
-                      width: 20,
-                      color: (transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
-                      indicatorXY: 0.3,
-                    ),
-                    endChild: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Restoran sedang menyiapkan pesanan',
-                        style: TextStyle(
-                          color: (transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
-                          fontSize: 14
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            // Call admin
+                          },
+                          icon: const Icon(Icons.phone, color: AppColors.secondary),
                         ),
-                      ),
-                    ),
-                  ),
-                  TimelineTile(
-                    alignment: TimelineAlign.start,
-                    lineXY: 0.3,
-                    indicatorStyle: IndicatorStyle(
-                      iconStyle: IconStyle(
-                        color: Colors.white,
-                        iconData: Icons.done,
-                      ),
-                      width: 20,
-                      color: (transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
-                      indicatorXY: 0.3,
-                    ),
-                    endChild: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Pesanan Anda telah jadi !', 
-                        style: TextStyle(
-                          color: (transactions[0]['status'] == 'prepared' || transactions[0]['status'] == 'success') ? AppColors.secondary : Colors.grey,
-                          fontSize: 14
+                        IconButton(
+                          onPressed: () {
+                            // Chat with admin
+                          },
+                          icon: const Icon(Icons.chat, color: AppColors.secondary),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  TimelineTile(
-                    alignment: TimelineAlign.start,
-                    lineXY: 0.3,
-                    indicatorStyle: IndicatorStyle(
-                      iconStyle: IconStyle(
-                        color: Colors.white,
-                        iconData: Icons.done,
-                      ),
-                      width: 20,
-                      color: transactions[0]['status'] == 'success' ? AppColors.secondary : Colors.grey,
-                      indicatorXY: 0.3,
-                    ),
-                    endChild: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Koin berhasil ditukar !', 
-                        style: TextStyle(
-                          color: transactions[0]['status'] == 'success' ? AppColors.secondary : Colors.grey,
-                          fontSize: 14
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (transactions[0]['status'] == 'prepared') SizedBox(height: 30),
-                  if (transactions[0]['status'] == 'prepared') TextButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const FoodOrderQrPage()), 
-                      );
-                    },
-                    child: Text(
-                      'Bayar',
-                      style: const TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
-                    ),
-                  ),   
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                                radius: 30,
-                                backgroundColor: AppColors.secondary,
-                                backgroundImage:
-                                    AssetImage('assets/avatar.jpg'),
-                      ),
-                      SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(restaurant['name']),
-                          Text('Admin'),
-                        ],
-                      ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          // Call admin
-                        },
-                        icon: Icon(Icons.phone, color: AppColors.secondary),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          // Chat with admin
-                        },
-                        icon: Icon(Icons.chat, color: AppColors.secondary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          );
-        },
-      ),
+                  ],
+                ),
+              )
+            );
+          },
+        ),
+      )
     );
   }
 

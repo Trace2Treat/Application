@@ -34,238 +34,250 @@ class _ManagementDetailPageState extends State<ManagementDetailPage> {
     double price = (double.parse(transaction['total'] ?? 0));
     String formattedPrice = price.toStringAsFixed(0);
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ManagementOrderPage()), 
-            );
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ManagementOrderPage()),
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ManagementOrderPage()), 
+              );
+            },
+          ),
+          centerTitle: true,
+          title: const Text('Detail Pesanan'),
         ),
-        centerTitle: true,
-        title: const Text('Detail Pesanan'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            
-            Text(
-              'Dipesan pada ${formatDateTime(transaction['created_at'])}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
-                                        ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Customer', 
-              style: TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold
-              )
-            ),
-            const SizedBox(height: 5),
-            Text(
-              transaction['userName'], 
-              style: const TextStyle(
-                fontSize: 12, 
-              )
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Nomor Telepon', 
-              style: TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold
-              )
-            ),
-            const SizedBox(height: 5),
-            Text(
-              transaction['userPhone'], 
-              style: const TextStyle(
-                fontSize: 12, 
-              )
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Total', 
-              style: TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold
-              )
-            ),
-            const SizedBox(height: 5),
-            Text(
-              '$formattedPrice koin', 
-              style: const TextStyle(
-                fontSize: 12, 
-              )
-            ),
-            const SizedBox(height: 10),
-            buildFoodItemsList(transaction['items']),
-            const SizedBox(height: 10),
-            Visibility(
-                              visible: transaction['status'] == 'pending',
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () async {
-                                      try {
-                                        await controller.transactionUpdateStatus(transaction['id'], 'preparing');
-                                        
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => ManagementOrderPage()), 
-                                        );
-
-                                      } catch (error) {
-                                        print('Error accepting transaction: $error');
-                                      }
-                                    },
-                                    child: SizedBox(
-                                      height: 40,
-                                      width: 100,
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
-                                        ),
-                                        color: AppColors.primary,
-                                        child: const Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(width: 10),
-                                              Text(
-                                                'Terima',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                              SizedBox(width: 10),
-                                            ]),
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      try {
-                                        await controller.transactionUpdateStatus(transaction['id'], 'failed');
-                                        
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => ManagementOrderPage()), 
-                                        );
-
-                                      } catch (error) {
-                                        print('Error accepting transaction: $error');
-                                      }
-                                    },
-                                    child: SizedBox(
-                                      height: 40,
-                                      width: 100,
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
-                                        ),
-                                        color: const Color(0xFFBC5757),
-                                        child: const Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(width: 10),
-                                              Text(
-                                                'Tolak',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                              SizedBox(width: 10),
-                                            ]),
-                                      ),
-                                    )
-                                  )
-                                ],
-                              ),
-                            ),
-            Visibility(
-              visible: transaction['status'] == 'preparing',
-              child: ElevatedButton(
-                onPressed: () async {
-                  try {
-                                        await controller.transactionUpdateStatus(transaction['id'], 'prepared');
-                                        
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => ManagementOrderPage()), 
-                                        );
-
-                                      } catch (error) {
-                                        print('Error accepting transaction: $error');
-                                      }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 0,
-                  primary: AppColors.primary,
-                ),
-                child: Container(
-                  constraints: const BoxConstraints(minHeight: 50),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Pesanan telah jadi',
-                    style: TextStyle(color: AppColors.white),
-                  ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Dipesan pada ${formatDateTime(transaction['created_at'])}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
                 ),
               ),
-            ),
-            Visibility(
-              visible: transaction['status'] == 'prepared',
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () async {
-                      List<int> qrCodeBase64 = await controller.getQrCode(transaction['transaction_code']);
+              const SizedBox(height: 10),
+              const Text(
+                'Customer', 
+                style: TextStyle(
+                  fontSize: 14, 
+                  fontWeight: FontWeight.bold
+                )
+              ),
+              const SizedBox(height: 5),
+              Text(
+                transaction['userName'], 
+                style: const TextStyle(
+                  fontSize: 12, 
+                )
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Nomor Telepon', 
+                style: TextStyle(
+                  fontSize: 14, 
+                  fontWeight: FontWeight.bold
+                )
+              ),
+              const SizedBox(height: 5),
+              Text(
+                transaction['userPhone'], 
+                style: const TextStyle(
+                  fontSize: 12, 
+                )
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Total', 
+                style: TextStyle(
+                  fontSize: 14, 
+                  fontWeight: FontWeight.bold
+                )
+              ),
+              const SizedBox(height: 5),
+              Text(
+                '$formattedPrice koin', 
+                style: const TextStyle(
+                  fontSize: 12, 
+                )
+              ),
+              const SizedBox(height: 10),
+              buildFoodItemsList(transaction['items']),
+              const SizedBox(height: 10),
+              Visibility(
+                  visible: transaction['status'] == 'pending',
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          try {
+                            await controller.transactionUpdateStatus(transaction['id'], 'preparing');
 
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('QR Pembayaran'),
-                            content: Image.memory(Uint8List.fromList(qrCodeBase64)),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Close'),
-                              ),
-                            ],
-                          );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ManagementOrderPage()),
+                            );
+                          } catch (error) {
+                            print('Error accepting transaction: $error');
+                          }
                         },
-                      );
+                        child: SizedBox(
+                          height: 40,
+                          width: 100,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            color: AppColors.primary,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(width: 10),
+                                Text(
+                                    'Terima',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(width: 10),
+                              ]
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                            try {
+                              await controller.transactionUpdateStatus(transaction['id'], 'failed');
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ManagementOrderPage()
+                                ),
+                              );
+                            } catch (error) {
+                              print('Error accepting transaction: $error');
+                            }
+                          },
+                          child: SizedBox(
+                            height: 40,
+                            width: 100,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              color: const Color(0xFFBC5757),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'Tolak',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 10),
+                                ]
+                            ),
+                          ),
+                        )
+                      )
+                    ],
+                  ),
+              ),
+              Visibility(
+                  visible: transaction['status'] == 'preparing',
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        await controller.transactionUpdateStatus(transaction['id'], 'prepared');
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ManagementOrderPage()
+                          ),
+                        );
+                      } catch (error) {
+                        print('Error accepting transaction: $error');
+                      }
                     },
-                    child: const Text(
-                      'QR Pembayaran',
-                      style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 0,
+                      primary: AppColors.primary,
                     ),
-                  ) 
-                ],
-              )
-            ),
-          ],
+                    child: Container(
+                      constraints: const BoxConstraints(minHeight: 50),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Pesanan telah jadi',
+                        style: TextStyle(color: AppColors.white),
+                      ),
+                    ),
+                  ),
+              ),
+              Visibility(
+                visible: transaction['status'] == 'prepared',
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        List<int> qrCodeBase64 = await controller.getQrCode(transaction['transaction_code']);
+
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('QR Pembayaran'),
+                              content: Image.memory(Uint8List.fromList(qrCodeBase64)),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Close'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Text(
+                        'QR Pembayaran',
+                        style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
+                      ),
+                    ) 
+                  ],
+                )
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 

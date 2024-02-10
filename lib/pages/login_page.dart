@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'welcome_page.dart';
 import 'administrator.dart';
 import 'register_page.dart';
 import 'home_page.dart';
@@ -23,277 +24,285 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // will pop scope to welcome
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          color: AppColors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                Center(
-                  child: Image.asset(
-                    'assets/logo.png', 
-                    height: MediaQuery.of(context).size.height * 0.2, 
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const WelcomePage()),
+        );
+        return false;
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            color: AppColors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                  Center(
+                    child: Image.asset(
+                      'assets/logo.png', 
+                      height: MediaQuery.of(context).size.height * 0.2, 
+                    ),
                   ),
-                ),
-                const Text(
-                  'Selamat datang di Trace2Treat!', 
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                const Text(
-                  'Masuk atau daftar hanya dalam beberapa langkah mudah.', 
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal), 
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      email = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(26),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.email, 
-                      color: Colors.grey[600],
-                    ),
-                    hintText: 'Enter your email',
+                  const Text(
+                    'Selamat datang di Trace2Treat!', 
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  onChanged: (value) {
-                          setState(() {
-                            password = value;
-                          });
-                        },
-                  obscureText: !isPasswordVisible,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(26),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.lock,
-                      color: Colors.grey[600],
-                    ),
-                    hintText: 'Enter your Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                  const SizedBox(height: 5),
+                  const Text(
+                    'Masuk atau daftar hanya dalam beberapa langkah mudah.', 
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal), 
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        email = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      contentPadding: const EdgeInsets.all(12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(26),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.email, 
                         color: Colors.grey[600],
                       ),
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                    ),
-                  )
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      controller.isLoading = true;
-                    });
-
-                    try {
-                      final loginResult = await controller.loginUser(email, password);
-                      
-
-                      final id = loginResult['id'];
-                      final name = loginResult['name'];
-                      final emailnya = loginResult['email'];
-                      final balanceCoin = loginResult['balance_coin'];
-                      final phone = loginResult['phone'];
-                      final address = loginResult['address'];
-                      final avatar = loginResult['avatar'];
-                      final role = loginResult['role'];
-                      final status = loginResult['status'];
-                      final restaurant = loginResult['restaurant'];
-                      final restaurantid = loginResult['restaurant_id'];
-
-                      SessionManager().saveUserData(
-                        userId: id ?? '',
-                        userName: name ?? '',
-                        userEmail: emailnya ?? '',
-                        userPoin: balanceCoin ?? '',
-                        userPhone: phone ?? '',
-                        userRole: role ?? '',
-                        userAddress: address ?? '',
-                        userAvatar: avatar ?? '',
-                        userStatus: status ?? '',
-                        userRestaurant: restaurant ?? '',
-                        userRestaurantId: restaurantid ?? 0
-                      );
-                    
-                      AnimatedSnackBar.rectangle(
-                          'Sukses',
-                          'Anda berhasil masuk',
-                          type: AnimatedSnackBarType.success,
-                          brightness: Brightness.light,
-                        ).show(
-                          context,
-                        );
-
-                        if (role == 'ADMIN') {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const Administrator(),
-                            ),
-                          );
-                        } else{
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const HomePage(),
-                            ),
-                          );
-                        }
-
-                        SessionManager().setLoggedIn(true);
-
-                      print('idnya $id, namanya $name, emailnya $email');
-                      print('role $role, poinnya $balanceCoin, phonenya $phone');
-                      print('status restaurant: $restaurant, idnya $restaurantid');
-                    } catch (e) {
-                      print('Error during login: $e');
-                      AnimatedSnackBar.material(
-                          'Gagal masuk, coba lagi !',
-                          type: AnimatedSnackBarType.error,
-                        ).show(context);
-
-                      setState(() {
-                        controller.isLoading = false;
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    elevation: 0,
-                    primary: Colors.transparent,
-                  ),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(56),
-                    ),
-                    child: Container(
-                      constraints: const BoxConstraints(minHeight: 36, minWidth: 88),
-                      alignment: Alignment.center,
-                      child: controller.isLoading
-                        ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
-                          )
-                        : const Text(
-                            'Masuk',
-                            style: TextStyle(color: AppColors.white),
-                          ),
+                      hintText: 'Enter your email',
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                RichText(
-                  textAlign: TextAlign.left, 
-                  text: TextSpan(
-                    text: 'Saya menyetujui ',
-                    style: TextStyle(
-                      color: Colors.black, 
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Ketentuan Layanan',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // ketentuan layanan page
+                  const SizedBox(height: 5),
+                  TextField(
+                    onChanged: (value) {
+                            setState(() {
+                              password = value;
+                            });
                           },
+                    obscureText: !isPasswordVisible,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      contentPadding: const EdgeInsets.all(12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(26),
+                        borderSide: BorderSide.none,
                       ),
-                      TextSpan(
-                        text: ' & ',
-                        style: TextStyle(
-                          color: Colors.black,
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Colors.grey[600],
+                      ),
+                      hintText: 'Enter your Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey[600],
                         ),
-                      ),
-                      TextSpan(
-                        text: 'Kebijakan Privasi ',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // kebijakan privasi page
-                          },
-                      ),
-                      TextSpan(
-                        text: 'Trace2Treat.',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Belum memiliki akun?',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Daftar',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
-                        ),
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
                       ),
                     )
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        controller.isLoading = true;
+                      });
+
+                      try {
+                        final loginResult = await controller.loginUser(email, password);
+                        
+
+                        final id = loginResult['id'];
+                        final name = loginResult['name'];
+                        final emailnya = loginResult['email'];
+                        final balanceCoin = loginResult['balance_coin'];
+                        final phone = loginResult['phone'];
+                        final address = loginResult['address'];
+                        final avatar = loginResult['avatar'];
+                        final role = loginResult['role'];
+                        final status = loginResult['status'];
+                        final restaurant = loginResult['restaurant'];
+                        final restaurantid = loginResult['restaurant_id'];
+
+                        SessionManager().saveUserData(
+                          userId: id ?? '',
+                          userName: name ?? '',
+                          userEmail: emailnya ?? '',
+                          userPoin: balanceCoin ?? '',
+                          userPhone: phone ?? '',
+                          userRole: role ?? '',
+                          userAddress: address ?? '',
+                          userAvatar: avatar ?? '',
+                          userStatus: status ?? '',
+                          userRestaurant: restaurant ?? '',
+                          userRestaurantId: restaurantid ?? 0
+                        );
+                      
+                        AnimatedSnackBar.rectangle(
+                            'Sukses',
+                            'Anda berhasil masuk',
+                            type: AnimatedSnackBarType.success,
+                            brightness: Brightness.light,
+                          ).show(
+                            context,
+                          );
+
+                          if (role == 'ADMIN') {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const Administrator(),
+                              ),
+                            );
+                          } else{
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            );
+                          }
+
+                          SessionManager().setLoggedIn(true);
+
+                        print('idnya $id, namanya $name, emailnya $email');
+                        print('role $role, poinnya $balanceCoin, phonenya $phone');
+                        print('status restaurant: $restaurant, idnya $restaurantid');
+                      } catch (e) {
+                        print('Error during login: $e');
+                        AnimatedSnackBar.material(
+                            'Gagal masuk, coba lagi !',
+                            type: AnimatedSnackBarType.error,
+                          ).show(context);
+
+                        setState(() {
+                          controller.isLoading = false;
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 0,
+                      primary: Colors.transparent,
+                    ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(56),
+                      ),
+                      child: Container(
+                        constraints: const BoxConstraints(minHeight: 36, minWidth: 88),
+                        alignment: Alignment.center,
+                        child: controller.isLoading
+                          ? const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                            )
+                          : const Text(
+                              'Masuk',
+                              style: TextStyle(color: AppColors.white),
+                            ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  RichText(
+                    textAlign: TextAlign.left, 
+                    text: TextSpan(
+                      text: 'Saya menyetujui ',
+                      style: const TextStyle(
+                        color: Colors.black, 
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Ketentuan Layanan',
+                          style: const TextStyle(
+                            color: AppColors.primary,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // ketentuan layanan page
+                            },
+                        ),
+                        const TextSpan(
+                          text: ' & ',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Kebijakan Privasi ',
+                          style: const TextStyle(
+                            color: AppColors.primary,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // kebijakan privasi page
+                            },
+                        ),
+                        const TextSpan(
+                          text: 'Trace2Treat.',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Belum memiliki akun?',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Daftar',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      )
     );
   }
 }

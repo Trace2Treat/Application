@@ -69,9 +69,9 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                       const SizedBox(height: 10),
                       GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 5,
                           crossAxisSpacing: 5,
@@ -99,19 +99,19 @@ class _SearchPageState extends State<SearchPage> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FoodOrderPage(
-                              foodId: food['id'] ?? '-',
-                              foodName: food['name'] ?? '-',
-                              formattedPrice: formattedPrice,
-                              foodImage: food['thumb'] ?? '-',
-                              foodDescription: food['description'] ?? '-',
-                              restaurantId: food['restaurant_id'],
-                              // stock: food['stock'] ?? 0,
-                            ),
-                          ),
-                        );
+          context,
+          MaterialPageRoute(
+            builder: (context) => FoodOrderPage(
+              foodId: food['id'] ?? '-',
+              foodName: food['name'] ?? '-',
+              formattedPrice: formattedPrice,
+              foodImage: food['thumb'] ?? '-',
+              foodDescription: food['description'] ?? '-',
+              restaurantId: food['restaurant_id'],
+              // stock: food['stock'] ?? 0,
+            ),
+          ),
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -122,8 +122,6 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              //child: Image.asset(
-              //'assets/makanan.png', 
               child: Image.network(
                 food['thumb'] ?? '-',
                 fit: BoxFit.cover,
@@ -139,7 +137,7 @@ class _SearchPageState extends State<SearchPage> {
                 children: [
                   Text(
                     food['name'] ?? '-',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -147,7 +145,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   Text(
                     '$formattedPrice koin',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primary,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -157,15 +155,15 @@ class _SearchPageState extends State<SearchPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [ 
                       Container(
-                        padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.symmetric(vertical: 5),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           'Tersedia stok: ${food['stock'] ?? 0}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,

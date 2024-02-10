@@ -28,7 +28,7 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
   CustomFile? pickedFile;
   String attachment = '';
   String file = 'Add Logo';
-  double uploadProgress = 0.0;
+  double uploadProgress = 0;
   Future<void> selectFile() async {
     final result = await FilePicker.platform.pickFiles();
     if (result == null) return;
@@ -199,7 +199,7 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
                     child: Column(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
+                            borderRadius: BorderRadius.circular(5),
                             child: LinearProgressIndicator(
                               value: uploadProgress,
                               minHeight: 10,
@@ -263,7 +263,7 @@ class _RegisterRestaurantPageState extends State<RegisterRestaurantPage> {
                       constraints: const BoxConstraints(minHeight: 36, minWidth: 88),
                       alignment: Alignment.center,
                       child:  controller.isLoading
-                        ? CircularProgressIndicator(
+                        ? const CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
                           )
                         : const Text(

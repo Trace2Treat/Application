@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 
 class ExchangeDetailPage extends StatefulWidget {
   final Map<String, dynamic> selectedData;
@@ -12,48 +13,57 @@ class ExchangeDetailPage extends StatefulWidget {
 class _ExchangeDetailPageState extends State<ExchangeDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text('Detail Pengumpulan'),
+          centerTitle: true,
         ),
-        title: const Text('Detail Pengumpulan'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              margin: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(
+                margin: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildRow('Tipe Sampah', widget.selectedData['trash_type']),
+                    buildDivider(),
+                    buildRow('Berat Sampah', '${widget.selectedData['trash_weight'].toString()} (kg)'),
+                    buildDivider(),
+                    buildRow('Koin Didapat', '${widget.selectedData['point'] ?? 'Pending'}'),
+                    buildDivider(),
+                    buildRow('Status', widget.selectedData['status']),
+                    buildDivider(),
+                    buildRow('Driver', widget.selectedData['driver_name'].isEmpty ? 'Pending' : widget.selectedData['driver_name']), 
+                    buildDivider(),
+                    buildRow('Tanggal', widget.selectedData['date']),
+                  ],
+                ),
               ),
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildRow('Tipe Sampah', widget.selectedData['trash_type']),
-                  buildDivider(),
-                  buildRow('Berat Sampah', '${widget.selectedData['trash_weight'].toString()} (kg)'),
-                  buildDivider(),
-                  buildRow('Koin Didapat', '${widget.selectedData['point'] ?? 'Pending'}'),
-                  buildDivider(),
-                  buildRow('Status', widget.selectedData['status']),
-                  buildDivider(),
-                  buildRow('Driver', widget.selectedData['driver_name'].isEmpty ? 'Pending' : widget.selectedData['driver_name']), 
-                  buildDivider(),
-                  buildRow('Tanggal', widget.selectedData['date']),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 

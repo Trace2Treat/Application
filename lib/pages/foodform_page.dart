@@ -72,224 +72,232 @@ class _FoodFormPageState extends State<FoodFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const FoodListPage()), 
-            );
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const FoodListPage()),
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FoodListPage()), 
+              );
+            },
+          ),
+          title: const Text('Tambah Menu'),
+          centerTitle: true,
         ),
-        title: Text('Tambah Menu'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      name = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(26),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'Nama menu...',
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    name = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(26),
+                    borderSide: BorderSide.none,
                   ),
+                  hintText: 'Nama menu...',
                 ),
-            const SizedBox(height: 10),
-            TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      description = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(26),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'Deskripsi menu...',
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    description = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(26),
+                    borderSide: BorderSide.none,
                   ),
+                  hintText: 'Deskripsi menu...',
                 ),
-            const SizedBox(height: 10),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  if (value.isNotEmpty) {
-                    price = int.parse(value);
-                  }
-                });
-              },
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[200],
-                contentPadding: const EdgeInsets.all(12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(26),
-                  borderSide: BorderSide.none,
-                ),
-                hintText: 'Harga menu (rupiah)...',
               ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  if (value.isNotEmpty) {
-                    stock = int.parse(value);
-                  }
-                });
-              },
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[200],
-                contentPadding: const EdgeInsets.all(12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(26),
-                  borderSide: BorderSide.none,
+              const SizedBox(height: 10),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    if (value.isNotEmpty) {
+                      price = int.parse(value);
+                    }
+                  });
+                },
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(26),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: 'Harga menu (rupiah)...',
                 ),
-                hintText: 'Stok menu...',
               ),
-            ),
-            const SizedBox(height: 10),
-                Card(
-                  color: Colors.grey[200],
-                      margin: EdgeInsets.zero,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(26),
-                      ),
-                      child: GestureDetector(
-                        onTap: () async {
-                          await selectFile();
-                          await uploadFile();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  pickedFile == null ? file : pickedFile!.name,
-                                  maxLines: 1, 
-                                  overflow: TextOverflow.ellipsis, 
-                                  style: TextStyle(color: Colors.grey[600]),
-                                ),
-                              ),
-                              const Spacer(),
-                              Icon(Icons.insert_photo, size: 24, color: Colors.grey[600]),
-                            ],
+              const SizedBox(height: 10),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    if (value.isNotEmpty) {
+                      stock = int.parse(value);
+                    }
+                  });
+                },
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(26),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: 'Stok menu...',
+                ),
+              ),
+              const SizedBox(height: 10),
+              Card(
+                color: Colors.grey[200],
+                margin: EdgeInsets.zero,
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(26),
+                ),
+                child: GestureDetector(
+                  onTap: () async {
+                    await selectFile();
+                    await uploadFile();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            pickedFile == null ? file : pickedFile!.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.grey[600]),
                           ),
                         ),
-                      ),
+                        const Spacer(),
+                        Icon(Icons.insert_photo, size: 24, color: Colors.grey[600]),
+                      ],
                     ),
-                const SizedBox(height: 10),
-                Visibility(
-                  visible: pickedFile != null,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Visibility(
+                visible: pickedFile != null,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: LinearProgressIndicator(
-                              value: uploadProgress,
-                              minHeight: 10,
-                              backgroundColor: Colors.grey[300],
-                              valueColor: const AlwaysStoppedAnimation<Color>(
-                                  AppColors.primary),
-                            ),
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: LinearProgressIndicator(
+                            value: uploadProgress,
+                            minHeight: 10,
+                            backgroundColor: Colors.grey[300],
+                            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
                   )
-                ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-                  onPressed: () async {
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    controller.isLoading = true;
+                  });
+
+                  try {
+                    await controller.createFood(name, description,
+                        (price / 100).toString(), stock.toString(), attachment);
+
+                    AnimatedSnackBar.rectangle(
+                      'Sukses',
+                      'Anda berhasil menambahkan menu',
+                      type: AnimatedSnackBarType.success,
+                      brightness: Brightness.light,
+                    ).show(
+                      context,
+                    );
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FoodListPage()),
+                    );
+                  } catch (e) {
+                    print('Error during posting: $e');
+                    AnimatedSnackBar.material(
+                      'Gagal, coba lagi !',
+                      type: AnimatedSnackBarType.error,
+                    ).show(context);
+
                     setState(() {
-                      controller.isLoading = true;
+                      controller.isLoading = false;
                     });
-
-                    try {
-                      await controller.createFood(name, description, (price/100).toString(), stock.toString(), attachment);
-                    
-                        AnimatedSnackBar.rectangle(
-                          'Sukses',
-                          'Anda berhasil menambahkan menu',
-                          type: AnimatedSnackBarType.success,
-                          brightness: Brightness.light,
-                        ).show(
-                          context,
-                        );
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const FoodListPage()), 
-                        );
-
-                    } catch (e) {
-                      print('Error during posting: $e');
-                      AnimatedSnackBar.material(
-                          'Gagal, coba lagi !',
-                          type: AnimatedSnackBarType.error,
-                        ).show(context);
-
-                      setState(() {
-                        controller.isLoading = false;
-                      });
-                    }
-
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    elevation: 0,
-                    primary: Colors.transparent,
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(56),
-                    ),
-                    child: Container(
-                      constraints: const BoxConstraints(minHeight: 36, minWidth: 88),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Kirim',
-                        style: TextStyle(color: AppColors.white),
-                      ),
+                  elevation: 0,
+                  primary: Colors.transparent,
+                ),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(56),
+                  ),
+                  child: Container(
+                    constraints: const BoxConstraints(minHeight: 36, minWidth: 88),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Kirim',
+                      style: TextStyle(color: AppColors.white),
                     ),
                   ),
                 ),
-          ],
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 }

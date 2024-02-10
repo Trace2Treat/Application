@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:trace2treat/pages/foodcart_page.dart';
-import 'package:trace2treat/utils/globals.dart';
+import 'package:trace2treat/pages/foodtrackorder_page.dart';
+import 'foodcart_page.dart';
 import 'restaurants_page.dart';
 import 'exchangedetail_page.dart';
 import 'exchangelist_page.dart';
@@ -10,7 +10,9 @@ import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
 import '../utils/session_manager.dart';
 import '../utils/cart_data.dart';
+import '../utils/globals.dart';
 import '../services/trash_service.dart';
+import '../services/transaction_service.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -22,19 +24,51 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final CarouselController controller = CarouselController();
   final TrashService trashController = TrashService();
-  int currentIndex = 0;
+  final TransactionService transactionController = TransactionService();
+  late Widget trashListFutureBuilder;
+  List<Map<String, dynamic>> transactions = [];
   List<String> imageAssets = [
     'assets/banner.png',
     'assets/banner.png',
     'assets/banner.png',
   ];
 
-  late Widget trashListFutureBuilder;
+  int currentIndex = 0;
+  int restaurantId = 0;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     trashListFutureBuilder = buildTrashList();
+    fetchData();
+  }
+  
+  Future<void> fetchData() async {
+    try {
+      await fetchTransactionData();
+    } catch (e) {
+      print('Error fetching data: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> fetchTransactionData() async {
+    try {      
+      transactions = await transactionController.getTransaction();
+      if (mounted) {
+        setState(() {
+          transactions = transactions;
+        });
+      }
+    } catch (e) {
+      print('Error fetching transaction data: $e');
+    }
   }
 
   @override
@@ -131,7 +165,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           children: [
                                             Image.asset('assets/point.png', height: 16, width: 16),
                                             const SizedBox(width: 5),
-                                            Text(
+                                            const Text(
                                               'Koin Kamu',
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -141,7 +175,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             )
                                           ]
                                         ),
-                                        Text('${SessionManager().getUserPoin()}', style: TextStyle(color: Colors.white, fontSize: 14))
+                                        Text('${SessionManager().getUserPoin()}', style: const TextStyle(color: Colors.white, fontSize: 14))
                                       ],
                                     )
                                   ]
@@ -189,18 +223,25 @@ class _DashboardPageState extends State<DashboardPage> {
                                           right: 0,
                                           child: GestureDetector(
                                             onTap: (){
-                                              if (cartProvider.items.isEmpty) {
+                                              if (cartProvider.items.isNotEmpty) {
                                                 Navigator.pushReplacement(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) => const RestaurantsPage(),
+                                                    builder: (context) => FoodCartPage(restaurantId: grestaurantId),
+                                                  ),
+                                                );
+                                              } else if (transactions[0]['status'] == 'pending' || transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared'){
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => const TrackOrderPage(),
                                                   ),
                                                 );
                                               } else {
                                                 Navigator.pushReplacement(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) => FoodCartPage(restaurantId: grestaurantId),
+                                                    builder: (context) => const RestaurantsPage(),
                                                   ),
                                                 );
                                               }
@@ -209,7 +250,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             height: 40,
                                             child: Card(
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(8.0),
+                                                borderRadius: BorderRadius.circular(8),
                                               ),
                                               color: AppColors.secondary,
                                               child: const Row(
@@ -246,7 +287,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 CarouselSlider(
                   items: imageAssets.map((asset) {
                     return ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(10),
                       child: Image.asset(asset, fit: BoxFit.cover)
                     );
                   }).toList(),
@@ -277,7 +318,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Pengumpulan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          const Text('Pengumpulan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                           TextButton(
                             onPressed: (){
                               Navigator.push(
@@ -285,7 +326,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 MaterialPageRoute(builder: (context) => const ExchangeListPage()), 
                               );
                             }, 
-                            child: Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary))
+                            child: const Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary))
                           )
                         ]
                       ),
@@ -332,7 +373,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
           return ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: trashList.length,
             itemBuilder: (context, index) {
                 return Container(
@@ -350,13 +391,13 @@ class _DashboardPageState extends State<DashboardPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Tipe sampah: ${trashList[index]['trash_type']}', style: TextStyle(fontSize: 12)),
-                        Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}', style: TextStyle(fontSize: 12)),
+                        Text(trashList[index]['date'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Tipe sampah: ${trashList[index]['trash_type']}', style: const TextStyle(fontSize: 12)),
+                        Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}', style: const TextStyle(fontSize: 12)),
                         Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black))
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     IconButton(
                         onPressed: () {
                           Navigator.push(
@@ -367,8 +408,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                             ),
                           );
-                        },
-                        icon: Icon(Icons.arrow_right_alt_rounded))
+                      },
+                    icon: const Icon(Icons.arrow_right_alt_rounded))
                   ]
                 )
               );

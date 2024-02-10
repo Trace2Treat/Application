@@ -93,9 +93,9 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                               ),
                             ],
                           ),
-                          ],
-                        )
-                      ),
+                        ],
+                      )
+                    ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -135,7 +135,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                 CarouselSlider(
                   items: imageAssets.map((asset) {
                     return ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
                               asset, 
                               fit: BoxFit.cover,
@@ -169,7 +169,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Makanan Tersedia', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          const Text('Makanan Tersedia', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                           TextButton(
                             onPressed: (){
                               Navigator.push(
@@ -177,7 +177,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                                 MaterialPageRoute(builder: (context) => const FoodListPage()), 
                               );
                             }, 
-                            child: Text(
+                            child: const Text(
                               'Lihat Semua', 
                               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.secondary))
                             )
@@ -185,7 +185,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                       ),
                       const SizedBox(height: 10),
                       GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -229,19 +229,19 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FoodOrderPage(
-                              foodId: food['id'] ?? '-',
-                              foodName: food['name'] ?? '-',
-                              formattedPrice: formattedPrice,
-                              foodImage: food['thumb'] ?? '-',
-                              foodDescription: food['description'] ?? '-',
-                              restaurantId: food['restaurant_id'],
-                              // stock: food['stock'] ?? 0,
-                            ),
-                          ),
-                        );
+          context,
+          MaterialPageRoute(
+            builder: (context) => FoodOrderPage(
+              foodId: food['id'] ?? '-',
+              foodName: food['name'] ?? '-',
+              formattedPrice: formattedPrice,
+              foodImage: food['thumb'] ?? '-',
+              foodDescription: food['description'] ?? '-',
+              restaurantId: food['restaurant_id'],
+              // stock: food['stock'] ?? 0,
+            ),
+          ),
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -252,8 +252,6 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              // child: Image.asset(
-              // 'assets/makanan.png', 
               child: Image.network(
                 food['thumb'] ?? '-',
                 fit: BoxFit.cover,
@@ -269,7 +267,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                 children: [
                   Text(
                     food['name'] ?? '-',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -277,7 +275,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                   ),
                   Text(
                     '$formattedPrice koin',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primary,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -287,15 +285,15 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [ 
                       Container(
-                        padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           'Tersedia stok: ${food['stock'] ?? 0}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,

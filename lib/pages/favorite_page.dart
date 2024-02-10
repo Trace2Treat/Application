@@ -68,9 +68,9 @@ class _FavoritePageState extends State<FavoritePage> {
                       ),
                       const SizedBox(height: 10),
                       GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 5,
                           crossAxisSpacing: 5,
@@ -108,8 +108,6 @@ class _FavoritePageState extends State<FavoritePage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              //child: Image.asset(
-              //'assets/makanan.png', 
               child: Image.network(
                 food['thumb'] ?? '-',
                 fit: BoxFit.cover,
@@ -125,7 +123,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 children: [
                   Text(
                     food['name'] ?? '-',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -133,13 +131,13 @@ class _FavoritePageState extends State<FavoritePage> {
                   ),
                   Text(
                     '$formattedPrice koin',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primary,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [ 
                       Icon(Icons.favorite, color: AppColors.primary),

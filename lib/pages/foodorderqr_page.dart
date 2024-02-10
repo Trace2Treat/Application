@@ -52,7 +52,7 @@ class _FoodOrderQrPageState extends State<FoodOrderQrPage> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text('PAYMENT', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('PAYMENT', style: TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
         backgroundColor: Colors.transparent,
@@ -74,32 +74,32 @@ class _FoodOrderQrPageState extends State<FoodOrderQrPage> {
                   children: [
                     const SizedBox(height: 70),
                     Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Image(
-                                  width: 200,
-                                  image: AssetImage("assets/qr.png"),
-                                ),
-                                const SizedBox(height: 80),
-                                ElevatedButton(
-                                  onPressed: _scanBarcode,
-                                  child: Text('Scan QR Code', style: TextStyle(fontSize: 12)),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: AppColors.primary,
-                                    onPrimary: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    elevation: 4,
-                                    minimumSize: const Size(130, 48),
-                                  ),
-                                ),
-                              ],
-                            ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Image(
+                            width: 200,
+                            image: AssetImage("assets/qr.png"),
                           ),
+                          const SizedBox(height: 80),
+                          ElevatedButton(
+                            onPressed: _scanBarcode,
+                            style: ElevatedButton.styleFrom(
+                              primary: AppColors.primary,
+                              onPrimary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 4,
+                              minimumSize: const Size(130, 48),
+                            ),
+                            child: const Text('Scan QR Code', style: TextStyle(fontSize: 12)),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: 30),
                   ],
                 ),
