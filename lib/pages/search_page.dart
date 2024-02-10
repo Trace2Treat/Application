@@ -128,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
                 food['thumb'] ?? '-',
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: 90,
+                height: 80,
               ),
             ),
             const SizedBox(height: 8),
@@ -158,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                     children: [ 
                       Container(
                         padding: EdgeInsets.all(5),
-                        margin: EdgeInsets.symmetric(vertical: 15),
+                        margin: EdgeInsets.symmetric(vertical: 5),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(10),

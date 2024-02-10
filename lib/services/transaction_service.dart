@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:http/http.dart' as http;
 import 'api_config.dart';
 import 'dart:convert';
@@ -223,7 +225,7 @@ class TransactionService {
     }
   }
 
-  Future<String> getQrCode(String id) async {
+  Future<Uint8List> getQrCode(String id) async {
     final String accessToken = SessionManager().getAccess() ?? '';
 
     final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/generate-qr-code/$id');
@@ -235,7 +237,7 @@ class TransactionService {
       );
 
       if (response.statusCode == 200) {
-        return response.body;
+        return response.bodyBytes;
       } else {
         print('Failed to get transaction - Status Code: ${response.statusCode}');
         print('Response Body: ${response.body}');
@@ -249,10 +251,15 @@ class TransactionService {
   }
 
   Future<void> payTransaction(String code) async {
-    try {
-      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/pay/$code');
+    final String accessToken = SessionManager().getAccess() ?? '';
 
-      final response = await http.post(url);
+    try {
+      final Uri url = Uri.parse(code);
+
+      final response = await http.post(
+        url,
+        headers: {'Authorization': 'Bearer $accessToken'},
+      );
 
       print(response.body);
 

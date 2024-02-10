@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'managementorder_page.dart';
 import '../themes/app_colors.dart';
@@ -234,16 +235,14 @@ class _ManagementDetailPageState extends State<ManagementDetailPage> {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      String qrCodeBody = await controller.getQrCode(transaction['transaction_code']);
-                      print('qr nya $qrCodeBody');
+                      List<int> qrCodeBase64 = await controller.getQrCode(transaction['transaction_code']);
 
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text('QR Pembayaran'),
-                            content: Image.network(qrCodeBody),
-                            //content: Image.memory(base64Decode(qrCodeBody)),
+                            content: Image.memory(Uint8List.fromList(qrCodeBase64)),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
@@ -260,7 +259,7 @@ class _ManagementDetailPageState extends State<ManagementDetailPage> {
                       'QR Pembayaran',
                       style: TextStyle(color: AppColors.secondary, decoration: TextDecoration.underline),
                     ),
-                  ),   
+                  ) 
                 ],
               )
             ),

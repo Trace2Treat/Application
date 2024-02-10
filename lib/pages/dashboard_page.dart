@@ -102,7 +102,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   children: [
                                     Image.asset('assets/wallet.png', height: 30, width: 30),
                                     const SizedBox(width: 5),
-                                    Column(
+                                    const Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
@@ -351,8 +351,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Tipe sampah: ${trashList[index]['trash_type']}'),
-                        Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
+                        Text('Tipe sampah: ${trashList[index]['trash_type']}', style: TextStyle(fontSize: 12)),
+                        Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}', style: TextStyle(fontSize: 12)),
                         Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black))
                       ],
                     ),

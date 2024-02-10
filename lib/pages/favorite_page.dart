@@ -114,7 +114,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 food['thumb'] ?? '-',
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: 90,
+                height: 80,
               ),
             ),
             const SizedBox(height: 8),
