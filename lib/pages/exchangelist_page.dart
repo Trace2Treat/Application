@@ -79,16 +79,17 @@ class _ExchangeListPageState extends State<ExchangeListPage> {
                                   children: [
                                     Image.asset('assets/trash.png', height: 16, width: 16),
                                     const SizedBox(width: 16),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
-                                        Text('Tipe sampah: ${trashList[index]['trash_type']}'),
-                                        Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
-                                        Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black))
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(trashList[index]['date'], style: TextStyle(fontWeight: FontWeight.bold)),
+                                          Text('Tipe sampah: ${trashList[index]['trash_type']}'),
+                                          Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
+                                          Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black)),
+                                        ],
+                                      ),
                                     ),
-                                    Spacer(),
                                     IconButton(
                                       onPressed: () {
                                         Navigator.push(

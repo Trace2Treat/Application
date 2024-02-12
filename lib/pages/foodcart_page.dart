@@ -6,6 +6,7 @@ import 'restaurantmenu_page.dart';
 import '../themes/app_colors.dart';
 import '../utils/globals.dart';
 import '../utils/cart_data.dart';
+import '../utils/session_manager.dart';
 import '../services/transaction_service.dart';
 
 class FoodCartPage extends StatefulWidget {
@@ -143,6 +144,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                         ),
                       ),
                     ),
+                    
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -151,13 +153,12 @@ class _FoodCartPageState extends State<FoodCartPage> {
                           Consumer<CartProvider>(
                             builder: (context, cartProvider, child) {
                               int finalTotalPoin = 0;
+                              List<Map<String, dynamic>> formattedItems = cartProvider.formatItemsForSending();
 
                               return Column(
                                 children: cartProvider.items.map((item) {
                                   finalTotalPoin += int.tryParse(item['totalPoin'].toString()) ?? 0;
                                   totalPoin = finalTotalPoin;
-
-                                  List<Map<String, dynamic>> formattedItems = cartProvider.formatItemsForSending();
 
                                   return Row(
                                     children: [
@@ -201,8 +202,6 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                             updateTotalPoin();
                                                           }
                                                         });
-                                                        print('List panjang: ${cartProvider.items}');
-                                                        print('List pengiriman ke API: $formattedItems');
                                                       },
                                                     ),
                                                     const SizedBox(width: 8),
@@ -246,65 +245,74 @@ class _FoodCartPageState extends State<FoodCartPage> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () async {
-                try {
-                  final purchaseList = cartProvider.formatItemsForSending();
-                  final restoId = widget.restaurantId.toString();
+            
+            Consumer<CartProvider>(
+              builder: (context, cartProvider, child) {
+                List<Map<String, dynamic>> purchaseList = cartProvider.formatItemsForSending();
+                
+                return GestureDetector(
+                  onTap: () async {
+                    
+                    try {
+                      final restoId = widget.restaurantId.toString();
+                      final address = SessionManager().getUserAddress();
+                      print('restoid nya $restoId, $purchaseList, address: ${SessionManager().getUserAddress()}');
 
-                  await transactionService.purchaseFood(restoId, purchaseList);
+                      await transactionService.purchaseFood(address!, restoId, purchaseList.toString());
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrderSuccessPage(),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderSuccessPage(),
+                        ),
+                      );
+                    } catch (error) {
+                      print('Error occurred while purchasing: $error');
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  );
-                } catch (error) {
-                  print('Error occurred while purchasing: $error');
-                }
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Total Koin', style: TextStyle(color: Colors.white)),
-                          const SizedBox(height: 5),
-                          Row(
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.asset('assets/point.png', height: 16, width: 16, color: Colors.white),
-                              const SizedBox(width: 5),
-                              Text(
-                                '$totalPoin',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                              const Text('Total Koin', style: TextStyle(color: Colors.white)),
+                              const SizedBox(height: 5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset('assets/point.png', height: 16, width: 16, color: Colors.white),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    '$totalPoin',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
+                          Text('Tukar ($counter)', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                         ],
                       ),
-                      Text('Tukar ($counter)', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }
             ),
           ],
         ),

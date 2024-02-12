@@ -28,7 +28,7 @@ class TransactionService {
             'id': transactionData['id'],
             'transaction_code': transactionData['transaction_code'],
             'status': transactionData['status'],
-            'total': transactionData['total'],
+            'total': transactionData['total'] ?? 0,
             'note': transactionData['note'],
             'transaction_date': transactionData['transaction_date'],
             'userid': transactionData['user_id'],
@@ -169,10 +169,9 @@ class TransactionService {
     }
   }
 
-  Future<void> purchaseFood(String restoId, List<Map<String, dynamic>> purchaseList) async {
+  Future<void> purchaseFood(String address, String restoId, String purchaseList) async {
     try {
       final String accessToken = SessionManager().getAccess() ?? '';
-      final String address = SessionManager().getUserAddress() ?? '';
       final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction/purchase-food');
 
       final response = await http.post(
@@ -181,7 +180,7 @@ class TransactionService {
         body: {
           'address': address,
           'restaurant_id': restoId,
-          'items': purchaseList.toString()
+          'items': purchaseList
         },
       );
 

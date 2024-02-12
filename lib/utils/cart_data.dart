@@ -13,8 +13,8 @@ class CartProvider extends ChangeNotifier {
     
     for (var item in items) {
       Map<String, dynamic> formattedItem = {
-        'food_id': item['food_id'],
-        'qty': item['qty'],
+        '"food_id"': item['food_id'],
+        '"qty"': item['qty'],
       };
       formattedItems.add(formattedItem);
     }

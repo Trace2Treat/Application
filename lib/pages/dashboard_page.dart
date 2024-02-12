@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:trace2treat/pages/foodtrackorder_page.dart';
+import 'foodtrackorder_page.dart';
 import 'foodcart_page.dart';
 import 'restaurants_page.dart';
 import 'exchangedetail_page.dart';
@@ -388,16 +388,17 @@ class _DashboardPageState extends State<DashboardPage> {
                     children: [
                     Image.asset('assets/trash.png', height: 24, width: 24),
                     const SizedBox(width: 10),
-                    Column(
+                    Expanded( 
+                      child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(trashList[index]['date'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                        Text('Tipe sampah: ${trashList[index]['trash_type']}', style: const TextStyle(fontSize: 12)),
-                        Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}', style: const TextStyle(fontSize: 12)),
-                        Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black))
-                      ],
+                        children: [
+                          Text(trashList[index]['date'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text('Tipe sampah: ${trashList[index]['trash_type']}'),
+                          Text('Koin didapat: ${trashList[index]['point'] ?? 'Pending'}'),
+                          Text('Status: ${trashList[index]['status']}', style: TextStyle(color: trashList[index]['status'] == 'Approved' ? AppColors.primary : Colors.black))
+                        ],
+                      ),
                     ),
-                    const Spacer(),
                     IconButton(
                         onPressed: () {
                           Navigator.push(
