@@ -153,7 +153,6 @@ class _FoodCartPageState extends State<FoodCartPage> {
                           Consumer<CartProvider>(
                             builder: (context, cartProvider, child) {
                               int finalTotalPoin = 0;
-                              List<Map<String, dynamic>> formattedItems = cartProvider.formatItemsForSending();
 
                               return Column(
                                 children: cartProvider.items.map((item) {
