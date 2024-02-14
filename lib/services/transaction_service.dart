@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:http/http.dart' as http;
 import 'api_config.dart';
 import 'dart:convert';
@@ -8,54 +7,21 @@ import '../utils/session_manager.dart';
 class TransactionService {
   bool isLoading = false;
 
-  Future<List<Map<String, dynamic>>> getTransaction() async {
+  Future<List<Transaction>> getTransactions() async {
     final String accessToken = SessionManager().getAccess() ?? '';
     final int userid = SessionManager().getUserId() ?? 0;
-
     final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?user_id=$userid');
 
-    try {
-      final response = await http.get(
-        baseUrl,
-        headers: {'Authorization': 'Bearer $accessToken'},
-      );
+    final response = await http.get(
+      baseUrl,
+      headers: {'Authorization': 'Bearer $accessToken'},
+    );
 
-      if (response.statusCode == 200) {
-        final transactionDataList = json.decode(response.body)['data'];
-
-        return List<Map<String, dynamic>>.from(transactionDataList.map((transactionData) {
-          return {
-            'id': transactionData['id'],
-            'transaction_code': transactionData['transaction_code'],
-            'status': transactionData['status'],
-            'total': transactionData['total'] ?? 0,
-            'note': transactionData['note'],
-            'transaction_date': transactionData['transaction_date'],
-            'userid': transactionData['user_id'],
-            'restaurant_id': transactionData['restaurant_id'],
-            'created_at': transactionData['created_at'],
-            'updated_at': transactionData['updated_at'],
-            'items': List<Map<String, dynamic>>.from(
-              transactionData['items'].map((item) => {
-                'qty': item['qty'],
-                'food': {
-                  'name': item['food']['name'],
-                  'thumb': item['food']['thumb'],
-                },
-              },
-              ),
-            ),
-          };
-        }));
-      } else {
-        print('Failed to get transaction - Status Code: ${response.statusCode}');
-        print('Response Body: ${response.body}');
-        throw Exception('Failed to get transaction');
-      }
-    } catch (e) {
-      print('Exception: $e');
-      print('aksessnya $accessToken');
-      throw Exception('Failed to get transaction');
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body)['data'];
+      return data.map((item) => Transaction.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load transactions');
     }
   }
 
@@ -271,5 +237,29 @@ class TransactionService {
       print('Error pay request: $error');
       rethrow;
     }
+  }
+}
+
+class Transaction {
+  late int id;
+  late String transactionCode;
+  late String status;
+  late double total;
+  late String createdAt;
+  late int restoId;
+  late List<Map<String, dynamic>> items;
+
+  Transaction.fromJson(Map<String, dynamic> json) {
+    id = json['id'] ?? 0;
+    transactionCode = json['transaction_code'];
+    status = json['status'];
+    total = double.parse(json['total']);
+    createdAt = json['created_at'];
+    restoId = json['restaurant_id'];
+    items = (json['items'] as List<dynamic>).cast<Map<String, dynamic>>();
+  }
+
+  bool operator >(Transaction other) {
+    return id > other.id;
   }
 }

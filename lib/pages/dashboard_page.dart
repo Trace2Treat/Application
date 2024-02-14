@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'foodtrackorder_page.dart';
+import 'foodtrack_page.dart';
 import 'foodcart_page.dart';
 import 'restaurants_page.dart';
 import 'exchangedetail_page.dart';
@@ -26,7 +26,7 @@ class _DashboardPageState extends State<DashboardPage> {
   final TrashService trashController = TrashService();
   final TransactionService transactionController = TransactionService();
   late Widget trashListFutureBuilder;
-  List<Map<String, dynamic>> transactions = [];
+  late List<Transaction> transactions = [];
   List<String> imageAssets = [
     'assets/banner.png',
     'assets/banner.png',
@@ -46,7 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
   
   Future<void> fetchData() async {
     try {
-      await fetchTransactionData();
+      await fetchTransactions();
     } catch (e) {
       print('Error fetching data: $e');
     } finally {
@@ -58,16 +58,22 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
-  Future<void> fetchTransactionData() async {
-    try {      
-      transactions = await transactionController.getTransaction();
-      if (mounted) {
-        setState(() {
-          transactions = transactions;
-        });
-      }
+  Future<void> fetchTransactions() async {
+    setState(() {
+      transactionController.isLoading = true;
+    });
+    try {
+      final List<Transaction> result = await transactionController.getTransactions();
+      
+      result.sort((a, b) => b.id.compareTo(a.id));
+
+      setState(() {
+        transactions = result.isNotEmpty ? [result.first] : [];
+        restaurantId = transactions[0].restoId;
+        print('resto id nya $restaurantId');
+      });
     } catch (e) {
-      print('Error fetching transaction data: $e');
+      print('Error fetching transactions: $e');
     }
   }
 
@@ -230,7 +236,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     builder: (context) => FoodCartPage(restaurantId: grestaurantId),
                                                   ),
                                                 );
-                                              } else if (transactions[0]['status'] == 'pending' || transactions[0]['status'] == 'preparing' || transactions[0]['status'] == 'prepared'){
+                                              } else if (transactions[0].status == 'pending' || transactions[0].status == 'preparing' || transactions[0].status == 'prepared'){
                                                 Navigator.pushReplacement(
                                                   context,
                                                   MaterialPageRoute(

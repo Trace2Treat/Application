@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'foodtrackorder_page.dart';
+import 'foodtrack_page.dart';
 import 'restaurantmenu_page.dart';
 import 'home_page.dart';
 import '../services/restaurant_service.dart';
-import '../services/transaction_service.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
 import '../utils/globals.dart';
@@ -18,7 +17,6 @@ class RestaurantsPage extends StatefulWidget {
 
 class _RestaurantsPageState extends State<RestaurantsPage> {
   final RestaurantService controller = RestaurantService();
-  final TransactionService controllerTransaction = TransactionService();
   List<Map<String, dynamic>> transactions = [];
   Map<String, dynamic> restaurant = {};
 
@@ -33,7 +31,6 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
 
   Future<void> fetchData() async {
     try {
-      await fetchTransactionData();
       await fetchRestaurantData();
     } catch (e) {
       print('Error fetching data: $e');
@@ -43,20 +40,6 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
           isLoading = false;
         });
       }
-    }
-  }
-
-  Future<void> fetchTransactionData() async {
-    try {      
-      transactions = await controllerTransaction.getTransaction();
-      if (mounted) {
-        setState(() {
-          transactions = transactions;
-          restaurantId = transactions[0]['restaurant_id'];
-        });
-      }
-    } catch (e) {
-      print('Error fetching transaction data: $e');
     }
   }
 
@@ -191,14 +174,10 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
               bottom: 36,
               child: GestureDetector(
                 onTap: () {
-                  if (transactions[0]['items'].isNotEmpty) {
-                    Navigator.push(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const TrackOrderPage()), 
                     );
-                  } else {
-                    //history page
-                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
