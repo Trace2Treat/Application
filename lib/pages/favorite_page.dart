@@ -24,6 +24,8 @@ class _FavoritePageState extends State<FavoritePage> {
   Future<void> fetchFoodList() async {
     try {
       final List<Map<String, dynamic>> foods = await foodController.getFoodList();
+      foods.sort((a, b) => (a['name'] ?? '').compareTo(b['name'] ?? ''));
+      
       setState(() {
         foodList = foods;
       });
