@@ -236,7 +236,16 @@ class _DashboardPageState extends State<DashboardPage> {
                                                     builder: (context) => FoodCartPage(restaurantId: grestaurantId),
                                                   ),
                                                 );
-                                              } else if (transactions[0].status == 'pending' || transactions[0].status == 'preparing' || transactions[0].status == 'prepared'){
+                                              } else {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => const RestaurantsPage(),
+                                                  ),
+                                                );
+                                              }
+
+                                              if (transactions[0].status == 'pending' || transactions[0].status == 'preparing' || transactions[0].status == 'prepared'){
                                                 Navigator.pushReplacement(
                                                   context,
                                                   MaterialPageRoute(
