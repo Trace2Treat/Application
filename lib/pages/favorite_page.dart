@@ -14,6 +14,7 @@ class _FavoritePageState extends State<FavoritePage> {
   final FoodService foodController = FoodService();
 
   List<Map<String, dynamic>> foodList = [];
+  List<Map<String, dynamic>> filteredFoodList = [];
 
   @override
   void initState() {
@@ -28,6 +29,7 @@ class _FavoritePageState extends State<FavoritePage> {
       
       setState(() {
         foodList = foods;
+        filteredFoodList = foodList;
       });
     } catch (e) {
       print('Error fetching food list: $e');
@@ -56,7 +58,10 @@ class _FavoritePageState extends State<FavoritePage> {
                           controller: searchController,
                           onChanged: (query) {
                             setState(() {
-                              // search query
+                              filteredFoodList = foodList
+                                  .where((food) =>
+                                      food['name'].toLowerCase().contains(query.toLowerCase()))
+                                  .toList();
                             });
                           },
                           decoration: InputDecoration(
@@ -78,9 +83,9 @@ class _FavoritePageState extends State<FavoritePage> {
                           crossAxisSpacing: 5,
                           childAspectRatio: 1, 
                         ),
-                        itemCount: foodList.length,
+                        itemCount: filteredFoodList.length,
                         itemBuilder: (context, index) {
-                          return buildFoodCard(foodList[index]);
+                          return buildFoodCard(filteredFoodList[index]);
                         },
                       ),
                     ],

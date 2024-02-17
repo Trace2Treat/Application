@@ -15,6 +15,7 @@ class _SearchPageState extends State<SearchPage> {
   final FoodService foodController = FoodService();
 
   List<Map<String, dynamic>> foodList = [];
+  List<Map<String, dynamic>> filteredFoodList = [];
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _SearchPageState extends State<SearchPage> {
 
       setState(() {
         foodList = foods;
+        filteredFoodList = foodList;
       });
     } catch (e) {
       print('Error fetching food list: $e');
@@ -58,7 +60,10 @@ class _SearchPageState extends State<SearchPage> {
                           controller: searchController,
                           onChanged: (query) {
                             setState(() {
-                              // search query
+                              filteredFoodList = foodList
+                                  .where((food) =>
+                                      food['name'].toLowerCase().contains(query.toLowerCase()))
+                                  .toList();
                             });
                           },
                           decoration: InputDecoration(
@@ -80,9 +85,9 @@ class _SearchPageState extends State<SearchPage> {
                           crossAxisSpacing: 5,
                           childAspectRatio: 0.95, 
                         ),
-                        itemCount: foodList.length,
+                        itemCount: filteredFoodList.length,
                         itemBuilder: (context, index) {
-                          return buildFoodCard(foodList[index]);
+                          return buildFoodCard(filteredFoodList[index]);
                         },
                       ),
                     ],
