@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'api_config.dart';
 import 'dart:convert';
 import '../utils/session_manager.dart';
+import '../utils/globals.dart';
 
 class TransactionService {
   bool isLoading = false;
@@ -21,6 +22,7 @@ class TransactionService {
       final List<dynamic> data = json.decode(response.body)['data'];
       return data.map((item) => Transaction.fromJson(item)).toList();
     } else {
+      statusCode = response.statusCode;
       throw Exception('Failed to load transactions');
     }
   }

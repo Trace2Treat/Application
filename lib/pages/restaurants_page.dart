@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trace2treat/themes/empty_order.dart';
 import 'foodtrack_page.dart';
 import 'restaurantmenu_page.dart';
 import 'home_page.dart';
@@ -6,7 +7,6 @@ import '../services/restaurant_service.dart';
 import '../themes/app_colors.dart';
 import '../themes/empty_data.dart';
 import '../utils/globals.dart';
-import '../utils/session_manager.dart';
 
 class RestaurantsPage extends StatefulWidget {
   const RestaurantsPage({Key? key}) : super(key: key);
@@ -17,44 +17,10 @@ class RestaurantsPage extends StatefulWidget {
 
 class _RestaurantsPageState extends State<RestaurantsPage> {
   final RestaurantService controller = RestaurantService();
-  List<Map<String, dynamic>> transactions = [];
-  Map<String, dynamic> restaurant = {};
-
-  int restaurantId = 0;
-  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
-  }
-
-  Future<void> fetchData() async {
-    try {
-      await fetchRestaurantData();
-    } catch (e) {
-      print('Error fetching data: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }
-  }
-
-  Future fetchRestaurantData() async {
-    print(transactions[0]['items']);
-    final String accessToken = SessionManager().getAccess() ?? '';
-
-    try {
-      final restaurantService = RestaurantService();
-
-      restaurant = await restaurantService.fetchRestaurantData(restaurantId, accessToken);
-
-    } catch (e) {
-      print('Error fetching data: $e');
-    }
   }
 
   @override
@@ -174,10 +140,17 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
               bottom: 36,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
+                  if (statusCode == 404){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const EmptyOrder()), 
+                    );
+                  } else {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const TrackOrderPage()), 
                     );
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
