@@ -31,7 +31,7 @@ class TransactionService {
     final String accessToken = SessionManager().getAccess() ?? '';
     final int restoid = SessionManager().getRestaurantId() ?? 0;
 
-    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$restoid');
+    final baseUrl = Uri.parse('${AppConfig.apiBaseUrl}/api/transaction?restaurant_id=$restoid&status=pending,preparing,prepared');
 
     try {
       final response = await http.get(

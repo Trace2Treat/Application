@@ -160,7 +160,7 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                           filterList(query);
                         },
                         decoration: const InputDecoration(
-                          labelText: 'Caru...',
+                          labelText: 'Cari...',
                           prefixIcon: Icon(Icons.search),
                         ),
                   ),
