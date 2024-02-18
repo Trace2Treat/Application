@@ -108,4 +108,35 @@ class FoodService {
       rethrow;
     }
   }
+
+  Future<void> updateFood(int id, String name, String description, String price, String stock, String thumb) async {
+    try {
+      final Uri url = Uri.parse('${AppConfig.apiBaseUrl}/api/foods/update/$id');
+      final accessToken = SessionManager().getAccess();
+
+      final response = await http.post(
+        url,
+        headers: {'Authorization': 'Bearer $accessToken'},
+        body: {
+          'name': name,
+          'description': description,
+          'price': price,
+          'stock': stock,
+          'thumb': thumb,
+          'category_id': '1'
+        },
+      );
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        // success
+      } else {
+        // failed
+      }
+    } catch (error) {
+      print('Error post food request: $error');
+      rethrow;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'refresh_page.dart';
 import 'foodform_page.dart';
+import 'fooddetail_page.dart';
 import 'home_page.dart';
 import '../services/food_service.dart';
 import '../themes/app_colors.dart';
@@ -95,6 +96,8 @@ class _FoodListPagePageState extends State<FoodListPage> {
                 } else {
                   List<Map<String, dynamic>> foodList = snapshot.data!;
 
+                  
+
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -111,27 +114,34 @@ class _FoodListPagePageState extends State<FoodListPage> {
                           children: [
                             Image.asset('assets/trash.png', height: 16, width: 16),
                             const SizedBox(width: 16),
-                            Column(
+                            Expanded(child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(foodList[index]['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                                Text('Deskripsi: ${foodList[index]['description']}'),
-                                Text('Harga: ${foodList[index]['price'] ?? 0}'),
+                                Wrap(
+                                        spacing: 14,
+                                        children: [
+                                          Text(
+                                            'Deskripsi: ${foodList[index]['description']}',
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                Text('Stok: ${foodList[index]['stock'] ?? 0}'),
                               ],
-                            ),
-                            Spacer(),
+                            ),),
                             IconButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => FoodDetailPage(
-                                //       selectedData: foodList[index],
-                                //     ),
-                                //   ),
-                                // );
-                              }, 
-                              icon: const Icon(Icons.arrow_right_alt_rounded)
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FoodDetailPage(
+                                      selectedData: foodList[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.arrow_right_alt_rounded),
                             )
                           ]
                         )
