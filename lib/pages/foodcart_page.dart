@@ -184,9 +184,7 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                             ),
                                             const SizedBox(height: 8),
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     IconButton(
                                                       icon: const Icon(Icons.remove),
@@ -203,9 +201,9 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                         });
                                                       },
                                                     ),
-                                                    const SizedBox(width: 8),
+                                                    const SizedBox(width: 5),
                                                     Text('${item['qty']}'),
-                                                    const SizedBox(width: 8),
+                                                    const SizedBox(width: 5),
                                                     IconButton(
                                                       icon: const Icon(Icons.add),
                                                       onPressed: () {
@@ -216,18 +214,18 @@ class _FoodCartPageState extends State<FoodCartPage> {
                                                         });
                                                       },
                                                     ),
+                                                    const SizedBox(height: 5),
+                                                    Expanded(
+                                                      child: Text(
+                                                        'Total Koin: ${item['totalPoin']}',
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
-                                                Text(
-                                                  'Total Koin: ${item['totalPoin']}',
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 8),
                                           ],
                                         ),
                                       ),
@@ -244,7 +242,6 @@ class _FoodCartPageState extends State<FoodCartPage> {
                 ),
               ),
             ),
-            
             Consumer<CartProvider>(
               builder: (context, cartProvider, child) {
                 List<Map<String, dynamic>> purchaseList = cartProvider.formatItemsForSending();

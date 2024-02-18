@@ -191,7 +191,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                           crossAxisCount: 2,
                           mainAxisSpacing: 5,
                           crossAxisSpacing: 5,
-                          childAspectRatio: 0.9, 
+                          childAspectRatio: 0.95, 
                         ),
                         itemCount: foodList.length,
                         itemBuilder: (context, index) {
@@ -256,7 +256,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                 food['thumb'] ?? '-',
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: 90,
+                height: 70,
               ),
             ),
             const SizedBox(height: 8),
@@ -286,7 +286,7 @@ class _DashboardUmkmPageState extends State<DashboardUmkmPage> {
                     children: [ 
                       Container(
                         padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        margin: const EdgeInsets.symmetric(vertical: 5),
                         decoration: BoxDecoration(
                           color: AppColors.primary,
                           borderRadius: BorderRadius.circular(10),

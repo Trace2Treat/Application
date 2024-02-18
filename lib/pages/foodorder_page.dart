@@ -103,8 +103,8 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
           ),
           Positioned(
             bottom: 20,
-            left: 16,
-            right: 16,
+            left: 10,
+            right: 10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -116,9 +116,9 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                         decrementCounter(); 
                       },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 5),
                     Text('$counter'), 
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 5),
                     IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: () {
@@ -150,9 +150,10 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                     );
                   },
                   child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Icon(Icons.shopping_cart),
-                      SizedBox(width: 8),
+                      SizedBox(width: 5),
                       Text('Tambah ke Keranjang'),
                     ],
                   ),

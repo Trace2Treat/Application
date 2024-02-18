@@ -202,23 +202,11 @@ class _ManagementOrderPageState extends State<ManagementOrderPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('#${transaction['transaction_code']}'),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              transaction['userName'],
+                                        Text(
+                                          '${transaction['userName']} (${transaction['userPhone']})',
                                               style: const TextStyle(
                                                 fontSize: 14,
                                               ),
-                                            ),
-                                            Text(
-                                              ' (${transaction['userPhone']})',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            
-                                          ]
                                         ),
                                         Text(
                                           'Total: $formattedPrice',
