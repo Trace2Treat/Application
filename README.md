@@ -7,9 +7,9 @@ Kiddovation
 3. Muhammad Rafi (Hipster)
 4. Muhammad Rizki Agus Salim (Hustler)
 
-# TRACETOTREAT APP (MOBILE)
-Trace2Treat adalah platform promosi produk makanan belum terjual yang menawarkan solusi bagi dua masalah serius: food waste dan sampah plastik. Melalui kolaborasi dengan pelaku UMKM di bidang makanan, kami menghadirkan solusi yang menggabungkan keberlanjutan dan aksesibilitas. Trace2Treat memberikan solusi pengelolaan sampah yang berkelanjutan dengan melibatkan pelaku UMKM sebagai mitra utama. Dengan Trace2Treat customer memiliki kemudahan untuk mengakses makanan dengan harga terjangkau. Pelanggan dapat membayar dengan uang tunai atau e-money dan tukar sampah plastik. Ketika pelanggan memesan makanan, driver Trace2Treat juga akan mengambil sampah plastik yang telah dipisahkan oleh pelanggan. Sampah plastik ini kemudian diolah dan didaur ulang oleh pengepul mitra. Fokus bisnis Trace2Treat adalah memenuhi kebutuhan pekerja dan mahasiswa perkotaan dengan makanan yang memiliki harga terjangkau dengan konsep bisnis ramah lingkungan. Melalui aplikasi pengiriman makanan yang efisien, Trace2Treat menyediakan solusi yang nyaman, hemat biaya, dan berkelanjutan.
+# TRACE2TREAT (trash to treat)
+Trace2Treat is a platform for promoting unsold food products that offers solutions to two serious problems: food waste and plastic waste. Through collaboration with small and medium-sized enterprises (UMKM) in the food industry, we provide a solution that combines sustainability and accessibility. Trace2Treat offers a sustainable waste management solution by involving UMKM players as main partners. With Trace2Treat, customers have the convenience of accessing affordable food. Customers can pay with point from exchange plastic waste. When customers order food, Trace2Treat drivers also collect plastic waste that has been separated by customers. This plastic waste will processed and recycled by partner collectors. Trace2Treat's business focus is to meet the needs of urban workers and students with affordable, environmentally friendly food concepts. Through an efficient food delivery application, Trace2Treat provides a convenient, cost-effective, and sustainable solution.
 
-## MOBILE 
+## FLUTTER DEBUG RUN
 - run `flutter pub get`
 - run `flutter run`
