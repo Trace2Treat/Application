@@ -383,7 +383,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       try {
                         await controller.postRegister(name, email, password, passwordConfirm, phone, address, role, attachment);
                       
-                          AnimatedSnackBar.rectangle(
+                        if (controller.statusCode == 200){
+                            AnimatedSnackBar.rectangle(
                             'Sukses',
                             'Anda berhasil mendaftar',
                             type: AnimatedSnackBarType.success,
@@ -405,6 +406,16 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             );
                           }
+                        } else {
+                          print('Error during register ${controller.statusCode}');
+                          AnimatedSnackBar.material(
+                              'Gagal mendaftar, coba lagi !',
+                              type: AnimatedSnackBarType.error,
+                            ).show(context);
+                            setState(() {
+                              controller.isLoading = false;
+                            });
+                        }
 
                       } catch (e) {
                         print('Error during register: $e');
@@ -412,6 +423,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             'Gagal mendaftar, coba lagi !',
                             type: AnimatedSnackBarType.error,
                           ).show(context);
+                        setState(() {
+                          controller.isLoading = false;
+                        });
                       }
                     },
                     style: ElevatedButton.styleFrom(
