@@ -4,6 +4,7 @@ import '../utils/session_manager.dart';
 
 class RegisterService {
   bool isLoading = false;
+  int statusCode = 0;
 
   Future<void> postRegister(String name, String email, String password, String passwordConfirm, String phone, String address, String role, String avatar) async {
     try {
@@ -25,6 +26,7 @@ class RegisterService {
       );
 
       print(response.body);
+      statusCode = response.statusCode;
 
       if (response.statusCode == 200) {
         // success
